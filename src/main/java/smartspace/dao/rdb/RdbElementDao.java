@@ -5,14 +5,17 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import smartspace.dao.ElementDao;
+import smartspace.dao.EnhancedElementDao;
 import smartspace.data.ElementEntity;
 
 @Repository
-public class RdbElementDao implements ElementDao<String> {
+public class RdbElementDao implements EnhancedElementDao<String> {
 	private ElementCrud elementCrud;
 	private GenericIdGeneratorCrud generatorCrud;
 
@@ -97,6 +100,27 @@ public class RdbElementDao implements ElementDao<String> {
 	@Transactional
 	public void deleteAll() {
 		this.elementCrud.deleteAll();
+	}
+
+	@Override
+	@Transactional(readOnly=true)
+	public List<ElementEntity> readAll(int size, int page) {
+		return this.elementCrud.findAll(PageRequest.of(page, size)).getContent();
+	}
+
+	@Override
+	@Transactional(readOnly=true)
+	public List<ElementEntity> readAll(String sortBy, int size, int page) {
+		return this.elementCrud
+				.findAll(PageRequest.of(page, size, Direction.ASC, sortBy))
+				.getContent();
+	}
+
+	@Override
+	@Transactional(readOnly=true)
+	public List<ElementEntity> readMessageWithSmartspaceContaining(String smartspace, int size, int page) {
+		return this.elementCrud
+				.findAllByNameLike("%" + smartspace + "%", PageRequest.of(page, size));
 	}
 
 }

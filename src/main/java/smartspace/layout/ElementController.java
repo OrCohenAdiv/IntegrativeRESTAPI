@@ -22,26 +22,28 @@ public class ElementController {
 		this.elementService = elementService;
 	}
 	
-	@RequestMapping(path="/smarspace/admin/users/{adminSmartspace}/{adminEmail}",
+	@RequestMapping(path="/smarspace/admin/elements/{adminSmartspace}/{adminEmail}",
 			method=RequestMethod.POST,
 			consumes=MediaType.APPLICATION_JSON_VALUE,
 			produces=MediaType.APPLICATION_JSON_VALUE)
-	public ElementBoundary newMessage (@RequestBody ElementBoundary message, 
+	public ElementBoundary newElement (@RequestBody ElementBoundary element, 
 			@PathVariable("adminSmartspace") String adminSmartspace,
 			@PathVariable("adminEmail") String adminEmail) {
 		
 		return new ElementBoundary(
 				this.elementService
-					.newMessage(message.convertToEntity(), adminSmartspace,adminEmail));
+					.newElement(element.convertToEntity(), adminSmartspace,adminEmail));
 	}
 
 	@RequestMapping(
-			path="/smarspace/admin/users/{adminSmartspace}/{adminEmail}",
+			path="/smarspace/admin/elements/{adminSmartspace}/{adminEmail}",
 			method=RequestMethod.GET,
 			produces=MediaType.APPLICATION_JSON_VALUE)
 	public ElementBoundary[] getUsingPagination (
 			@RequestParam(name="size", required=false, defaultValue="10") int size,
-			@RequestParam(name="page", required=false, defaultValue="0") int page) {
+			@RequestParam(name="page", required=false, defaultValue="0") int page,
+			@PathVariable("adminSmartspace") String adminSmartspace,
+			@PathVariable("adminEmail") String adminEmail) {
 		return 
 			this.elementService
 			.getUsingPagination(size, page)

@@ -7,69 +7,66 @@ import smartspace.data.ElementEntity;
 import smartspace.data.Location;
 
 public class ElementBoundary {
-	private String key;
+	private ElementKeyBondary key;
 	private String name;
-	private String type;
+	private String elementType;
 	private Date creationTimestamp;
 	private boolean expired;
-	private String creator;
-	private String latlng;
+	private ElementCreatorBondary creator;
+	private ElementLocationBondary latlng;
 	private Map<String, Object> elementProperties;
 
 	public ElementBoundary() {
 	}
 
 	public ElementBoundary(ElementEntity entity) {
-		this.key = entity.getKey();
+		if(key==null) {
+			this.key=new ElementKeyBondary();
+		}
+		if(entity.getKey()!=null) {
+			String[] args = entity.getKey().split("=");
+			this.key.setId(args[0]);
+			this.key.setSmartspace(args[1]);
+		}
+		this.elementType = entity.getType();
 		this.name = entity.getName();
-		this.type = entity.getType();
 		this.creationTimestamp = entity.getCreationTimestamp();
 		this.expired = entity.isExpired();
-		this.creator = entity.getCreatorEmail() + "#" + entity.getCreatorSmartspace();
-
-		if (entity.getLocation() != null) {
-			this.latlng = entity.getLocation().getX() + "#" + entity.getLocation().getY();
+		if(creator==null) {
+			this.creator = new ElementCreatorBondary();
 		}
+		this.creator.setEmail(entity.getCreatorEmail());
+		this.creator.setSmartspcae(entity.getCreatorSmartspace());
+		if(latlng==null) {
+			this.latlng = new ElementLocationBondary();
+		}
+		this.latlng.setLat(entity.getLocation().getX());
+		this.latlng.setLng(entity.getLocation().getY());
 		this.elementProperties = entity.getMoreAttributes();
 	}
 
 	public ElementEntity convertToEntity() {
 		ElementEntity entity = new ElementEntity();
-
-		entity.setKey(this.key);
-		entity.setType(this.type);
+		entity.setKey("=");
+		if(this.key.getId()!=null && this.key.getSmartspace()!=null) {
+			entity.setKey(this.key.getSmartspace()+"="+this.key.getId());
+		}
+		entity.setType(this.elementType);
 		entity.setName(this.name);
 		entity.setExpired(this.expired);
 		entity.setCreationTimestamp(this.creationTimestamp);
-		entity.setCreatorEmail(null);
-		entity.setCreatorSmartspace(null);
-		if (this.creator != null) {
-			String[] splitedCreator = this.creator.split("#");
-			if (splitedCreator.length == 2) {
-				entity.setCreatorEmail(splitedCreator[0]);
-				entity.setCreatorSmartspace(splitedCreator[1]);
-			}
-		}
-
-		entity.setLocation(null);
-		if (this.latlng != null) {
-			String[] splitedLocation = this.latlng.split("#");
-			if (splitedLocation.length == 2) {
-				entity.setLocation(new Location(
-								Double.parseDouble(splitedLocation[0]),
-								Double.parseDouble(splitedLocation[1])));
-			}
-		}
+		entity.setCreatorEmail(this.creator.getEmail());
+		entity.setCreatorSmartspace(this.creator.getSmartspcae());
+		entity.setLocation(new Location(this.latlng.getLat(),this.latlng.getLng()));
 		entity.setMoreAttributes(this.elementProperties);
-
 		return entity;
 	}
 
-	public String getKey() {
+	public ElementKeyBondary getKey() {
 		return key;
 	}
 
-	public void setKey(String key) {
+	public void setKey(ElementKeyBondary key) {
 		this.key = key;
 	}
 
@@ -81,12 +78,12 @@ public class ElementBoundary {
 		this.name = name;
 	}
 
-	public String getType() {
-		return type;
+	public String getElementType() {
+		return elementType;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setElementType(String type) {
+		this.elementType = type;
 	}
 
 	public Date getCreationTimestamp() {
@@ -105,19 +102,19 @@ public class ElementBoundary {
 		this.expired = expired;
 	}
 
-	public String getCreator() {
+	public ElementCreatorBondary getCreator() {
 		return creator;
 	}
 
-	public void setCreator(String creator) {
+	public void setCreator(ElementCreatorBondary creator) {
 		this.creator = creator;
 	}
 
-	public String getLatlng() {
+	public ElementLocationBondary getLatlng() {
 		return latlng;
 	}
 
-	public void setLatlng(String latlng) {
+	public void setLatlng(ElementLocationBondary latlng) {
 		this.latlng = latlng;
 	}
 
@@ -128,7 +125,79 @@ public class ElementBoundary {
 	public void setElementProperties(Map<String, Object> elementProperties) {
 		this.elementProperties = elementProperties;
 	}
-	
-	
 
+}
+
+class ElementKeyBondary{
+	private String id;
+	private String smartspace;
+	
+	public ElementKeyBondary() {
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getSmartspace() {
+		return smartspace;
+	}
+
+	public void setSmartspace(String smartspace) {
+		this.smartspace = smartspace;
+	}
+}
+
+class ElementCreatorBondary{
+	private String email;
+	private String smartspcae;
+	
+	public ElementCreatorBondary() {
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getSmartspcae() {
+		return smartspcae;
+	}
+
+	public void setSmartspcae(String smartspcae) {
+		this.smartspcae = smartspcae;
+	}
+}
+
+class ElementLocationBondary{
+	private double lat;
+	private double lng;
+	
+	public ElementLocationBondary() {
+	}
+
+	public double getLat() {
+		return lat;
+	}
+
+	public void setLat(double lat) {
+		this.lat = lat;
+	}
+
+	public double getLng() {
+		return lng;
+	}
+
+	public void setLng(double lng) {
+		this.lng = lng;
+	}
+	
+	
 }

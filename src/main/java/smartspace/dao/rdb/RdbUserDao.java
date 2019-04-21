@@ -1,19 +1,22 @@
 package smartspace.dao.rdb;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import smartspace.dao.EnhancedUserDao;
 import smartspace.dao.UserDao;
 import smartspace.data.UserEntity;
 
 @Repository
-public class RdbUserDao implements UserDao<String>{
+public class RdbUserDao implements EnhancedUserDao<String>{
 
 	private UserCrud userCrud;
 	private GenericIdGeneratorCrud genericIdGeneratorCrud;	
@@ -58,15 +61,20 @@ public class RdbUserDao implements UserDao<String>{
 		//SQL: SELECT
 		return this.userCrud.findById(userKey);
 	}
-
+	
 	@Override
 	@Transactional(readOnly=true)
 	public List<UserEntity> readAll() {
-		//SQL: SELECT
 		List<UserEntity> rv = new ArrayList<>();
-		this.userCrud.findAll().forEach(rv::add);
+		
+		// SQL: SELECT
+		this.userCrud.findAll()
+			.forEach(rv::add);
+		
 		return rv;
 	}
+
+
 
 	@Override
 	@Transactional
@@ -101,17 +109,35 @@ public class RdbUserDao implements UserDao<String>{
 		this.userCrud.deleteAll();
 	}
 	
-//	@Override
-//	@Transactional(readOnly=true)
-//	public List<UserEntity> readMessageWithNameContaining(
-//			String text, 
-//			int size, 
-//			int page) {
-//		
-//		return this.userCrud
-//				.findAllByNameLike(
-//						"%" + text + "%",
-//						PageRequest.of(page, size));
-//	}
+	@Override
+	@Transactional(readOnly=true)
+	public List<UserEntity> readAll(int size, int page) {
+		return this.userCrud
+			.findAll(PageRequest.of(page, size))
+			.getContent();
+	}
 
+
+	@Override
+	@Transactional(readOnly=true)
+	public List<UserEntity> readMessageWithNameContaining(
+			String text, 
+			int size, 
+			int page) {
+		
+		return this.userCrud
+				.findAllByNameLike(
+						"%" + text + "%",
+						PageRequest.of(page, size));
+	}
+
+	@Override
+	public List<UserEntity> readAll(String sortBy, int size, int page) {
+		return this.userCrud
+			.findAll(PageRequest.of(
+					page, size, 
+					Direction.ASC, sortBy))
+			.getContent();
+	}
+	
 }

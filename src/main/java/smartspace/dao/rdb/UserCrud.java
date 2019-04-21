@@ -1,14 +1,25 @@
 package smartspace.dao.rdb;
 
+
 import smartspace.data.UserEntity;
 
+import java.util.Date;
 import java.util.List;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.query.Param;
 
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.repository.CrudRepository;
-
-public interface UserCrud extends CrudRepository<UserEntity, String> {
+public interface UserCrud extends PagingAndSortingRepository<UserEntity, String>{ 
 
 //	List<UserEntity> findAllByNameLike(String string, PageRequest of);
+	
+	public List<UserEntity> findAllByNameLike(
+			@Param("pattern") String pattern, 
+			Pageable pageable);
+
+	public List<UserEntity> findAllByAvailableFromBetween(
+			@Param("fromDate") Date fromDate, 
+			@Param("toDate") Date toDate, 
+			Pageable pageable);
 
 }

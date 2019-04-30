@@ -13,13 +13,8 @@ public interface UserCrud extends PagingAndSortingRepository<UserEntity, String>
 
 //	List<UserEntity> findAllByNameLike(String string, PageRequest of);
 	
-	public List<UserEntity> findAllByNameLike(
+	public List<UserEntity> findAllByUserNameLike(
 			@Param("pattern") String pattern, 
-			Pageable pageable);
-
-	public List<UserEntity> findAllByAvailableFromBetween(
-			@Param("fromDate") Date fromDate, 
-			@Param("toDate") Date toDate, 
 			Pageable pageable);
 
 }

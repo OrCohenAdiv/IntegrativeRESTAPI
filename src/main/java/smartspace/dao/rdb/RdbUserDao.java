@@ -83,6 +83,9 @@ public class RdbUserDao implements EnhancedUserDao<String>{
 		UserEntity existing = this.readById(userEntity.getKey())
 				.orElseThrow(() -> new RuntimeException("not user to update"));
 		
+		if(userEntity.getPoints() != existing.getPoints()) {
+			existing.setPoints(userEntity.getPoints());
+		}
 		if(userEntity.getAvatar() != null) {
 			existing.setAvatar(userEntity.getAvatar());
 		}

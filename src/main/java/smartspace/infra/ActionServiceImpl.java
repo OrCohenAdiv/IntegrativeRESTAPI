@@ -2,12 +2,12 @@ package smartspace.infra;
 
 import java.util.Date;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.stereotype.Service;
 import smartspace.dao.EnhancedActionDao;
 import smartspace.data.ActionEntity;
 
+@Service
 public class ActionServiceImpl implements ActionService {
 	private EnhancedActionDao actionDao;
 
@@ -18,6 +18,7 @@ public class ActionServiceImpl implements ActionService {
 
 	@Override
 	public ActionEntity newAction(ActionEntity entity, String adminSmartspace, String adminEmail) {
+		// validate code	
 		if (valiadate(entity)) {
 			entity.setCreationTimestamp(new Date());
 			return this.actionDao.create(entity);

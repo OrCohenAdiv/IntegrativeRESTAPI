@@ -5,9 +5,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
-
-import org.springframework.stereotype.Repository;
-
 import smartspace.dao.UserDao;
 import smartspace.data.UserEntity;
 
@@ -47,27 +44,28 @@ public class MemoryUserDao implements UserDao<String> {
 	}
 
 	@Override
-	public void update(UserEntity user) {
+	public void update(UserEntity userEntity) {
 		synchronized (this.userEntities) {
-			UserEntity tmpUser = readById(user.getKey()).orElseThrow(() -> 
+			UserEntity tmpUser = readById(userEntity.getKey()).orElseThrow(() -> 
 				new RuntimeException("user couldn't be found"));
 			
-			tmpUser.setPoints(user.getPoints());
-
-			if(user.getAvatar() != null) {
-				tmpUser.setAvatar(user.getAvatar());
+			if(userEntity.getPoints() != tmpUser.getPoints()) {
+				tmpUser.setPoints(userEntity.getPoints());
 			}
-			
-			if(user.getRole() != null) {
-				tmpUser.setRole(user.getRole());
+			if(userEntity.getAvatar() != null) {
+				tmpUser.setAvatar(userEntity.getAvatar());
 			}
-			
-			if(user.getUserEmail() != null) {
-				tmpUser.setUserEmail(user.getUserEmail());
+			if(userEntity.getRole() != null) {
+				tmpUser.setRole(userEntity.getRole());
 			}
-			
-			if(user.getUserName() != null) {
-				tmpUser.setUserName(user.getUserName());
+			if(userEntity.getUserEmail() != null) {
+				tmpUser.setUserEmail(userEntity.getUserEmail());
+			}
+			if(userEntity.getUserName() != null) {
+				tmpUser.setUserName(userEntity.getUserName());
+			}
+			if(userEntity.getUserSmartspace() != null) {
+				tmpUser.setUserSmartspace(userEntity.getUserSmartspace());
 			}
 		}
 	}

@@ -23,7 +23,7 @@ public class EntityFactoryTest {
 		EntityFactoryImpl factory = new EntityFactoryImpl();
 
 		// THEN the EntityFactory will creat new ActionEntity with the correct data
-		factory.createNewActionEntity(null,Smartspace,"Test",new Date(),"test@Testing",Smartspace,null);
+		factory.createNewAction(null,Smartspace,"Test",new Date(),"test@Testing",Smartspace,null);
 		
 
 

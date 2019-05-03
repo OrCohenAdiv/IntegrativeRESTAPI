@@ -17,7 +17,6 @@ import javax.persistence.Transient;
 import smartspace.dao.rdb.MapToJsonConverter;
 import smartspace.data.Location;
 
-
 @Entity
 @Table(name="ELEMENTS")
 public class ElementEntity implements SmartspaceEntity<String> {

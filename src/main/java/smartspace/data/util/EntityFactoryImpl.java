@@ -15,7 +15,7 @@ import smartspace.data.UserRole;
 public class EntityFactoryImpl implements EntityFactory{
 	
 	@Override
-	public UserEntity createNewUserEntity(
+	public UserEntity createNewUser(
 			String userEmail, 
 			String userSmartspace, 
 			String username, 
@@ -33,7 +33,7 @@ public class EntityFactoryImpl implements EntityFactory{
 	}
 	
 	@Override
-	public ElementEntity createNewElementEntity(
+	public ElementEntity createNewElement(
 			String name, 
 			String type, 
 			Location location, 
@@ -55,7 +55,7 @@ public class EntityFactoryImpl implements EntityFactory{
 	}
 
 	@Override
-	public ActionEntity createNewActionEntity(
+	public ActionEntity createNewAction(
 			String elementId, 
 			String elementSmartSpace, 
 			String actionType,

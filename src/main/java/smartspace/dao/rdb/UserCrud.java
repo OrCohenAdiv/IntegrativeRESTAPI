@@ -1,8 +1,6 @@
 package smartspace.dao.rdb;
 
-
 import smartspace.data.UserEntity;
-
 import java.util.Date;
 import java.util.List;
 import org.springframework.data.domain.Pageable;

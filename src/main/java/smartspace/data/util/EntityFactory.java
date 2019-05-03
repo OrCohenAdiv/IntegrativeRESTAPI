@@ -21,7 +21,7 @@ public interface EntityFactory {
 	 * 
 	 *  @return new UserEntity object according to the given data
 	 * */
-	public UserEntity createNewUserEntity(
+	public UserEntity createNewUser(
 			String userEmail,
 			String userSmartspace,
 			String username,
@@ -43,7 +43,7 @@ public interface EntityFactory {
 	 * 
 	 *  @return new UserEntity object according to the given data
 	 * */
-	public ElementEntity createNewElementEntity(
+	public ElementEntity createNewElement(
 			String name,
 			String type,
 			Location location,
@@ -66,7 +66,7 @@ public interface EntityFactory {
 	 * 
 	 *  @return new ActionEntity object according to the given data
 	 * */
-	public ActionEntity createNewActionEntity(
+	public ActionEntity createNewAction(
 			String elementId,
 			String elementSmartSpace,
 			String actionType,

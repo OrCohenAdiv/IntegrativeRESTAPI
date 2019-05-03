@@ -36,13 +36,13 @@ private EnhancedUserDao<String> userDao;
 		UserEntity userInSmartspace = userDao.readById(key).orElseThrow(() -> new RuntimeException("not user to update"));;
 		
 		if(userInSmartspace.getRole()!= UserRole.ADMIN)
-			throw new RuntimeException("you are not allowed to create messages");
+			throw new RuntimeException("you are not allowed to create users");
 				
-				if (valiadate(entity)) {
-					return this.userDao.create(entity);
-				}else {
-					throw new RuntimeException("invalid message");
-				}
+		if (valiadate(entity)) {
+			return this.userDao.create(entity);
+		} else {
+			throw new RuntimeException("invalid message");
+		}
 	}
 
 	@Override

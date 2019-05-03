@@ -51,7 +51,7 @@ public class RdbActionIntegrationTests {
 
 		// WHEN Create 10 Actions in DB
 		Set<String> result = IntStream.range(1, 11)
-				.mapToObj(i -> this.factory.createNewActionEntity("Test #" + i, SMARTSPACE, "TEST", new Date(),
+				.mapToObj(i -> this.factory.createNewAction("Test #" + i, SMARTSPACE, "TEST", new Date(),
 						"Test@tesing.com", SMARTSPACE, null))
 				.map(this.actionDao::create)
 				.map(ActionEntity::getKey)
@@ -68,7 +68,7 @@ public class RdbActionIntegrationTests {
 		// WHEN I create some Actions to the database
 		int size = 10;
 		Set<String> ids = IntStream.range(1, size + 1) // Stream Integer
-				.mapToObj(i -> this.factory.createNewActionEntity("Test #" + i, SMARTSPACE, "TEST", new Date(),
+				.mapToObj(i -> this.factory.createNewAction("Test #" + i, SMARTSPACE, "TEST", new Date(),
 						"Test@tesing.com", SMARTSPACE, new HashMap<>())) // ActionEntity Stream
 				.map(this.actionDao::create) // ActionEntity Stream
 				.map(ActionEntity::getKey) // String Stream

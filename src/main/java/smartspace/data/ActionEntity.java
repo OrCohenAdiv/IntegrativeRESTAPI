@@ -15,7 +15,6 @@ import javax.persistence.Transient;
 
 import smartspace.dao.rdb.MapToJsonConverter;
 
-
 @Entity
 @Table(name="ACTIONS")
 public class ActionEntity implements SmartspaceEntity<String> {
@@ -29,7 +28,6 @@ public class ActionEntity implements SmartspaceEntity<String> {
 	private Date creationTimestamp;
 	private Map<String,Object> moreAttributes;
 	
-
 	public ActionEntity() {
 	}
 	

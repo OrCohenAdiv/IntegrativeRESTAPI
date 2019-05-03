@@ -11,21 +11,30 @@ import smartspace.data.ElementEntity;
 
 @Service
 public class ElementServiceImpl implements ElementService {
-	private EnhancedElementDao<String> elemntDao;
+	private EnhancedElementDao<String> elementDao;
 
 	@Autowired
 	public ElementServiceImpl(EnhancedElementDao<String> elementDao) {
-		this.elemntDao = elementDao;
+		this.elementDao = elementDao;
 	}
 
 	@Override
-	public ElementEntity newElement(ElementEntity entity,
-			String adminSmartspace, String adminEmail) {
+	public ElementEntity newElement(
+			ElementEntity entity, String adminSmartspace, String adminEmail) {
 		// TODO: check if user is admin
+		// validate code
 
+		String key = adminEmail + "=" + adminSmartspace;
+		ElementEntity elementInSmartspace = elementDao.readById(key).
+				orElseThrow(() -> new RuntimeException("not element to update"));
+		
+		if(elementInSmartspace.getCreatorEmail() != adminEmail 
+				|| elementInSmartspace.getCreatorSmartspace() != adminSmartspace)
+			throw new RuntimeException("you are not allowed to create element");
+		
 		if (valiadate(entity)) {
 			entity.setCreationTimestamp(new Date());
-			return this.elemntDao.create(entity);
+			return this.elementDao.create(entity);
 		} else {
 			throw new RuntimeException("invalid message");
 		}
@@ -44,7 +53,7 @@ public class ElementServiceImpl implements ElementService {
 
 	@Override
 	public List<ElementEntity> getUsingPagination(int size, int page) {
-		return this.elemntDao.readAll("key", size, page);
+		return this.elementDao.readAll("key", size, page);
 	}
 
 }

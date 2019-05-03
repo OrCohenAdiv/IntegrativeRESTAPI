@@ -56,7 +56,7 @@ public class RdbElementIntegrationTests {
 
 		// WHEN Create 10 element in DB
 		Set<String> result = IntStream.range(1, 11)
-				.mapToObj(i -> this.factory.createNewElementEntity("Test #" + i,
+				.mapToObj(i -> this.factory.createNewElement("Test #" + i,
 						"tests", new Location(), new Date(),
 						"Test@testing.com",
 						SMARTSPACE, false, null))
@@ -77,7 +77,7 @@ public class RdbElementIntegrationTests {
 		// AND Update element details
 		// AND Read element from database
 		ElementEntity newElement = 
-				this.eleDao.create(this.factory.createNewElementEntity("Test",
+				this.eleDao.create(this.factory.createNewElement("Test",
 				"tests", new Location(), new Date(),
 				"Test@testing.com",
 				SMARTSPACE, false, null));
@@ -119,7 +119,7 @@ public class RdbElementIntegrationTests {
 		int size = 10;
 		Set<String> ids = 
 		IntStream.range(1, size+1) // Stream Integer
-			.mapToObj(i->this.factory.createNewElementEntity("Test",
+			.mapToObj(i->this.factory.createNewElement("Test",
 					"tests", new Location(), new Date(),
 					"Test@testing.com",
 					SMARTSPACE, false,

@@ -2,29 +2,38 @@ package smartspace.layout;
 
 import java.util.Date;
 import java.util.Map;
-
 import smartspace.data.ActionEntity;
-import smartspace.data.Location;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ActionBoundry {
-	private ActionKeyBoundry actionKey;
-	private String actionType;
-	private Date creationTimestamp;	
+	
+	private ActionBoundryKey actionKey;
+	private String type;
+	private Date created;	
 	private ElementKeyBondary element;
 	private UserKeyBoundry player;
-	private Map<String,Object> moreAttributes;
+	private Map<String,Object> properties;
 	
 	public ActionBoundry() {
 	}
 	
 	public ActionBoundry(ActionEntity entity){
 		
-		this.setActionType(entity.getActionType());
-		this.setCreationTimestamp(entity.getCreationTimestamp());
-		this.setMoreAttributes(entity.getMoreAttributes());
-				
+//		this.setType(entity.getActionType());
+//		this.setCreated(entity.getCreationTimestamp());
+//		this.setProperties(entity.getMoreAttributes());
+//		
+//		this.actionKey.setId(entity.getActionId());	
+//		this.actionKey.setSmartspace(entity.getActionSmartspace());	
+//
+//		this.element.setId(entity.getElementId());
+//		this.element.setSmartspace(entity.getElementSmartspace());
+//
+//		this.player.setPlayerEmail(entity.getPlayerEmail());
+//		this.player.setPlayerSmartspace(entity.getPlayerSmartspace());
+//	}
 		if(actionKey==null) {
-			this.actionKey = new ActionKeyBoundry();			
+			this.actionKey = new ActionBoundryKey();			
 		}
 		if(entity.getKey() != null) {
 			this.actionKey.setId(entity.getActionId());
@@ -47,11 +56,77 @@ public class ActionBoundry {
 			this.player.setPlayerSmartspace(entity.getPlayerSmartspace());
 		}
 	}
+	
+	
+	public ActionBoundryKey getActionKey() {
+		return actionKey;
+	}
 
+	public void setActionKey(ActionBoundryKey actionKey) {
+		this.actionKey = actionKey;
+	}
 
+	public ElementKeyBondary getElement() {
+		return element;
+	}
+
+	public void setElement(ElementKeyBondary element) {
+		this.element = element;
+	}
+
+	public UserKeyBoundry getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(UserKeyBoundry player) {
+		this.player = player;
+	}
+	
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public Date getCreated() {
+		return created;
+	}
+
+	public void setCreated(Date created) {
+		this.created = created;
+	}
+
+	public Map<String,Object> getProperties() {
+		return properties;
+	}
+
+	public void setProperties(Map<String,Object> properties) {
+		this.properties = properties;
+	}
+	
+	
 	public ActionEntity convertToEntity(){
 		
 		ActionEntity entity =  new ActionEntity();
+		
+//		entity.setActionId(this.actionKey.getId());
+//		entity.setActionSmartspace(this.actionKey.getSmartspace());
+//		
+//		String key = entity.getActionSmartspace() + "=" + entity.getActionId();
+//		entity.setKey(key);
+//
+//		entity.setElementId(this.element.getId());
+//		entity.setElementSmartspace(this.element.getSmartspace());
+//		
+//		entity.setPlayerEmail(this.player.getPlayerEmail());
+//		entity.setPlayerSmartspace(this.player.getPlayerSmartspace());
+//		
+//		entity.setCreationTimestamp(this.created);
+//		entity.setMoreAttributes(this.properties); 
+//		entity.setActionType(this.type);
+		
 		entity.setKey("=");
 		if(this.actionKey.getId() != null && this.actionKey.getSmartspace() != null) {
 			entity.setActionId(this.actionKey.getId());
@@ -66,43 +141,29 @@ public class ActionBoundry {
 			entity.setPlayerEmail(this.player.getPlayerEmail());
 			entity.setPlayerSmartspace(this.player.getPlayerSmartspace());
 		}	
-		entity.setCreationTimestamp(this.creationTimestamp);
-		entity.setMoreAttributes(this.moreAttributes); 
-		entity.setActionType(this.actionType);
+		entity.setCreationTimestamp(this.created);
+		entity.setMoreAttributes(this.properties); 
+		entity.setActionType(this.type);
+
 		return entity;
 	}
-
-	public String getActionType() {
-		return actionType;
-	}
-
-	public void setActionType(String actionType) {
-		this.actionType = actionType;
-	}
-
-	public Date getCreationTimestamp() {
-		return creationTimestamp;
-	}
-
-	public void setCreationTimestamp(Date creationTimestamp) {
-		this.creationTimestamp = creationTimestamp;
-	}
-
-	public Map<String,Object> getMoreAttributes() {
-		return moreAttributes;
-	}
-
-	public void setMoreAttributes(Map<String,Object> moreAttributes) {
-		this.moreAttributes = moreAttributes;
+	
+	@Override
+	public String toString() {
+		try {
+			return new ObjectMapper().writeValueAsString(this);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 }
 
 
-class ActionKeyBoundry {
+class ActionBoundryKey {
 	private String smartspace;
 	private String id;
 	
-	public ActionKeyBoundry() {
+	public ActionBoundryKey() {
 	}
 	
 	public String getSmartspace() {
@@ -123,26 +184,26 @@ class ActionKeyBoundry {
 
 class UserKeyBoundry {
 	
-	private String playerSmartspace;
-	private String playerEmail;
+	private String smartspace;
+	private String email;
 	
 	public UserKeyBoundry() {
 	}
 
 	public String getPlayerSmartspace() {
-		return playerSmartspace;
+		return smartspace;
 	}
 
 	public void setPlayerSmartspace(String playerSmartspace) {
-		this.playerSmartspace = playerSmartspace;
+		this.smartspace = playerSmartspace;
 	}
 
 	public String getPlayerEmail() {
-		return playerEmail;
+		return email;
 	}
 
 	public void setPlayerEmail(String playerEmail) {
-		this.playerEmail = playerEmail;
+		this.email = playerEmail;
 	}
 }
 

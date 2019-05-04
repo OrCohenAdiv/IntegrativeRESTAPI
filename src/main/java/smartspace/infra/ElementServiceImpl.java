@@ -24,14 +24,14 @@ public class ElementServiceImpl implements ElementService {
 		// TODO: check if user is admin
 		// validate code
 
-		String key = adminEmail + "=" + adminSmartspace;
-		ElementEntity elementInSmartspace = elementDao.readById(key).
-				orElseThrow(() -> new RuntimeException("not element to update"));
-		
-		if(elementInSmartspace.getCreatorEmail() != adminEmail 
-				|| elementInSmartspace.getCreatorSmartspace() != adminSmartspace)
-			throw new RuntimeException("you are not allowed to create element");
-		
+//		String key = adminEmail + "=" + adminSmartspace;
+//		ElementEntity elementInSmartspace = elementDao.readById(key).
+//				orElseThrow(() -> new RuntimeException("not element to update"));
+//		
+//		if(elementInSmartspace.getCreatorEmail() != adminEmail 
+//				|| elementInSmartspace.getCreatorSmartspace() != adminSmartspace)
+//			throw new RuntimeException("you are not allowed to create element");
+//		
 		if (valiadate(entity)) {
 			entity.setCreationTimestamp(new Date());
 			return this.elementDao.create(entity);

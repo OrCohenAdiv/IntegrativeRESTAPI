@@ -15,6 +15,7 @@ import smartspace.infra.ActionService;
 
 @RestController
 public class ActionController {
+	
 	private ActionService actionService;
 
 	@Autowired
@@ -22,17 +23,19 @@ public class ActionController {
 		this.actionService = actionService;
 	}
 	
-	@RequestMapping(path="/smartspace/admin/actions/{adminSmartspace}/{adminEmail}",
+	@RequestMapping(
+			path="/smartspace/admin/actions/{adminSmartspace}/{adminEmail}",
 			method=RequestMethod.POST,
 			consumes=MediaType.APPLICATION_JSON_VALUE,
 			produces=MediaType.APPLICATION_JSON_VALUE)
-	public ActionBoundry newAction (@RequestBody ActionBoundry action, 
+	public ActionBoundry newAction (
+			@RequestBody ActionBoundry action, 
 			@PathVariable("adminSmartspace") String adminSmartspace,
 			@PathVariable("adminEmail") String adminEmail) {
 		
 		return new ActionBoundry(
 				this.actionService
-					.newAction(action.convertToEntity(), adminSmartspace,adminEmail));
+					.newAction(action.convertToEntity(), adminSmartspace, adminEmail));
 	}
 
 	@RequestMapping(
@@ -44,6 +47,7 @@ public class ActionController {
 			@RequestParam(name="page", required=false, defaultValue="0") int page,
 			@PathVariable("adminSmartspace") String adminSmartspace,
 			@PathVariable("adminEmail") String adminEmail) {
+			
 		return 
 			this.actionService
 			.getUsingPagination(size, page)

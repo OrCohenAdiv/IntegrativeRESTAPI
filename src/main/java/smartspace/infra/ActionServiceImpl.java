@@ -9,6 +9,7 @@ import smartspace.data.ActionEntity;
 
 @Service
 public class ActionServiceImpl implements ActionService {
+	
 	private EnhancedActionDao actionDao;
 
 	@Autowired
@@ -42,5 +43,4 @@ public class ActionServiceImpl implements ActionService {
 	public List<ActionEntity> getUsingPagination(int size, int page) {
 		return this.actionDao.readAll("key", size, page);
 	}
-
 }

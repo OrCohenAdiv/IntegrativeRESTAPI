@@ -2,7 +2,6 @@ package smartspace.data;
 
 import java.util.Date;
 import java.util.Map;
-
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
@@ -12,7 +11,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
-
 import smartspace.dao.rdb.MapToJsonConverter;
 
 @Entity
@@ -33,6 +31,7 @@ public class ActionEntity implements SmartspaceEntity<String> {
 	
 	public ActionEntity(String elementId, String elementSmartSpace, String actionType, Date creationTimeStamp,
 			String playerEmail, String playerSmartSpace, Map<String, Object> moreAttributes) {
+		super();
 		this.elementSmartspace = elementSmartSpace;
 		this.elementId = elementId;
 		this.playerSmartspace = playerSmartSpace;
@@ -56,7 +55,21 @@ public class ActionEntity implements SmartspaceEntity<String> {
 		this.creationTimestamp = creationTimestamp;
 		this.moreAttributes = moreAttributes;
 	}
+	
+	@Override
+	@Id
+	@Column(name="ID")
+	public String getKey() {
+		return this.actionSmartspace + "=" + this.actionId;
+	}
 
+	@Override
+	public void setKey(String key) {
+		String[] parts = key.split("=");
+		this.actionSmartspace = parts[0];
+		this.actionId = parts[1];
+	}
+	
 	@Transient
 	public String getActionSmartspace() {
 		return actionSmartspace;
@@ -98,7 +111,7 @@ public class ActionEntity implements SmartspaceEntity<String> {
 	public void setPlayerSmartspace(String playerSmartspace) {
 		this.playerSmartspace = playerSmartspace;
 	}
-
+	
 	public String getPlayerEmail() {
 		return playerEmail;
 	}
@@ -133,18 +146,11 @@ public class ActionEntity implements SmartspaceEntity<String> {
 	public void setMoreAttributes(Map<String, Object> moreAttributes) {
 		this.moreAttributes = moreAttributes;
 	}
-
+	
 	@Override
-	@Id
-	@Column(name="ID")
-	public String getKey() {
-		return this.actionSmartspace + "=" + this.actionId;
-	}
-
-	@Override
-	public void setKey(String key) {
-		String[] parts = key.split("=");
-		this.actionSmartspace = parts[0];
-		this.actionId = parts[1];
+	public String toString() {
+		return "ActionEntity [id=" + actionId + ", smartspace=" + actionSmartspace + 
+				", type=" + actionType + ", "+ "element Id=" + elementId 
+				+ ", player Email=" + playerEmail +"]";
 	}
 }

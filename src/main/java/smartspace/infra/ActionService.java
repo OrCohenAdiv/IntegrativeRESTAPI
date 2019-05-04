@@ -6,8 +6,10 @@ import smartspace.data.ActionEntity;
 
 public interface ActionService {
 
-	public ActionEntity newAction(ActionEntity entity, 
-			String adminSmartspace, String adminEmail);
+	public ActionEntity newAction(
+			ActionEntity entity, 
+			String adminSmartspace, 
+			String adminEmail);
 
 	public List<ActionEntity> getUsingPagination(int size, int page);
 	

@@ -10,7 +10,7 @@ public class ElementBoundary {
 	private ElementKeyBondary key;
 	private String name;
 	private String elementType;
-	private Date creationTimestamp;
+	private Date created;
 	private boolean expired;
 	private ElementCreatorBondary creator;
 	private ElementLocationBondary latlng;
@@ -30,7 +30,7 @@ public class ElementBoundary {
 		}
 		this.elementType = entity.getType();
 		this.name = entity.getName();
-		this.creationTimestamp = entity.getCreationTimestamp();
+		this.created = entity.getCreationTimestamp();
 		this.expired = entity.isExpired();
 		if(creator==null) {
 			this.creator = new ElementCreatorBondary();
@@ -54,7 +54,7 @@ public class ElementBoundary {
 		entity.setType(this.elementType);
 		entity.setName(this.name);
 		entity.setExpired(this.expired);
-		entity.setCreationTimestamp(this.creationTimestamp);
+		entity.setCreationTimestamp(this.created);
 		entity.setCreatorEmail(this.creator.getEmail());
 		entity.setCreatorSmartspace(this.creator.getSmartspcae());
 		entity.setLocation(new Location(this.latlng.getLat(),this.latlng.getLng()));
@@ -87,11 +87,11 @@ public class ElementBoundary {
 	}
 
 	public Date getCreationTimestamp() {
-		return creationTimestamp;
+		return created;
 	}
 
 	public void setCreationTimestamp(Date creationTimestamp) {
-		this.creationTimestamp = creationTimestamp;
+		this.created = creationTimestamp;
 	}
 
 	public boolean isExpired() {

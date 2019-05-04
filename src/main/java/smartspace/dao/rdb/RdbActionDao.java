@@ -2,11 +2,11 @@ package smartspace.dao.rdb;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import smartspace.dao.ActionDao;
 import smartspace.dao.EnhancedActionDao;
 import smartspace.data.ActionEntity;
 import org.springframework.data.domain.Sort.Direction;
@@ -37,7 +37,7 @@ public class RdbActionDao implements EnhancedActionDao {
 			throw new RuntimeException("Action Entity already exist with key:" + actionEntity.getKey());
 		}
 	}
-
+	
 	@Override
 	@Transactional(readOnly = true)
 	public List<ActionEntity> readAll() {
@@ -66,12 +66,9 @@ public class RdbActionDao implements EnhancedActionDao {
 	}
 
 	@Override
-	@Transactional(readOnly=true)
-	public List<ActionEntity> readMessageWithSmartspaceContaining(
-			String smartspace, int size, int page) {
-		return this.actionCrud.findAllByNameLike(
-				"%" + smartspace + "%",
-				PageRequest.of(page, size));
+	public List<ActionEntity> readMessageWithSmartspaceContaining(String text, int size, int page) {
+		return this.actionCrud.findAllByActionSmartspaceLike("%" + text + "%", PageRequest.of(page, size));
 	}
+
 }
 

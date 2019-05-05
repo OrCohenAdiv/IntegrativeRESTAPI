@@ -3,7 +3,11 @@ package smartspace.layout;
 import java.util.Date;
 import java.util.Map;
 import smartspace.data.ActionEntity;
+import smartspace.layout.data.ActionKeyBoundary;
+import smartspace.layout.data.ElementKeyBoundary;
+import smartspace.layout.data.UserKeyBoundary;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 public class ActionBoundary {
 	
@@ -39,8 +43,8 @@ public class ActionBoundary {
 			this.player = new UserKeyBoundary();			
 		}
 		if(entity.getPlayerEmail() != null && entity.getPlayerSmartspace() != null) {
-			this.player.setPlayerEmail(entity.getPlayerEmail());
-			this.player.setPlayerSmartspace(entity.getPlayerSmartspace());
+			this.player.setEmail(entity.getPlayerEmail());
+			this.player.setSmartspace(entity.getPlayerSmartspace());
 		}
 	}
 	
@@ -61,11 +65,11 @@ public class ActionBoundary {
 		this.element = element;
 	}
 
-	public UserKeyBondary getPlayer() {
+	public UserKeyBoundary getPlayer() {
 		return player;
 	}
 
-	public void setPlayer(UserKeyBoundry player) {
+	public void setPlayer(UserKeyBoundary player) {
 		this.player = player;
 	}
 	
@@ -108,9 +112,9 @@ public class ActionBoundary {
 			entity.setElementId(this.element.getId());
 			entity.setElementSmartspace(this.element.getSmartspace());
 		}
-		if(this.player.getPlayerEmail() != null && this.player.getPlayerSmartspace() != null) {
-			entity.setPlayerEmail(this.player.getPlayerEmail());
-			entity.setPlayerSmartspace(this.player.getPlayerSmartspace());
+		if(this.player.getEmail() != null && this.player.getSmartspace() != null) {
+			entity.setPlayerEmail(this.player.getEmail());
+			entity.setPlayerSmartspace(this.player.getSmartspace());
 		}	
 		entity.setCreationTimestamp(this.created);
 		entity.setMoreAttributes(this.properties); 
@@ -130,27 +134,5 @@ public class ActionBoundary {
 }
 
 
-class ActionKeyBoundary {
-	private String smartspace;
-	private String id;
-	
-	public ActionKeyBoundary() {
-	}
-	
-	public String getSmartspace() {
-		return smartspace;
-	}
-	
-	public void setSmartspace(String smartspace) {
-		this.smartspace = smartspace;
-	}
-	
-	public String getId() {
-		return id;
-	}
-	
-	public void setId(String id) {
-		this.id = id;
-	}
-}
+
 

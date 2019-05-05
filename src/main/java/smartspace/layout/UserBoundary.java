@@ -1,12 +1,12 @@
 package smartspace.layout;
 
-import smartspace.data.ElementEntity;
 import smartspace.data.UserEntity;
 import smartspace.data.UserRole;
+import smartspace.layout.data.UserKeyBoundary;
 
 public class UserBoundary {
 
-	private UserKeyBondary key;
+	private UserKeyBoundary key;
 	private String userName;
 	private String avatar;
 	private UserRole role;
@@ -18,12 +18,12 @@ public class UserBoundary {
 	public UserBoundary(UserEntity entity) {
 
 		if (key == null) {
-			this.key = new UserKeyBondary();
+			this.key = new UserKeyBoundary();
 		}
 		if (entity.getKey() != null) {
 			String[] args = entity.getKey().split("=");
 			this.key.setEmail(args[0]);
-			this.key.setSmartspcae(args[1]);
+			this.key.setSmartspace(args[1]);
 		}
 		this.userName = entity.getUserName();
 		this.avatar = entity.getAvatar();
@@ -31,11 +31,11 @@ public class UserBoundary {
 		this.points = entity.getPoints();
 	}
 
-	public UserKeyBondary getKey() {
+	public UserKeyBoundary getKey() {
 		return key;
 	}
 
-	public void setKey(UserKeyBondary key) {
+	public void setKey(UserKeyBoundary key) {
 		this.key = key;
 	}
 
@@ -76,8 +76,8 @@ public class UserBoundary {
 		UserEntity entity = new UserEntity();
 
 //		entity.setKey("=");
-		if (this.key.getEmail() != null && this.key.getSmartspcae() != null) {
-			entity.setKey(this.key.getSmartspcae() + "=" + this.key.getEmail());
+		if (this.key.getEmail() != null && this.key.getSmartspace() != null) {
+			entity.setKey(this.key.getSmartspace() + "=" + this.key.getEmail());
 		}
 
 		entity.setAvatar(this.avatar);
@@ -93,24 +93,3 @@ public class UserBoundary {
 
 }
 
-class UserKeyBondary {
-
-	private String email;
-	private String smartspcae;
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getSmartspcae() {
-		return smartspcae;
-	}
-
-	public void setSmartspcae(String smartspcae) {
-		this.smartspcae = smartspcae;
-	}
-}

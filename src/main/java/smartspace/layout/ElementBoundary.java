@@ -5,6 +5,9 @@ import java.util.Map;
 
 import smartspace.data.ElementEntity;
 import smartspace.data.Location;
+import smartspace.layout.data.ElementCreatorBoundary;
+import smartspace.layout.data.ElementKeyBoundary;
+import smartspace.layout.data.ElementLocationBoundary;
 
 public class ElementBoundary {
 	private ElementKeyBoundary key;
@@ -12,18 +15,18 @@ public class ElementBoundary {
 	private String elementType;
 	private Date created;
 	private boolean expired;
-	private ElementCreatorBondary creator;
-	private ElementLocationBondary latlng;
+	private ElementCreatorBoundary creator;
+	private ElementLocationBoundary latlng;
 	private Map<String, Object> elementProperties;
 
 	public ElementBoundary() {
 	}
 
 	public ElementBoundary(ElementEntity entity) {
-		if(key==null) {
-			this.key=new ElementKeyBoundary();
+		if (key == null) {
+			this.key = new ElementKeyBoundary();
 		}
-		if(entity.getKey()!=null) {
+		if (entity.getKey() != null) {
 			String[] args = entity.getKey().split("=");
 			this.key.setId(args[0]);
 			this.key.setSmartspace(args[1]);
@@ -32,13 +35,13 @@ public class ElementBoundary {
 		this.name = entity.getName();
 		this.created = entity.getCreationTimestamp();
 		this.expired = entity.isExpired();
-		if(creator==null) {
-			this.creator = new ElementCreatorBondary();
+		if (creator == null) {
+			this.creator = new ElementCreatorBoundary();
 		}
 		this.creator.setEmail(entity.getCreatorEmail());
-		this.creator.setSmartspcae(entity.getCreatorSmartspace());
-		if(latlng==null) {
-			this.latlng = new ElementLocationBondary();
+		this.creator.setSmartspace(entity.getCreatorSmartspace());
+		if (latlng == null) {
+			this.latlng = new ElementLocationBoundary();
 		}
 		this.latlng.setLat(entity.getLocation().getX());
 		this.latlng.setLng(entity.getLocation().getY());
@@ -48,16 +51,16 @@ public class ElementBoundary {
 	public ElementEntity convertToEntity() {
 		ElementEntity entity = new ElementEntity();
 		entity.setKey("=");
-		if(this.key.getId()!=null && this.key.getSmartspace()!=null) {
-			entity.setKey(this.key.getSmartspace()+"="+this.key.getId());
+		if (this.key.getId() != null && this.key.getSmartspace() != null) {
+			entity.setKey(this.key.getSmartspace() + "=" + this.key.getId());
 		}
 		entity.setType(this.elementType);
 		entity.setName(this.name);
 		entity.setExpired(this.expired);
 		entity.setCreationTimestamp(this.created);
 		entity.setCreatorEmail(this.creator.getEmail());
-		entity.setCreatorSmartspace(this.creator.getSmartspcae());
-		entity.setLocation(new Location(this.latlng.getLat(),this.latlng.getLng()));
+		entity.setCreatorSmartspace(this.creator.getSmartspace());
+		entity.setLocation(new Location(this.latlng.getLat(), this.latlng.getLng()));
 		entity.setMoreAttributes(this.elementProperties);
 		return entity;
 	}
@@ -102,19 +105,19 @@ public class ElementBoundary {
 		this.expired = expired;
 	}
 
-	public ElementCreatorBondary getCreator() {
+	public ElementCreatorBoundary getCreator() {
 		return creator;
 	}
 
-	public void setCreator(ElementCreatorBondary creator) {
+	public void setCreator(ElementCreatorBoundary creator) {
 		this.creator = creator;
 	}
 
-	public ElementLocationBondary getLatlng() {
+	public ElementLocationBoundary getLatlng() {
 		return latlng;
 	}
 
-	public void setLatlng(ElementLocationBondary latlng) {
+	public void setLatlng(ElementLocationBoundary latlng) {
 		this.latlng = latlng;
 	}
 
@@ -126,78 +129,4 @@ public class ElementBoundary {
 		this.elementProperties = elementProperties;
 	}
 
-}
-
-class ElementKeyBoundary{
-	private String id;
-	private String smartspace;
-	
-	public ElementKeyBoundary() {
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public String getSmartspace() {
-		return smartspace;
-	}
-
-	public void setSmartspace(String smartspace) {
-		this.smartspace = smartspace;
-	}
-}
-
-class ElementCreatorBondary{
-	private String email;
-	private String smartspcae;
-	
-	public ElementCreatorBondary() {
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getSmartspcae() {
-		return smartspcae;
-	}
-
-	public void setSmartspcae(String smartspcae) {
-		this.smartspcae = smartspcae;
-	}
-}
-
-class ElementLocationBondary{
-	private double lat;
-	private double lng;
-	
-	public ElementLocationBondary() {
-	}
-
-	public double getLat() {
-		return lat;
-	}
-
-	public void setLat(double lat) {
-		this.lat = lat;
-	}
-
-	public double getLng() {
-		return lng;
-	}
-
-	public void setLng(double lng) {
-		this.lng = lng;
-	}
-	
-	
 }

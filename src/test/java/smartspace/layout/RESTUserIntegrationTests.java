@@ -18,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 import smartspace.dao.EnhancedUserDao;
 import smartspace.data.UserRole;
 import smartspace.infra.UserService;
+import smartspace.layout.data.UserKeyBoundary;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT)
@@ -64,7 +65,7 @@ public class RESTUserIntegrationTests {
 		UserBoundary newUser = new UserBoundary();
 		UserKeyBoundary ukb = new UserKeyBoundary();
 		ukb.setEmail("Or@Test");
-		ukb.setSmartspcae("DaniTest.smartspace");
+		ukb.setSmartspace("DaniTest.smartspace");
 		newUser.setKey(ukb);
 		newUser.setRole(UserRole.ADMIN);
 		newUser.setAvatar("TheAvatar");

@@ -7,7 +7,7 @@ import smartspace.data.ElementEntity;
 import smartspace.data.Location;
 
 public class ElementBoundary {
-	private ElementKeyBondary key;
+	private ElementKeyBoundary key;
 	private String name;
 	private String elementType;
 	private Date created;
@@ -21,7 +21,7 @@ public class ElementBoundary {
 
 	public ElementBoundary(ElementEntity entity) {
 		if(key==null) {
-			this.key=new ElementKeyBondary();
+			this.key=new ElementKeyBoundary();
 		}
 		if(entity.getKey()!=null) {
 			String[] args = entity.getKey().split("=");
@@ -62,11 +62,11 @@ public class ElementBoundary {
 		return entity;
 	}
 
-	public ElementKeyBondary getKey() {
+	public ElementKeyBoundary getKey() {
 		return key;
 	}
 
-	public void setKey(ElementKeyBondary key) {
+	public void setKey(ElementKeyBoundary key) {
 		this.key = key;
 	}
 
@@ -128,11 +128,11 @@ public class ElementBoundary {
 
 }
 
-class ElementKeyBondary{
+class ElementKeyBoundary{
 	private String id;
 	private String smartspace;
 	
-	public ElementKeyBondary() {
+	public ElementKeyBoundary() {
 	}
 
 	public String getId() {

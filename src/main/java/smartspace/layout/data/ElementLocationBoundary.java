@@ -1,10 +1,10 @@
 package smartspace.layout.data;
 
-public class ElementLocationBondary {
+public class ElementLocationBoundary {
 	private double lat;
 	private double lng;
 	
-	public ElementLocationBondary() {
+	public ElementLocationBoundary() {
 	}
 
 	public double getLat() {

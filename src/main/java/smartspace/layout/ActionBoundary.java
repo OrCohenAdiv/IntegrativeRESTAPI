@@ -5,35 +5,22 @@ import java.util.Map;
 import smartspace.data.ActionEntity;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class ActionBoundry {
+public class ActionBoundary {
 	
-	private ActionBoundryKey actionKey;
+	private ActionKeyBoundary actionKey;
 	private String type;
 	private Date created;	
-	private ElementKeyBondary element;
-	private UserKeyBoundry player;
+	private ElementKeyBoundary element;
+	private UserKeyBoundary player;
 	private Map<String,Object> properties;
 	
-	public ActionBoundry() {
+	public ActionBoundary() {
 	}
 	
-	public ActionBoundry(ActionEntity entity){
+	public ActionBoundary(ActionEntity entity){
 		
-//		this.setType(entity.getActionType());
-//		this.setCreated(entity.getCreationTimestamp());
-//		this.setProperties(entity.getMoreAttributes());
-//		
-//		this.actionKey.setId(entity.getActionId());	
-//		this.actionKey.setSmartspace(entity.getActionSmartspace());	
-//
-//		this.element.setId(entity.getElementId());
-//		this.element.setSmartspace(entity.getElementSmartspace());
-//
-//		this.player.setPlayerEmail(entity.getPlayerEmail());
-//		this.player.setPlayerSmartspace(entity.getPlayerSmartspace());
-//	}
 		if(actionKey==null) {
-			this.actionKey = new ActionBoundryKey();			
+			this.actionKey = new ActionKeyBoundary();			
 		}
 		if(entity.getKey() != null) {
 			this.actionKey.setId(entity.getActionId());
@@ -41,7 +28,7 @@ public class ActionBoundry {
 		}
 		
 		if(element==null) {
-			this.element = new ElementKeyBondary();			
+			this.element = new ElementKeyBoundary();			
 		}
 		if(entity.getElementId() != null && entity.getElementSmartspace() != null) {
 			this.element.setId(entity.getElementId());
@@ -49,7 +36,7 @@ public class ActionBoundry {
 		}
 		
 		if(player==null) {
-			this.player = new UserKeyBoundry();			
+			this.player = new UserKeyBoundary();			
 		}
 		if(entity.getPlayerEmail() != null && entity.getPlayerSmartspace() != null) {
 			this.player.setPlayerEmail(entity.getPlayerEmail());
@@ -58,23 +45,23 @@ public class ActionBoundry {
 	}
 	
 	
-	public ActionBoundryKey getActionKey() {
+	public ActionKeyBoundary getActionKey() {
 		return actionKey;
 	}
 
-	public void setActionKey(ActionBoundryKey actionKey) {
+	public void setActionKey(ActionKeyBoundary actionKey) {
 		this.actionKey = actionKey;
 	}
 
-	public ElementKeyBondary getElement() {
+	public ElementKeyBoundary getElement() {
 		return element;
 	}
 
-	public void setElement(ElementKeyBondary element) {
+	public void setElement(ElementKeyBoundary element) {
 		this.element = element;
 	}
 
-	public UserKeyBoundry getPlayer() {
+	public UserKeyBondary getPlayer() {
 		return player;
 	}
 
@@ -111,22 +98,6 @@ public class ActionBoundry {
 		
 		ActionEntity entity =  new ActionEntity();
 		
-//		entity.setActionId(this.actionKey.getId());
-//		entity.setActionSmartspace(this.actionKey.getSmartspace());
-//		
-//		String key = entity.getActionSmartspace() + "=" + entity.getActionId();
-//		entity.setKey(key);
-//
-//		entity.setElementId(this.element.getId());
-//		entity.setElementSmartspace(this.element.getSmartspace());
-//		
-//		entity.setPlayerEmail(this.player.getPlayerEmail());
-//		entity.setPlayerSmartspace(this.player.getPlayerSmartspace());
-//		
-//		entity.setCreationTimestamp(this.created);
-//		entity.setMoreAttributes(this.properties); 
-//		entity.setActionType(this.type);
-		
 		entity.setKey("=");
 		if(this.actionKey.getId() != null && this.actionKey.getSmartspace() != null) {
 			entity.setActionId(this.actionKey.getId());
@@ -159,16 +130,17 @@ public class ActionBoundry {
 }
 
 
-class ActionBoundryKey {
+class ActionKeyBoundary {
 	private String smartspace;
 	private String id;
 	
-	public ActionBoundryKey() {
+	public ActionKeyBoundary() {
 	}
 	
 	public String getSmartspace() {
 		return smartspace;
 	}
+	
 	public void setSmartspace(String smartspace) {
 		this.smartspace = smartspace;
 	}
@@ -176,34 +148,9 @@ class ActionBoundryKey {
 	public String getId() {
 		return id;
 	}
+	
 	public void setId(String id) {
 		this.id = id;
-	}
-}
-
-
-class UserKeyBoundry {
-	
-	private String smartspace;
-	private String email;
-	
-	public UserKeyBoundry() {
-	}
-
-	public String getPlayerSmartspace() {
-		return smartspace;
-	}
-
-	public void setPlayerSmartspace(String playerSmartspace) {
-		this.smartspace = playerSmartspace;
-	}
-
-	public String getPlayerEmail() {
-		return email;
-	}
-
-	public void setPlayerEmail(String playerEmail) {
-		this.email = playerEmail;
 	}
 }
 

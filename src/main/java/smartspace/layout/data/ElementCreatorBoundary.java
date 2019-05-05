@@ -1,10 +1,10 @@
 package smartspace.layout.data;
 
-public class ElementCreatorBondary {
+public class ElementCreatorBoundary {
 	private String email;
 	private String smartspcae;
 	
-	public ElementCreatorBondary() {
+	public ElementCreatorBoundary() {
 	}
 
 	public String getEmail() {

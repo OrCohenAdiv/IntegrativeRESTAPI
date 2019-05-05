@@ -28,12 +28,12 @@ public class ActionController {
 			method=RequestMethod.POST,
 			consumes=MediaType.APPLICATION_JSON_VALUE,
 			produces=MediaType.APPLICATION_JSON_VALUE)
-	public ActionBoundry newAction (
-			@RequestBody ActionBoundry action, 
+	public ActionBoundary newAction (
+			@RequestBody ActionBoundary action, 
 			@PathVariable("adminSmartspace") String adminSmartspace,
 			@PathVariable("adminEmail") String adminEmail) {
 		
-		return new ActionBoundry(
+		return new ActionBoundary(
 				this.actionService
 					.newAction(action.convertToEntity(), adminSmartspace, adminEmail));
 	}
@@ -42,7 +42,7 @@ public class ActionController {
 			path="/smartspace/admin/actions/{adminSmartspace}/{adminEmail}",
 			method=RequestMethod.GET,
 			produces=MediaType.APPLICATION_JSON_VALUE)
-	public ActionBoundry[] getUsingPagination (
+	public ActionBoundary[] getUsingPagination (
 			@RequestParam(name="size", required=false, defaultValue="10") int size,
 			@RequestParam(name="page", required=false, defaultValue="0") int page,
 			@PathVariable("adminSmartspace") String adminSmartspace,
@@ -52,8 +52,8 @@ public class ActionController {
 			this.actionService
 			.getUsingPagination(size, page)
 			.stream()
-			.map(ActionBoundry::new)
+			.map(ActionBoundary::new)
 			.collect(Collectors.toList())
-			.toArray(new ActionBoundry[0]);
+			.toArray(new ActionBoundary[0]);
 	}
 }

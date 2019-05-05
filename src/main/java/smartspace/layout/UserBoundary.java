@@ -6,7 +6,7 @@ import smartspace.data.UserRole;
 
 public class UserBoundary {
 
-	private UserKeyBoundary key;
+	private UserKeyBondary key;
 	private String userName;
 	private String avatar;
 	private UserRole role;
@@ -17,30 +17,25 @@ public class UserBoundary {
 
 	public UserBoundary(UserEntity entity) {
 
-		if(key==null) {
-			this.key=new UserKeyBoundary();
+		if (key == null) {
+			this.key = new UserKeyBondary();
 		}
-		if(entity.getKey()!=null) {
+		if (entity.getKey() != null) {
 			String[] args = entity.getKey().split("=");
 			this.key.setEmail(args[0]);
 			this.key.setSmartspcae(args[1]);
 		}
-
 		this.userName = entity.getUserName();
-
 		this.avatar = entity.getAvatar();
-
 		this.role = entity.getRole();
-
 		this.points = entity.getPoints();
 	}
 
-
-	public UserKeyBoundary getKey() {
+	public UserKeyBondary getKey() {
 		return key;
 	}
 
-	public void setKey(UserKeyBoundary key) {
+	public void setKey(UserKeyBondary key) {
 		this.key = key;
 	}
 
@@ -81,10 +76,10 @@ public class UserBoundary {
 		UserEntity entity = new UserEntity();
 
 //		entity.setKey("=");
-		if(this.key.getEmail()!=null && this.key.getSmartspcae()!=null) {
-			entity.setKey(this.key.getSmartspcae()+"="+this.key.getEmail());
+		if (this.key.getEmail() != null && this.key.getSmartspcae() != null) {
+			entity.setKey(this.key.getSmartspcae() + "=" + this.key.getEmail());
 		}
-		
+
 		entity.setAvatar(this.avatar);
 
 		entity.setPoints(this.points);
@@ -98,7 +93,7 @@ public class UserBoundary {
 
 }
 
-class UserKeyBoundary {
+class UserKeyBondary {
 
 	private String email;
 	private String smartspcae;

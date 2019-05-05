@@ -1,10 +1,10 @@
 package smartspace.layout.data;
 
-public class ElementKeyBondary {
+public class ElementKeyBoundary {
 	private String id;
 	private String smartspace;
 	
-	public ElementKeyBondary() {
+	public ElementKeyBoundary() {
 	}
 
 	public String getId() {

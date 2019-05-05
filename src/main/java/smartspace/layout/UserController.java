@@ -3,6 +3,7 @@ package smartspace.layout;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,36 +18,35 @@ import smartspace.infra.UserService;
 public class UserController {
 
 	private UserService userService;
+	@Value("${smartspace.name}")
+	private String smartSpace;
 
 	@Autowired
-		public UserController(UserService userService) {
-			this.userService = userService;
+	public UserController(UserService userService) {
+		this.userService = userService;
 	}
+
 	@RequestMapping(path = "/smartspace/admin/users/{adminSmartspace}/{adminEmail}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public UserBoundary newUser(@RequestBody UserBoundary user, @PathVariable("adminSmartspace") String adminSmartspace, @PathVariable("adminEmail") String adminEmail ) {
+	public UserBoundary newUser(@RequestBody UserBoundary user, @PathVariable("adminSmartspace") String adminSmartspace,
+			@PathVariable("adminEmail") String adminEmail) {
 
-		return new UserBoundary(this.userService.newUser(user.convertToEntity(),adminEmail,adminSmartspace ));
+		if (adminSmartspace.equals(smartSpace)) {
+			throw new RuntimeException("The user uses the same smartspace");
+		} else {
+			return new UserBoundary(this.userService.newUser(user.convertToEntity(), adminEmail, adminSmartspace));
+
+		}
 	}
 
-	@RequestMapping(
-				path="/smartspace/admin/users/{adminSmartspace}/{adminEmail}",
-				method=RequestMethod.GET,
-				produces=MediaType.APPLICATION_JSON_VALUE)
-		public UserBoundary[] getUsingPagination (
-				@RequestParam(name="size", required=false, defaultValue="10") int size,
-				@RequestParam(name="page", required=false, defaultValue="0") int page, 
-				@PathVariable("adminSmartspace") String adminSmartspace,
-				@PathVariable("adminEmail") String adminEmail ) 
-	
+	@RequestMapping(path = "/smartspace/admin/users/{adminSmartspace}/{adminEmail}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public UserBoundary[] getUsingPagination(
+			@RequestParam(name = "size", required = false, defaultValue = "10") int size,
+			@RequestParam(name = "page", required = false, defaultValue = "0") int page,
+			@PathVariable("adminSmartspace") String adminSmartspace, @PathVariable("adminEmail") String adminEmail)
+
 	{
-			return 
-				this.userService
-				.getUsingPagination(size, page,adminSmartspace, adminEmail )
-				.stream()
-				.map(UserBoundary::new)
-				.collect(Collectors.toList())
-				.toArray(new UserBoundary[0]);
-	
+		return this.userService.getUsingPagination(size, page, adminSmartspace, adminEmail).stream()
+				.map(UserBoundary::new).collect(Collectors.toList()).toArray(new UserBoundary[0]);
 	}
 
 }

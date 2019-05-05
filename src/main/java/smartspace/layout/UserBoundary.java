@@ -6,7 +6,7 @@ import smartspace.data.UserRole;
 
 public class UserBoundary {
 
-	private UserKeyBondary key;
+	private UserKeyBoundary key;
 	private String userName;
 	private String avatar;
 	private UserRole role;
@@ -18,7 +18,7 @@ public class UserBoundary {
 	public UserBoundary(UserEntity entity) {
 
 		if(key==null) {
-			this.key=new UserKeyBondary();
+			this.key=new UserKeyBoundary();
 		}
 		if(entity.getKey()!=null) {
 			String[] args = entity.getKey().split("=");
@@ -36,11 +36,11 @@ public class UserBoundary {
 	}
 
 
-	public UserKeyBondary getKey() {
+	public UserKeyBoundary getKey() {
 		return key;
 	}
 
-	public void setKey(UserKeyBondary key) {
+	public void setKey(UserKeyBoundary key) {
 		this.key = key;
 	}
 
@@ -98,7 +98,7 @@ public class UserBoundary {
 
 }
 
-class UserKeyBondary {
+class UserKeyBoundary {
 
 	private String email;
 	private String smartspcae;

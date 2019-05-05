@@ -19,7 +19,7 @@ private EnhancedUserDao<String> userDao;
 		this.userDao = userDao;
 	}
 	
-	private boolean valiadate(UserEntity entity) {
+	private boolean validate(UserEntity entity) {
 		return entity.getAvatar() != null &&
 				!entity.getAvatar().trim().isEmpty() &&
 				entity.getUserName() != null &&
@@ -33,15 +33,15 @@ private EnhancedUserDao<String> userDao;
 		
 		String key = adminEmail + "=" + adminSmartspace;
 		
-		UserEntity userInSmartspace = userDao.readById(key).orElseThrow(() -> new RuntimeException("not user to update"));;
+		UserEntity userInSmartspace = userDao.readById(key).orElseThrow(() -> new RuntimeException("no such user exists"));;
 		
 		if(userInSmartspace.getRole()!= UserRole.ADMIN)
 			throw new RuntimeException("you are not allowed to create users");
 				
-		if (valiadate(entity)) {
+		if (validate(entity)) {
 			return this.userDao.create(entity);
 		} else {
-			throw new RuntimeException("invalid message");
+			throw new RuntimeException("user has invalid data");
 		}
 	}
 
@@ -50,10 +50,10 @@ private EnhancedUserDao<String> userDao;
 		
 		String key = adminEmail + "=" + adminSmartspace;
 		
-		UserEntity entity = userDao.readById(key).orElseThrow(() -> new RuntimeException("not user to update"));;
+		UserEntity entity = userDao.readById(key).orElseThrow(() -> new RuntimeException("no such user exists"));;
 		
 		if(entity.getRole()!= UserRole.ADMIN)
-			throw new RuntimeException("you are not allowed to create messages");
+			throw new RuntimeException("only the admin is allowed to create users");
 		
 		return this.userDao
 				.readAll("key", size, page);

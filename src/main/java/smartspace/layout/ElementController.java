@@ -22,7 +22,7 @@ public class ElementController {
 		this.elementService = elementService;
 	}
 	
-	@RequestMapping(path="/smarspace/admin/elements/{adminSmartspace}/{adminEmail}",
+	@RequestMapping(path="/smartspace/admin/elements/{adminSmartspace}/{adminEmail}",
 			method=RequestMethod.POST,
 			consumes=MediaType.APPLICATION_JSON_VALUE,
 			produces=MediaType.APPLICATION_JSON_VALUE)
@@ -36,7 +36,7 @@ public class ElementController {
 	}
 
 	@RequestMapping(
-			path="/smarspace/admin/elements/{adminSmartspace}/{adminEmail}",
+			path="/smartspace/admin/elements/{adminSmartspace}/{adminEmail}",
 			method=RequestMethod.GET,
 			produces=MediaType.APPLICATION_JSON_VALUE)
 	public ElementBoundary[] getUsingPagination (

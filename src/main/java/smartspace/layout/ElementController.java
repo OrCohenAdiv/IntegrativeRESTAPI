@@ -21,36 +21,27 @@ public class ElementController {
 	public ElementController(ElementService elementService) {
 		this.elementService = elementService;
 	}
-	
-	@RequestMapping(path="/smartspace/admin/elements/{adminSmartspace}/{adminEmail}",
-			method=RequestMethod.POST,
-			consumes=MediaType.APPLICATION_JSON_VALUE,
-			produces=MediaType.APPLICATION_JSON_VALUE)
-	public ElementBoundary newElement (@RequestBody ElementBoundary element, 
+
+	@RequestMapping(path = "/smartspace/admin/elements/{adminSmartspace}/{adminEmail}",
+			method = RequestMethod.POST,
+			consumes = MediaType.APPLICATION_JSON_VALUE, 
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ElementBoundary[] newElement(@RequestBody ElementBoundary[] elements,
 			@PathVariable("adminSmartspace") String adminSmartspace,
 			@PathVariable("adminEmail") String adminEmail) {
-		
-		return new ElementBoundary(
-				this.elementService
-					.newElement(element.convertToEntity(), adminSmartspace, adminEmail));
+
+		return this.elementService.newElement( elements, adminSmartspace, adminEmail).stream().map(ElementBoundary::new).collect(Collectors.toList().toArray(new ElementBoundary[0]);
 	}
 
-	@RequestMapping(
-			path="/smartspace/admin/elements/{adminSmartspace}/{adminEmail}",
-			method=RequestMethod.GET,
-			produces=MediaType.APPLICATION_JSON_VALUE)
-	public ElementBoundary[] getUsingPagination (
-			@RequestParam(name="size", required=false, defaultValue="10") int size,
-			@RequestParam(name="page", required=false, defaultValue="0") int page,
-			@PathVariable("adminSmartspace") String adminSmartspace,
-			@PathVariable("adminEmail") String adminEmail) {
-		return 
-			this.elementService
-			.getUsingPagination(size, page, adminSmartspace, adminEmail)
-			.stream()
-			.map(ElementBoundary::new)
-			.collect(Collectors.toList())
-			.toArray(new ElementBoundary[0]);
+	@RequestMapping(path = "/smartspace/admin/elements/{adminSmartspace}/{adminEmail}",
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ElementBoundary[] getUsingPagination(
+			@RequestParam(name = "size", required = false, defaultValue = "10") int size,
+			@RequestParam(name = "page", required = false, defaultValue = "0") int page,
+			@PathVariable("adminSmartspace") String adminSmartspace, @PathVariable("adminEmail") String adminEmail) {
+		return this.elementService.getUsingPagination(size, page, adminSmartspace, adminEmail).stream()
+				.map(ElementBoundary::new).collect(Collectors.toList()).toArray(new ElementBoundary[0]);
 	}
-	
+
 }

@@ -84,7 +84,7 @@ public class RESTActionIntegrationTests {
 		UserEntity user = new UserEntity("2019b.tomc", "admin@admin.com", "Admin", ":-D", UserRole.ADMIN, 6);
 		enhancedUserDao.create(user);
 		ElementEntity elementEntity = new ElementEntity("2019b.tomc", null, new Location(5, 5), "Moshe", "Hotel", null,
-				false, "creatorSmartSpace", "admin2@admin.com", null);
+				false, "creatorSmartSpace", "admin@admin.com", null);
 		enhancedElementDao.create(elementEntity);
 		
 		ActionKeyBoundary actionKey = new ActionKeyBoundary();

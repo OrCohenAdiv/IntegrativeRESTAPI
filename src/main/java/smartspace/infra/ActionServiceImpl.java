@@ -37,7 +37,7 @@ public class ActionServiceImpl implements ActionService {
 	@Transactional
 	@Override
 	public List<ActionEntity> newAction(ActionBoundary[] allBoundaries, String adminSmartspace, String adminEmail) {
-		List<ActionEntity> actionEntites = new LinkedList<ActionEntity>();
+		List<ActionEntity> actionEntites = new LinkedList<>();
 
 		if (!(userDao.readById(adminSmartspace + "=" + adminEmail)
 				.orElseThrow(() -> new RuntimeException("user doesn't exist"))).getRole().equals(UserRole.ADMIN))
@@ -74,7 +74,7 @@ public class ActionServiceImpl implements ActionService {
 
 	@Override
 	public List<ActionEntity> getUsingPagination(int size, int page, String adminSmartspace, String adminEmail) {
-		if (!(userDao.readById(adminEmail + "=" + adminSmartspace)
+		if (!(userDao.readById(adminSmartspace + "=" + adminEmail)
 				.orElseThrow(() -> new RuntimeException("user doesn't exist")).getRole().equals(UserRole.ADMIN)))
 			throw new RuntimeException("You are not an ADMIN!");
 

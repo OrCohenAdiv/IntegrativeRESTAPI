@@ -23,14 +23,21 @@ public class ActionController {
 		this.actionService = actionService;
 	}
 
-	@RequestMapping(path = "/smartspace/admin/actions/{adminSmartspace}/{adminEmail}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(path = "/smartspace/admin/actions/{adminSmartspace}/{adminEmail}",
+			method = RequestMethod.POST,
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ActionBoundary[] newAction(@RequestBody ActionBoundary[] actions,
-			@PathVariable("adminSmartspace") String adminSmartspace, @PathVariable("adminEmail") String adminEmail) {
-		return this.actionService.newAction(actions, adminSmartspace, adminEmail).stream().map(ActionBoundary::new)
+			@PathVariable("adminSmartspace") String adminSmartspace,
+			@PathVariable("adminEmail") String adminEmail) {
+		return this.actionService.newAction(
+				actions, adminSmartspace, adminEmail).stream().map(ActionBoundary::new)
 				.collect(Collectors.toList()).toArray(new ActionBoundary[0]);
 	}
 
-	@RequestMapping(path = "/smartspace/admin/actions/{adminSmartspace}/{adminEmail}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(path = "/smartspace/admin/actions/{adminSmartspace}/{adminEmail}", 
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ActionBoundary[] getUsingPagination(
 			@RequestParam(name = "size", required = false, defaultValue = "10") int size,
 			@RequestParam(name = "page", required = false, defaultValue = "0") int page,

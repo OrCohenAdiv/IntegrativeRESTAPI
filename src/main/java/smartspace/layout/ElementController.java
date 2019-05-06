@@ -30,7 +30,11 @@ public class ElementController {
 			@PathVariable("adminSmartspace") String adminSmartspace,
 			@PathVariable("adminEmail") String adminEmail) {
 
-		return this.elementService.newElement( elements, adminSmartspace, adminEmail).stream().map(ElementBoundary::new).collect(Collectors.toList().toArray(new ElementBoundary[0]);
+		return this.elementService.newElement(elements, adminSmartspace, adminEmail)
+				.stream()
+				.map(ElementBoundary::new)
+				.collect(Collectors.toList())
+						.toArray(new ElementBoundary[0]);
 	}
 
 	@RequestMapping(path = "/smartspace/admin/elements/{adminSmartspace}/{adminEmail}",
@@ -40,8 +44,11 @@ public class ElementController {
 			@RequestParam(name = "size", required = false, defaultValue = "10") int size,
 			@RequestParam(name = "page", required = false, defaultValue = "0") int page,
 			@PathVariable("adminSmartspace") String adminSmartspace, @PathVariable("adminEmail") String adminEmail) {
-		return this.elementService.getUsingPagination(size, page, adminSmartspace, adminEmail).stream()
-				.map(ElementBoundary::new).collect(Collectors.toList()).toArray(new ElementBoundary[0]);
+		return this.elementService.getUsingPagination(size, page, adminSmartspace, adminEmail)
+				.stream()
+				.map(ElementBoundary::new)
+				.collect(Collectors.toList())
+				.toArray(new ElementBoundary[0]);
 	}
 
 }

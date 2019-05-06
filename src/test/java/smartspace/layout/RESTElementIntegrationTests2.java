@@ -1,13 +1,15 @@
 package smartspace.layout;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.IntStream;
 
 import javax.annotation.PostConstruct;
+
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +20,11 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
+
 import smartspace.dao.EnhancedElementDao;
 import smartspace.dao.EnhancedUserDao;
-import smartspace.data.ElementEntity;
-import smartspace.data.Location;
 import smartspace.data.UserEntity;
 import smartspace.data.UserRole;
-import smartspace.infra.ElementService;
 import smartspace.layout.data.ElementCreatorBoundary;
 import smartspace.layout.data.ElementKeyBoundary;
 import smartspace.layout.data.ElementLocationBoundary;
@@ -71,6 +71,11 @@ public class RESTElementIntegrationTests2 {
 		
 	@PostConstruct
 	public void init(){
+		this.baseUrl = "http://localhost:" + port + "/smartspace/admin/elements/{adminSmartspace}/{adminEmail}";
+	}
+	
+	@Before
+	public void before() {
 		this.userEntityAdmin = new UserEntity("mysmartspace", "admin.creating.element@de.mo",
 				"myAdminName", "myAvatar", UserRole.ADMIN, 1332);
 		this.userEntityAdmin = this.userDao.create(userEntityAdmin);
@@ -78,8 +83,6 @@ public class RESTElementIntegrationTests2 {
 		this.userEntityManager = new UserEntity("mysmartspace", "manager.creating.element@de.mo",
 				"myManagerName", "myAvatar", UserRole.MANAGER, 13);
 		this.userEntityManager = this.userDao.create(userEntityManager);
-		
-		this.baseUrl = "http://localhost:" + port + "/smartspace/admin/elements/{adminSmartspace}/{adminEmail}";
 	}
 	
 	@After
@@ -128,10 +131,12 @@ public class RESTElementIntegrationTests2 {
 		newElemenetBoundary.setCreator(newElementCreator);
 		newElemenetBoundary.setCreationTimestamp(new Date());
 		
+		ElementBoundary[] arr = {newElemenetBoundary};
+		
 		this.restTemplate.postForObject(
 				this.baseUrl, 
-				newElemenetBoundary, 
-				ElementBoundary.class, 
+				arr, 
+				ElementBoundary[].class, 
 				this.userEntityAdmin.getUserSmartspace(),
 				this.userEntityAdmin.getUserEmail());
 		
@@ -143,7 +148,7 @@ public class RESTElementIntegrationTests2 {
 	@Test(expected=Exception.class)
 	public void testCreateAndPostByManagerUserRole() throws Exception {
 		// GIVEN the database is empty 
-
+		System.err.println("==========================================================start test");
 		// WHEN the manager create and try to POST a new element
 		
 		Map<String, Object> details = new HashMap<>();
@@ -178,10 +183,12 @@ public class RESTElementIntegrationTests2 {
 		newElemenetBoundary.setCreator(newElementCreator);
 		newElemenetBoundary.setCreationTimestamp(new Date());
 		
+		ElementBoundary[] arr = {newElemenetBoundary};
+		
 		this.restTemplate.postForObject(
 				this.baseUrl, 
-				newElemenetBoundary, 
-				ElementBoundary.class, 
+				arr, 
+				ElementBoundary[].class, 
 				this.userEntityManager.getUserSmartspace(),
 				this.userEntityManager.getUserEmail());
 		
@@ -341,6 +348,49 @@ public class RESTElementIntegrationTests2 {
 
 	// do array of users 
 	
+//	@Test
+//	public void testGetAllElementsUsingPagination() throws Exception{
+//		// GIVEN the database contains 3 messages
+//				
+//		Map<String, Object> elementProperties = new HashMap<>();
+//		elementProperties.put("key1", 1);
+//		elementProperties.put("key2", "2");
+//		elementProperties.put("key3", "it can be anything");
+//			
+//		Location location = new Location();
+//		location.setX(15.15);
+//		location.setY(52.25); 
+//			
+//		int size = 3;
+//		
+//		java.util.List<ElementBoundary> allElements = 
+//				IntStream.range(1, size + 1)
+//				.mapToObj(i->new ElementEntity( 
+//						"demo" + i, "MyType", location, new Date(), 
+//						this.userEntityAdmin.getUserEmail(), 
+//						this.userEntityAdmin.getUserSmartspace(), 
+//						false, elementProperties))
+//				.map(this.elementDao::create)
+//				.map(ElementBoundary::new)
+//				.collect(Collectors.toList());
+//
+//		// WHEN I GET messages of size 10 and page 0
+//		ElementBoundary[] response = this.restTemplate
+//			.getForObject(this.baseUrl + 
+//				"?size={size}&page={page}", 
+//				ElementBoundary[].class, 
+//				this.userEntityAdmin.getUserSmartspace(), 
+//				this.userEntityAdmin.getUserEmail(), 
+//				10, 0);
+//		
+//		// THEN I receive the exact 3 messages written to the databse
+//		assertThat(response)
+//		.usingElementComparatorOnFields("creatorSmartspace")
+//		.containsExactlyElementsOf(allElements);
+//
+//	}
+		
+	
 	
 //	@Test
 //	public void testGetAllElementsUsingPagination() throws Exception{
@@ -356,14 +406,16 @@ public class RESTElementIntegrationTests2 {
 //		elementProperties.put("key3", "it can be anything");
 //		
 //		IntStream.range(1, size + 1)
-//			.mapToObj(i -> new ElementEntity("demo" + i, "MyType", location, 
-//					new Date(), this.userEntityAdmin.getUserEmail(),
-//					this.userEntityAdmin.getUserSmartspace(), false, elementProperties))
+//			.mapToObj(i -> new ElementEntity
+//					("demo" + i, "MyType", location, new Date(), 
+//					this.userEntityAdmin.getUserEmail(), 
+//					this.userEntityAdmin.getUserSmartspace(), 
+//					false, elementProperties))
 //			.forEach(this.elementDao::create);
 //		
 //		// WHEN I GET messages of size 10 and page 0
 //		ElementBoundary[] response = this.restTemplate.getForObject(
-//				this.baseUrl + "?size={size}&page={page}", ElementBoundary[].class, 10, 0);
+//				this.baseUrl, ElementBoundary[].class, 10, 0);
 //		
 //		// THEN I receive 3 messages
 //		assertThat(response).hasSize(size);

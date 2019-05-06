@@ -29,7 +29,7 @@ public class RdbElementDao implements EnhancedElementDao<String> {
 		GenericIdGenerator nextIdNum = this.generatorCrud.save(new GenericIdGenerator());
 
 		// set element key and destroy the row in db
-		elementEntity.setKey(nextIdNum.getId() + "=" + elementEntity.getElementSmartspace());
+		elementEntity.setKey(elementEntity.getElementSmartspace() + "=" + nextIdNum.getId());
 		this.generatorCrud.delete(nextIdNum);
 
 		// if element doesn't exists then add it else throw RuntimeException

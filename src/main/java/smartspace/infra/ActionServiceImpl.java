@@ -39,15 +39,15 @@ public class ActionServiceImpl implements ActionService {
 	public List<ActionEntity> newAction(ActionBoundary[] allBoundaries, String adminSmartspace, String adminEmail) {
 		List<ActionEntity> actionEntites = new LinkedList<ActionEntity>();
 
-//		if (!(userDao.readById(adminEmail + "=" + adminSmartspace)
-//				.orElseThrow(() -> new RuntimeException("user doesn't exist"))).getRole().equals(UserRole.ADMIN))
-//			throw new RuntimeException("You are not an ADMIN!");
-
-//		elementDao.readById(entity.getElementId() + "=" + entity.getElementSmartspace())
-//				.orElseThrow(() -> new RuntimeException("Element doesn't exist"));
+		if (!(userDao.readById(adminSmartspace + "=" + adminEmail)
+				.orElseThrow(() -> new RuntimeException("user doesn't exist"))).getRole().equals(UserRole.ADMIN))
+			throw new RuntimeException("You are not an ADMIN!");
 
 		for (ActionBoundary actionBoundary : allBoundaries) {
 			ActionEntity actionEntity = actionBoundary.convertToEntity();
+			elementDao.readById(actionEntity.getElementSmartspace() + "=" + actionEntity.getElementId())
+					.orElseThrow(() -> new RuntimeException("Element doesn't exist"));
+
 			if (valiadate(actionEntity)) {
 				actionEntity.setCreationTimestamp(new Date());
 

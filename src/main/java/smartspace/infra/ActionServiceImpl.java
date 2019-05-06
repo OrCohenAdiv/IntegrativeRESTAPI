@@ -15,6 +15,7 @@ import smartspace.dao.EnhancedElementDao;
 import smartspace.dao.EnhancedUserDao;
 import smartspace.data.ActionEntity;
 import smartspace.data.ElementEntity;
+import smartspace.data.UserEntity;
 import smartspace.data.UserRole;
 import smartspace.layout.ActionBoundary;
 
@@ -38,9 +39,11 @@ public class ActionServiceImpl implements ActionService {
 	@Override
 	public List<ActionEntity> newAction(ActionBoundary[] allBoundaries, String adminSmartspace, String adminEmail) {
 		List<ActionEntity> actionEntites = new LinkedList<>();
-
-		if (!(userDao.readById(adminSmartspace + "=" + adminEmail)
-				.orElseThrow(() -> new RuntimeException("user doesn't exist"))).getRole().equals(UserRole.ADMIN))
+		
+		UserEntity user = userDao.readById(adminSmartspace + "=" + adminEmail)
+		.orElseThrow(() -> new RuntimeException("user doesn't exist"));
+		
+		if (!user.getRole().equals(UserRole.ADMIN))
 			throw new RuntimeException("You are not an ADMIN!");
 
 		for (ActionBoundary actionBoundary : allBoundaries) {

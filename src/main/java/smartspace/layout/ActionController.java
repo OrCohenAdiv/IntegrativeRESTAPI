@@ -15,45 +15,40 @@ import smartspace.infra.ActionService;
 
 @RestController
 public class ActionController {
-	
+
 	private ActionService actionService;
 
 	@Autowired
 	public ActionController(ActionService actionService) {
 		this.actionService = actionService;
 	}
-	
-	@RequestMapping(
-			path="/smartspace/admin/actions/{adminSmartspace}/{adminEmail}",
-			method=RequestMethod.POST,
-			consumes=MediaType.APPLICATION_JSON_VALUE,
-			produces=MediaType.APPLICATION_JSON_VALUE)
-	public ActionBoundary newAction (
-			@RequestBody ActionBoundary action, 
+
+	@RequestMapping(path = "/smartspace/admin/actions/{adminSmartspace}/{adminEmail}",
+			method = RequestMethod.POST,
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ActionBoundary newAction(@RequestBody ActionBoundary action,
 			@PathVariable("adminSmartspace") String adminSmartspace,
 			@PathVariable("adminEmail") String adminEmail) {
-		
-		return new ActionBoundary(
-				this.actionService
-					.newAction(action.convertToEntity(), adminSmartspace, adminEmail));
+
+		return new ActionBoundary(this.actionService
+				.newAction(action.convertToEntity(), adminSmartspace, adminEmail));
 	}
 
-	@RequestMapping(
-			path="/smartspace/admin/actions/{adminSmartspace}/{adminEmail}",
-			method=RequestMethod.GET,
-			produces=MediaType.APPLICATION_JSON_VALUE)
-	public ActionBoundary[] getUsingPagination (
-			@RequestParam(name="size", required=false, defaultValue="10") int size,
-			@RequestParam(name="page", required=false, defaultValue="0") int page,
+	@RequestMapping(path = "/smartspace/admin/actions/{adminSmartspace}/{adminEmail}",
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ActionBoundary[] getUsingPagination(
+			@RequestParam(name = "size", required = false, defaultValue = "10") int size,
+			@RequestParam(name = "page", required = false, defaultValue = "0") int page,
 			@PathVariable("adminSmartspace") String adminSmartspace,
 			@PathVariable("adminEmail") String adminEmail) {
-			
-		return 
-			this.actionService
-			.getUsingPagination(size, page)
-			.stream()
-			.map(ActionBoundary::new)
-			.collect(Collectors.toList())
-			.toArray(new ActionBoundary[0]);
+
+		return this.actionService
+				.getUsingPagination(size, page, adminSmartspace, adminEmail)
+				.stream()
+				.map(ActionBoundary::new)
+				.collect(Collectors.toList())
+				.toArray(new ActionBoundary[0]);
 	}
 }

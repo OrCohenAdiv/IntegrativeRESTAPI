@@ -2,24 +2,33 @@ package smartspace.infra;
 
 import java.util.Date;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import smartspace.dao.EnhancedActionDao;
+import smartspace.dao.EnhancedUserDao;
 import smartspace.data.ActionEntity;
+import smartspace.data.UserRole;
 
 @Service
 public class ActionServiceImpl implements ActionService {
-	
+
 	private EnhancedActionDao actionDao;
+	private EnhancedUserDao<String> userDao;
 
 	@Autowired
-	public ActionServiceImpl(EnhancedActionDao actionDao) {
+	public ActionServiceImpl(EnhancedActionDao actionDao, EnhancedUserDao<String> userDao) {
 		this.actionDao = actionDao;
+		this.userDao = userDao;
 	}
 
 	@Override
 	public ActionEntity newAction(ActionEntity entity, String adminSmartspace, String adminEmail) {
-		// validate code	
+
+		if (!(userDao.readById(adminEmail + "=" + adminSmartspace)
+				.orElseThrow(() -> new RuntimeException("user doesn't exist")).getRole().equals(UserRole.ADMIN)))
+			throw new RuntimeException("You are not an ADMIN!");
 		if (valiadate(entity)) {
 			entity.setCreationTimestamp(new Date());
 			return this.actionDao.create(entity);
@@ -40,7 +49,13 @@ public class ActionServiceImpl implements ActionService {
 	}
 
 	@Override
-	public List<ActionEntity> getUsingPagination(int size, int page) {
-		return this.actionDao.readAll("key", size, page);
+	public List<ActionEntity> getUsingPagination(int size, int page, String adminSmartspace, String adminEmail) {
+		if (!(userDao.readById(adminEmail + "=" + adminSmartspace)
+				.orElseThrow(() -> new RuntimeException("user doesn't exist"))
+				.getRole().equals(UserRole.ADMIN)))
+			throw new RuntimeException("You are not an ADMIN!");
+
+		return this.actionDao
+				.readAll("key", size, page);
 	}
 }

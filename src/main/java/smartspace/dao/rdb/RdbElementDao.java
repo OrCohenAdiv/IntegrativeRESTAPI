@@ -120,4 +120,11 @@ public class RdbElementDao implements EnhancedElementDao<String> {
 				.findAllByNameLike("%" + smartspace + "%", PageRequest.of(page, size));
 	}
 
+	@Override
+	public ElementEntity importElement(ElementEntity elementEntity) {
+		// import elementEntity to our database
+		ElementEntity returnedVal = this.elementCrud.save(elementEntity);
+		return returnedVal;
+	}
 }
+

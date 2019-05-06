@@ -37,7 +37,7 @@ public class ElementServiceImpl implements ElementService {
 		
 		if (valiadate(entity)) {
 			entity.setCreationTimestamp(new Date());
-			return this.elementDao.create(entity);
+			return this.elementDao.importElement(entity);
 		} else {
 			throw new RuntimeException("invalid element");
 		}

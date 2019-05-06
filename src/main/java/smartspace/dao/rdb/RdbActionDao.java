@@ -17,7 +17,7 @@ public class RdbActionDao implements EnhancedActionDao {
 	private ActionCrud actionCrud;
 	private GenericIdGeneratorCrud genericIdGeneratorCrud;
 
-	@Autowired	
+	@Autowired
 	public RdbActionDao(ActionCrud actionCrud, GenericIdGeneratorCrud genericIdGeneratorCrud) {
 		super();
 		this.actionCrud = actionCrud;
@@ -37,18 +37,12 @@ public class RdbActionDao implements EnhancedActionDao {
 			throw new RuntimeException("Action Entity already exist with key:" + actionEntity.getKey());
 		}
 	}
-	
+
 	@Transactional
 	public ActionEntity importAction(ActionEntity actionEntity) {
-		actionEntity.setKey(actionEntity.getActionId() + "=" + actionEntity.getActionSmartspace());
-		if (!this.actionCrud.existsById(actionEntity.getKey())) {
-			ActionEntity rv = this.actionCrud.save(actionEntity);
-			return rv;
-		} else {
-			throw new RuntimeException("Action Entity already exist with key:" + actionEntity.getKey());
-		}
+		return this.actionCrud.save(actionEntity);
 	}
-	
+
 	@Override
 	@Transactional(readOnly = true)
 	public List<ActionEntity> readAll() {
@@ -65,15 +59,14 @@ public class RdbActionDao implements EnhancedActionDao {
 	}
 
 	@Override
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	public List<ActionEntity> readAll(int size, int page) {
-		return this.actionCrud.findAll(PageRequest.of(page, size)).getContent(); 
+		return this.actionCrud.findAll(PageRequest.of(page, size)).getContent();
 	}
 
 	@Override
 	public List<ActionEntity> readAll(String sortBy, int size, int page) {
-		return this.actionCrud.findAll(PageRequest.of(
-				page, size, Direction.ASC, sortBy)).getContent();
+		return this.actionCrud.findAll(PageRequest.of(page, size, Direction.ASC, sortBy)).getContent();
 	}
 
 	@Override
@@ -82,4 +75,3 @@ public class RdbActionDao implements EnhancedActionDao {
 	}
 
 }
-

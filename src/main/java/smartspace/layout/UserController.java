@@ -25,12 +25,15 @@ public class UserController {
 		this.userService = userService;
 	}
 
-	@RequestMapping(path = "/smartspace/admin/users/{adminSmartspace}/{adminEmail}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public UserBoundary newUser(@RequestBody UserBoundary user, @PathVariable("adminSmartspace") String adminSmartspace,
+	@RequestMapping(path = "/smartspace/admin/users/{adminSmartspace}/{adminEmail}",
+			method = RequestMethod.POST,
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public UserBoundary[] newUser(@RequestBody UserBoundary[] users,
+			@PathVariable("adminSmartspace") String adminSmartspace,
 			@PathVariable("adminEmail") String adminEmail) {
 
-		
-			return new UserBoundary(this.userService.newUser(user.convertToEntity(), adminEmail, adminSmartspace));
+			return this.userService.newUser(users, adminEmail, adminSmartspace).stream().map(UserBoundary::new).collect(Collectors.toList()).toArray(new UserBoundary[0]);
 
 	}
 

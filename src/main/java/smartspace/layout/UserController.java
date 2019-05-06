@@ -18,8 +18,7 @@ import smartspace.infra.UserService;
 public class UserController {
 
 	private UserService userService;
-	@Value("${smartspace.name}")
-	private String smartSpace;
+
 
 	@Autowired
 	public UserController(UserService userService) {
@@ -30,12 +29,9 @@ public class UserController {
 	public UserBoundary newUser(@RequestBody UserBoundary user, @PathVariable("adminSmartspace") String adminSmartspace,
 			@PathVariable("adminEmail") String adminEmail) {
 
-		if (adminSmartspace.equals(smartSpace)) {
-			throw new RuntimeException("The user uses the same smartspace");
-		} else {
+		
 			return new UserBoundary(this.userService.newUser(user.convertToEntity(), adminEmail, adminSmartspace));
 
-		}
 	}
 
 	@RequestMapping(path = "/smartspace/admin/users/{adminSmartspace}/{adminEmail}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

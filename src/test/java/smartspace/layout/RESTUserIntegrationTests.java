@@ -2,9 +2,13 @@ package smartspace.layout;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import javax.annotation.PostConstruct;
 
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +20,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
 import smartspace.dao.EnhancedUserDao;
+import smartspace.data.UserEntity;
 import smartspace.data.UserRole;
 import smartspace.infra.UserService;
+import smartspace.infra.UserServiceImpl;
 import smartspace.layout.data.UserKeyBoundary;
 
 @RunWith(SpringRunner.class)
@@ -30,6 +36,8 @@ public class RESTUserIntegrationTests {
 	private EnhancedUserDao<String> userDao;
 	private UserService userService;
 	//TODO: create 2 users
+	private UserEntity userAdminTest;
+	private UserEntity userPlayerTest;
 	
 	@Autowired
 	public void setElementDao(EnhancedUserDao<String> userDao) {
@@ -51,20 +59,25 @@ public class RESTUserIntegrationTests {
 	public void init() {
 		this.baseUrl = "http://localhost:" + port + "/smartspace/admin/users/{adminSmartspace}/{adminEmail}";
 		//TODO: create actual user and add it to db
+		this.userAdminTest = new UserEntity("smartSpaceTest", "Or@Kooki", "kooki", "TheAvatar", UserRole.ADMIN, 100);
+		this.userDao.create(userAdminTest);
+
+		this.userPlayerTest = new UserEntity("smartSpaceTest", "Dani@Kooki", "kooki", "TheAvatar", UserRole.PLAYER, 100);
+		this.userDao.create(userPlayerTest);
 	}
 	
 	@After
 	public void teardown() {
 		this.userDao.deleteAll();
 	}
+	
 		
 	@Test
 	public void testPostNewUser() throws Exception{
-		// GIVEN the database is empty
+		// GIVEN the database has an admin user and non admin user
 		
 		// WHEN I POST new user
-	
-		UserBoundary newUser = new UserBoundary();
+		UserBoundary newUser = new UserBoundary(userAdminTest);
 		UserKeyBoundary ukb = new UserKeyBoundary();
 		ukb.setEmail("Or@Test");
 		ukb.setSmartspace("DaniTest.smartspace");
@@ -78,76 +91,78 @@ public class RESTUserIntegrationTests {
 					this.baseUrl, 
 					newUser, 
 					UserBoundary.class, 
-					1332);//TODO: change to admin email and smartspace
+					userAdminTest.getUserEmail(),userAdminTest.getUserSmartspace());//TODO: change to admin email and smartspace
 		
 		// THEN the database contains a single message
 		assertThat(this.userDao
 			.readAll())
-			.hasSize(1);
+			.hasSize(3);
 	}
-	/*
+	
 	@Test(expected=Exception.class)
-	public void testPostNewMessageWithBadCode() throws Exception{
-		// GIVEN the database is empty
+	public void testPostNewUserWithBadCode() throws Exception{
+		// GIVEN the database has an admin user and non admin user
 		
-		// WHEN I POST new message with bad code
-		int code = 133;
-		Map<String, Object> details = new HashMap<>();
-		details.put("y", 10.0);
-		details.put("x", "10");
-		MessageBoundary newMessage = new MessageBoundary();
-		newMessage.setName("Demo1");
-		newMessage.setSeverity(SeverityEnum.ERROR);
-		newMessage.setAuthor("Jane#Smith");
-		newMessage.setDetails(details);
+		UserBoundary newUser = new UserBoundary(userPlayerTest);
+		UserKeyBoundary ukb = new UserKeyBoundary();
+		ukb.setEmail("Or@Test");
+		ukb.setSmartspace("DaniTest.smartspace");
+		newUser.setKey(ukb);
+		newUser.setRole(UserRole.PLAYER);
+		newUser.setAvatar("TheAvatar");
+		newUser.setPoints(100);
+		newUser.setUserName("TestTest");
 		this.restTemplate
 			.postForObject(
-					this.baseUrl + "/{code}", 
-					newMessage, 
-					MessageBoundary.class, 
-					code);
+					this.baseUrl, 
+					newUser, 
+					UserBoundary.class, 
+					userPlayerTest.getUserEmail(),userPlayerTest.getUserSmartspace());//TODO: change to admin email and smartspace
+	
 		
 		// THEN the test end with exception
+		
 	}
 
+	
 	@Test
-	public void testGetAllMessagesUsingPagination() throws Exception{
+	public void testGetAllUsersUsingPagination() throws Exception{
 		// GIVEN the database contains 3 messages
-		int size = 3;
-		IntStream.range(1, size + 1)
-			.mapToObj(i->new MessageEntity("demo" + i))
-			.forEach(this.messageDao::create);
+		int size = 5;
+		IntStream.range(1, size)
+			.mapToObj(i->new UserEntity("smartSpaceTest2" + i, "Stam@Kooki", "kooki", "TheAvatar", UserRole.ADMIN, 100))
+			.forEach(this.userDao::create);
 		
-		// WHEN I GET messages of size 10 and page 0
-		MessageBoundary[] response = 
+		// WHEN I GET users of size 10 and page 0
+		UserBoundary[] response = 
 		this.restTemplate
 			.getForObject(
-					this.baseUrl + "?size={size}&page={page}", 
-					MessageBoundary[].class, 
+					this.baseUrl + "?size={size}&page={page}" ,  
+					UserBoundary[].class, userAdminTest.getUserEmail() , userAdminTest.getUserSmartspace(),
 					10, 0);
 		
-		// THEN I receive 3 messages
+		// THEN I receive 3 users
 		assertThat(response)
 			.hasSize(size);
 	}
-	
+	/*
 	@Test
 	public void testGetAllMessagesUsingPaginationAndValidateContent() throws Exception{
 		// GIVEN the database contains 3 messages
 		int size = 3;
-		java.util.List<MessageBoundary> all = 
+		java.util.List<UserBoundary> all = 
 		IntStream.range(1, size + 1)
-			.mapToObj(i->new MessageEntity("demo" + i))
-			.map(this.messageDao::create)
-			.map(MessageBoundary::new)
+			.mapToObj(i->new UserEntity("smartSpaceTest2" + i, "Stam@Kooki", "kooki", "TheAvatar", UserRole.ADMIN, 100))
+			.map(this.userDao::create)
+			.map(UserBoundary::new)
 			.collect(Collectors.toList());
 		
 		// WHEN I GET messages of size 10 and page 0
-		MessageBoundary[] response = 
+		UserBoundary[] response = 
 		this.restTemplate
 			.getForObject(
 					this.baseUrl + "?size={size}&page={page}", 
-					MessageBoundary[].class, 
+					UserBoundary[].class, userAdminTest.getUserEmail() , userAdminTest.getUserSmartspace(),
 					10, 0);
 		
 		// THEN I receive the exact 3 messages written to the databse
@@ -155,7 +170,7 @@ public class RESTUserIntegrationTests {
 			.usingElementComparatorOnFields("key")
 			.containsExactlyElementsOf(all);
 	}
-	
+	/*
 	@Test
 	public void testGetAllMessagesUsingPaginationAndValidateContentWithAllAttributeValidation() throws Exception{
 		// GIVEN the database contains 4 messages

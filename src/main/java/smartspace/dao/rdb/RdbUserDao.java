@@ -42,7 +42,7 @@ public class RdbUserDao implements EnhancedUserDao<String>{
 				this.genericIdGeneratorCrud.save(new GenericIdGenerator());
 		
 		//set user key and destroy the row in db
-		userEntity.setKey(userEntity.getUserSmartspace() + "=" + userEntity.getUserEmail());
+		userEntity.setKey(userEntity.getUserEmail() + "=" + userEntity.getUserSmartspace());
 		this.genericIdGeneratorCrud.delete(nextId);
 		
 		//if user doesn't exists then add it, else throw RuntimeException
@@ -141,6 +141,20 @@ public class RdbUserDao implements EnhancedUserDao<String>{
 					page, size, 
 					Direction.ASC, sortBy))
 			.getContent();
+	}
+	
+	@Override
+	public UserEntity importUser(UserEntity userEntity) {
+					
+				//if user doesn't exists then add it, else throw RuntimeException
+				if(!this.userCrud.existsById(userEntity.getKey())) {
+					UserEntity rv = this.userCrud.save(userEntity);
+					return rv;
+				}
+				else {
+					throw new RuntimeException("user entity already exist with key:" + userEntity.getKey());
+				}
+		
 	}
 	
 }

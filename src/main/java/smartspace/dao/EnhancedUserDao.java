@@ -12,5 +12,6 @@ public interface EnhancedUserDao<Key> extends UserDao<Key> {
 //	public List<UserEntity> readMessageAvaiable (
 //			Date fromDate, Date toDate,
 //			int size, int page);
+	public UserEntity importUser(UserEntity userEntity);
 	
 }

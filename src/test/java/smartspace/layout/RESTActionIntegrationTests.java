@@ -119,7 +119,7 @@ public class RESTActionIntegrationTests {
 	
 	@Test(expected=Exception.class)
 	public void testImportActionWithExistingElementsAndUserNotAdmin() throws Exception {
-		UserEntity user = new UserEntity("2019b.tomc", "admin@admin.com", "Admin", ":-D", UserRole.MANAGER, 6);
+		UserEntity user = new UserEntity("2019b.tomc", "admin2@admin.com", "Admin", ":-D", UserRole.MANAGER, 6);
 		enhancedUserDao.create(user);
 		ElementEntity elementEntity = new ElementEntity("2019b.tomc", null, new Location(5, 5), "Moshe", "Hotel", null,
 				false, "creatorSmartSpace", "admin2@admin.com", null);

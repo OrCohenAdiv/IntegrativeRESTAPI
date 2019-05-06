@@ -356,7 +356,46 @@ public class RESTElementIntegrationTests2 {
 	}
 
 	
-	
+	@Test//(expected=Exception.class)
+	public void testCreateAndPostByAdminThreeElements() throws Exception {
+		// GIVEN the database is empty
+		
+		// WHEN the admin create the element and the manager try to POST the element
+		
+		int size = 3;
+		
+		Map<String, Object> elementProperties = new HashMap<>();
+		elementProperties.put("key1", 1);
+		elementProperties.put("key2", "2");
+		elementProperties.put("key3", "it can be anything");
+			
+		Location location = new Location();
+		location.setX(15.15);
+		location.setY(52.25); 
+		
+		java.util.List<ElementBoundary> allElements = 
+				IntStream.range(1, size + 1)
+				.mapToObj(i->new ElementEntity( 
+						"demo" + i, "MyType", location, new Date(), 
+						this.userEntityAdmin.getUserEmail(), 
+						this.userEntityAdmin.getUserSmartspace(), 
+						false, elementProperties))
+				.map(this.elementDao::create)
+				.map(ElementBoundary::new)
+				.collect(Collectors.toList());
+
+		ElementBoundary[] response = 
+				this.restTemplate.postForObject(
+				this.baseUrl, 
+				allElements, 
+				ElementBoundary[].class, 
+				this.userEntityAdmin.getUserSmartspace(),
+				this.userEntityAdmin.getUserEmail());
+		
+		//THEN the database contains 3 elements
+		assertThat(this.elementDao.readAll()).hasSize(size);
+		
+	}
 	
 	
 	@Test

@@ -50,7 +50,7 @@ public class RdbUserIntegrationTests {
 
 		// WHEN Create 10 users in DB
 		Set<String> result = IntStream.range(1, 11)
-				.mapToObj(i -> this.factory.createNewUser("Test@tesing.com",SMARTSPACE, "Test", 
+				.mapToObj(i -> this.factory.createNewUser("Test"+i+"@tesing.com",SMARTSPACE, "Test", 
 						null, UserRole.PLAYER, 0))
 				.map(this.userDao::create)
 				.map(UserEntity::getKey)
@@ -96,7 +96,7 @@ public class RdbUserIntegrationTests {
 		int size = 10;
 		Set<String> ids = 
 		IntStream.range(1, size+1) // Stream Integer
-			.mapToObj(i->this.factory.createNewUser("Test@tesing.com",SMARTSPACE, "Test", 
+			.mapToObj(i->this.factory.createNewUser("Test"+i+"@tesing.com",SMARTSPACE, "Test", 
 					null, UserRole.PLAYER, 0)) // ElementEntity Stream
 			.map(this.userDao::create) // ElementEntity Stream
 			.map(UserEntity::getKey) // String Stream

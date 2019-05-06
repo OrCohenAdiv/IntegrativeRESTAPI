@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import smartspace.dao.EnhancedActionDao;
+import smartspace.dao.EnhancedElementDao;
 import smartspace.dao.EnhancedUserDao;
 import smartspace.data.ActionEntity;
+import smartspace.data.ElementEntity;
 import smartspace.data.UserRole;
 
 @Service
@@ -16,25 +18,30 @@ public class ActionServiceImpl implements ActionService {
 
 	private EnhancedActionDao actionDao;
 	private EnhancedUserDao<String> userDao;
+	private EnhancedElementDao<String> elementDao;
 
 	@Autowired
-	public ActionServiceImpl(EnhancedActionDao actionDao, EnhancedUserDao<String> userDao) {
+	public ActionServiceImpl(EnhancedActionDao actionDao, EnhancedUserDao<String> userDao,
+			EnhancedElementDao<String> elementDao) {
 		this.actionDao = actionDao;
 		this.userDao = userDao;
+		this.elementDao = elementDao;
 	}
-	
+
 	@Override
 	public ActionEntity newAction(ActionEntity entity, String adminSmartspace, String adminEmail) {
 
 		if (!(userDao.readById(adminEmail + "=" + adminSmartspace)
 				.orElseThrow(() -> new RuntimeException("user doesn't exist"))).getRole().equals(UserRole.ADMIN))
-
 			throw new RuntimeException("You are not an ADMIN!");
+
+		elementDao.readById(entity.getElementId() + "=" + entity.getElementSmartspace())
+				.orElseThrow(() -> new RuntimeException("Element doesn't exist"));
 
 		if (valiadate(entity)) {
 			entity.setCreationTimestamp(new Date());
 			return this.actionDao.importAction(entity);
-		} else 
+		} else
 			throw new RuntimeException("invalid action");
 	}
 

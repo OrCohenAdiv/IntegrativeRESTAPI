@@ -32,7 +32,7 @@ public class ElementController {
 		
 		return new ElementBoundary(
 				this.elementService
-					.newElement(element.convertToEntity(), adminSmartspace,adminEmail));
+					.newElement(element.convertToEntity(), adminSmartspace, adminEmail));
 	}
 
 	@RequestMapping(
@@ -46,12 +46,11 @@ public class ElementController {
 			@PathVariable("adminEmail") String adminEmail) {
 		return 
 			this.elementService
-			.getUsingPagination(size, page)
+			.getUsingPagination(size, page, adminSmartspace, adminEmail)
 			.stream()
 			.map(ElementBoundary::new)
 			.collect(Collectors.toList())
 			.toArray(new ElementBoundary[0]);
 	}
-	
 	
 }

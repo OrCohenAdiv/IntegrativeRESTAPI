@@ -29,6 +29,7 @@ public class RESTUserIntegrationTests {
 	private RestTemplate restTemplate;
 	private EnhancedUserDao<String> userDao;
 	private UserService userService;
+	//TODO: create 2 users
 	
 	@Autowired
 	public void setElementDao(EnhancedUserDao<String> userDao) {
@@ -49,6 +50,7 @@ public class RESTUserIntegrationTests {
 	@PostConstruct
 	public void init() {
 		this.baseUrl = "http://localhost:" + port + "/smartspace/admin/users/{adminSmartspace}/{adminEmail}";
+		//TODO: create actual user and add it to db
 	}
 	
 	@After
@@ -73,10 +75,10 @@ public class RESTUserIntegrationTests {
 		newUser.setUserName("TestTest");
 		this.restTemplate
 			.postForObject(
-					this.baseUrl + "/{code}", 
+					this.baseUrl, 
 					newUser, 
 					UserBoundary.class, 
-					1332);
+					1332);//TODO: change to admin email and smartspace
 		
 		// THEN the database contains a single message
 		assertThat(this.userDao

@@ -115,7 +115,7 @@ public class RdbElementDao implements EnhancedElementDao<String> {
 
 	@Override
 	@Transactional(readOnly=true)
-	public List<ElementEntity> readMessageWithSmartspaceContaining(String smartspace, int size, int page) {
+	public List<ElementEntity> readElementWithSmartspaceContaining(String smartspace, int size, int page) {
 		return this.elementCrud
 				.findAllByNameLike("%" + smartspace + "%", PageRequest.of(page, size));
 	}

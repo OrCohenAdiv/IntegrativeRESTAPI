@@ -27,7 +27,7 @@ public class ElementServiceImpl implements ElementService {
 	public ElementEntity newElement(
 			ElementEntity entity, String adminSmartspace, String adminEmail) {
 
-		String key = adminEmail + "=" + adminSmartspace;
+		String key = adminSmartspace + "=" + adminEmail;
 		UserEntity userEntity = userDao.readById(key)
 				.orElseThrow(() -> new RuntimeException("user don't exist"));
 		

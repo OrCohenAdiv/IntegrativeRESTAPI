@@ -52,7 +52,7 @@ public class ElementBoundary {
 		ElementEntity entity = new ElementEntity();
 //		entity.setKey("=");
 		if (this.key.getId() != null && this.key.getSmartspace() != null) {
-			entity.setKey(this.key.getSmartspace() + "=" + this.key.getId());
+			entity.setKey(this.key.getId() + "=" + this.key.getSmartspace() );
 		}
 		entity.setType(this.elementType);
 		entity.setName(this.name);

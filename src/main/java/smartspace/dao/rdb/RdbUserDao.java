@@ -42,7 +42,7 @@ public class RdbUserDao implements EnhancedUserDao<String>{
 				this.genericIdGeneratorCrud.save(new GenericIdGenerator());
 		
 		//set user key and destroy the row in db
-		userEntity.setKey(userEntity.getUserEmail() + "=" + userEntity.getUserSmartspace());
+		userEntity.setKey(userEntity.getUserSmartspace() + "=" + userEntity.getUserEmail());
 		this.genericIdGeneratorCrud.delete(nextId);
 		
 		//if user doesn't exists then add it, else throw RuntimeException

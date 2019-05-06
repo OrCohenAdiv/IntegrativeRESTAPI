@@ -41,7 +41,7 @@ public class RESTActionIntegrationTests {
 
 	@PostConstruct
 	public void init() {
-		this.baseUrl = "http://localhost:" + port + "/smartspace/admin/users/{adminSmartspace}/{adminEmail}";
+		this.baseUrl = "http://localhost:" + port + "/smartspace/admin/actions/{adminSmartspace}/{adminEmail}";
 	}
 
 	@After

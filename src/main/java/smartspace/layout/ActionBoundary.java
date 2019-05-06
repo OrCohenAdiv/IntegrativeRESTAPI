@@ -46,6 +46,10 @@ public class ActionBoundary {
 			this.player.setEmail(entity.getPlayerEmail());
 			this.player.setSmartspace(entity.getPlayerSmartspace());
 		}
+		
+		this.type=entity.getActionType();
+		this.created=entity.getCreationTimestamp();
+		this.properties=entity.getMoreAttributes();
 	}
 	
 	
@@ -102,7 +106,6 @@ public class ActionBoundary {
 		
 		ActionEntity entity =  new ActionEntity();
 		
-		entity.setKey("=");
 		if(this.actionKey.getId() != null && this.actionKey.getSmartspace() != null) {
 			entity.setActionId(this.actionKey.getId());
 			entity.setActionSmartspace(this.actionKey.getSmartspace());
@@ -132,6 +135,7 @@ public class ActionBoundary {
 		}
 	}
 }
+
 
 
 

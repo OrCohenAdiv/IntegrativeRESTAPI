@@ -38,6 +38,17 @@ public class RdbActionDao implements EnhancedActionDao {
 		}
 	}
 	
+	@Transactional
+	public ActionEntity importAction(ActionEntity actionEntity) {
+		actionEntity.setKey(actionEntity.getActionId() + "=" + actionEntity.getActionSmartspace());
+		if (!this.actionCrud.existsById(actionEntity.getKey())) {
+			ActionEntity rv = this.actionCrud.save(actionEntity);
+			return rv;
+		} else {
+			throw new RuntimeException("Action Entity already exist with key:" + actionEntity.getKey());
+		}
+	}
+	
 	@Override
 	@Transactional(readOnly = true)
 	public List<ActionEntity> readAll() {

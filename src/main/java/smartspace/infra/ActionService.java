@@ -11,7 +11,9 @@ public interface ActionService {
 			String adminSmartspace, 
 			String adminEmail);
 
-	public List<ActionEntity> getUsingPagination(int size, int page, 
+	public List<ActionEntity> getUsingPagination(
+			int size,
+			int page, 
 			String adminSmartspace, 
 			String adminEmail);
 	

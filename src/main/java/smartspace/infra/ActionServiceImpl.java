@@ -22,19 +22,20 @@ public class ActionServiceImpl implements ActionService {
 		this.actionDao = actionDao;
 		this.userDao = userDao;
 	}
-
+	
 	@Override
 	public ActionEntity newAction(ActionEntity entity, String adminSmartspace, String adminEmail) {
 
 		if (!(userDao.readById(adminEmail + "=" + adminSmartspace)
-				.orElseThrow(() -> new RuntimeException("user doesn't exist")).getRole().equals(UserRole.ADMIN)))
+				.orElseThrow(() -> new RuntimeException("user doesn't exist"))).getRole().equals(UserRole.ADMIN))
+
 			throw new RuntimeException("You are not an ADMIN!");
+
 		if (valiadate(entity)) {
 			entity.setCreationTimestamp(new Date());
-			return this.actionDao.create(entity);
-		} else {
+			return this.actionDao.importAction(entity);
+		} else 
 			throw new RuntimeException("invalid action");
-		}
 	}
 
 	private boolean valiadate(ActionEntity entity) {
@@ -51,11 +52,9 @@ public class ActionServiceImpl implements ActionService {
 	@Override
 	public List<ActionEntity> getUsingPagination(int size, int page, String adminSmartspace, String adminEmail) {
 		if (!(userDao.readById(adminEmail + "=" + adminSmartspace)
-				.orElseThrow(() -> new RuntimeException("user doesn't exist"))
-				.getRole().equals(UserRole.ADMIN)))
+				.orElseThrow(() -> new RuntimeException("user doesn't exist")).getRole().equals(UserRole.ADMIN)))
 			throw new RuntimeException("You are not an ADMIN!");
 
-		return this.actionDao
-				.readAll("key", size, page);
+		return this.actionDao.readAll("key", size, page);
 	}
 }

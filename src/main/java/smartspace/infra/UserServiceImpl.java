@@ -1,21 +1,25 @@
 package smartspace.infra;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import smartspace.dao.EnhancedUserDao;
+import smartspace.data.ActionEntity;
 import smartspace.data.UserEntity;
 import smartspace.data.UserRole;
+import smartspace.layout.UserBoundary;
 
 @Service
 public class UserServiceImpl implements UserService {
 
 	private EnhancedUserDao<String> userDao;
 	@Value("${smartspace.name}")
-	private String mySmartSpace;
+	private String smartspaceName;
 
 	@Autowired
 	public UserServiceImpl(EnhancedUserDao<String> userDao) {
@@ -28,30 +32,31 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserEntity newUser(UserEntity entity, String adminEmail, String adminSmartspace) {
-		// validate code
+	@Transactional
+	public List<UserEntity> newUser(UserBoundary[] allBoundaries, String adminSmartspace, String adminEmail) {
+		List<UserEntity> userEntites = new LinkedList<>();
 
 		String key = adminSmartspace + "=" + adminEmail;
 
-		UserEntity userInSmartspace = userDao.readById(key)
-				.orElseThrow(() -> new RuntimeException("no such user exists"));
-		;
+		UserEntity adminUserEntity = userDao.readById(key).orElseThrow(() -> new RuntimeException("user doesn't exist"));
 
-		if (userInSmartspace.getRole() != UserRole.ADMIN) {
-
-			if (entity.getUserSmartspace().equals(mySmartSpace))
-				throw new RuntimeException("Invalid! same smartspace");
-
-			if (validate(entity)) {
-				return this.userDao.create(entity);
-			} else {
-				throw new RuntimeException("user has invalid data");
-			}
-		} else {
-			throw new RuntimeException("Not admin you are not allowed to create users");
+		if (!adminUserEntity.getRole().equals(UserRole.ADMIN)) {
+			throw new RuntimeException("you are not ADMIN");
 		}
-	}
-
+		for (UserBoundary userBoundary : allBoundaries) {
+			UserEntity userEntity=userBoundary.convertToEntity();
+			
+			if (validate(userEntity)) {
+				if (userEntity.getUserSmartspace().equals(smartspaceName))
+					throw new RuntimeException("Illigal Import!");
+				else
+					userEntites.add(this.userDao.importUser(userEntity));
+			} else {
+				throw new RuntimeException("Invalid User");
+			}
+		
+	}return userEntites;
+}
 	@Override
 	public List<UserEntity> getUsingPagination(int size, int page, String adminSmartspace, String adminEmail) {
 

@@ -35,7 +35,7 @@ public class ElementServiceImpl implements ElementService {
 	public List<ElementEntity> newElement(ElementBoundary[] allBoundaries, String adminSmartspace, String adminEmail) {
 		List<ElementEntity> elementEntites = new LinkedList<>();
 		String key = adminSmartspace + "=" + adminEmail;
-		UserEntity userEntity = userDao.readById(key).orElseThrow(() -> new RuntimeException("user don't exist"));
+		UserEntity userEntity = userDao.readById(key).orElseThrow(() -> new RuntimeException("user doesn't exist"));
 
 		if (!userEntity.getRole().equals(UserRole.ADMIN)) {
 			throw new RuntimeException("you are not ADMIN");

@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
 	public UserEntity newUser(UserEntity entity, String adminEmail, String adminSmartspace) {
 		// validate code
 
-		String key = adminEmail + "=" + adminSmartspace;
+		String key = adminSmartspace + "=" + adminEmail;
 
 		UserEntity userInSmartspace = userDao.readById(key)
 				.orElseThrow(() -> new RuntimeException("no such user exists"));
@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<UserEntity> getUsingPagination(int size, int page, String adminSmartspace, String adminEmail) {
 
-		String key = adminEmail + "=" + adminSmartspace;
+		String key = adminSmartspace + "=" + adminEmail;
 
 		UserEntity entity = userDao.readById(key).orElseThrow(() -> new RuntimeException("no such user exists"));
 		;

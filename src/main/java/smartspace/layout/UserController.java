@@ -33,7 +33,7 @@ public class UserController {
 			@PathVariable("adminSmartspace") String adminSmartspace,
 			@PathVariable("adminEmail") String adminEmail) {
 
-			return this.userService.newUser(users, adminEmail, adminSmartspace).stream().map(UserBoundary::new).collect(Collectors.toList()).toArray(new UserBoundary[0]);
+			return this.userService.newUser(users, adminSmartspace,adminEmail).stream().map(UserBoundary::new).collect(Collectors.toList()).toArray(new UserBoundary[0]);
 
 	}
 

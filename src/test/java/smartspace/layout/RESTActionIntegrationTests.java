@@ -81,16 +81,16 @@ public class RESTActionIntegrationTests {
 	public void setEnhancedElementDao(EnhancedElementDao<String> enhancedElementDao) {
 		this.enhancedElementDao = enhancedElementDao;
 	}
-	
+
 	@Before
 	public void before() {
-		this.userEntityAdmin = new UserEntity("2019b.tomc", "admin.creating.element@de.mo",
-				"myAdminName", "myAvatar", UserRole.ADMIN, 1332);
-		this.userEntityAdmin = this.enhancedUserDao.create(userEntityAdmin);
-		
-		this.userEntityManager = new UserEntity("2019b.tomc", "manager.creating.element@de.mo",
-				"myManagerName", "myAvatar", UserRole.MANAGER, 13);
-		this.userEntityManager = this.enhancedUserDao.create(userEntityManager);
+		this.userEntityAdmin = new UserEntity("2019b.tomc", "admin.creating.action@de.mo", "myAdminName", "myAvatar",
+				UserRole.ADMIN, 1332);
+		this.enhancedUserDao.create(userEntityAdmin);
+
+		this.userEntityManager = new UserEntity("2019b.tomc", "manager.creating.action@de.mo", "myManagerName",
+				"myAvatar", UserRole.MANAGER, 13);
+		this.enhancedUserDao.create(userEntityManager);
 	}
 
 	@Test
@@ -98,7 +98,7 @@ public class RESTActionIntegrationTests {
 		ElementEntity elementEntity = new ElementEntity("2019b.tomc", null, new Location(5, 5), "Moshe", "Hotel", null,
 				false, "2019b.tomc", "admin@admin.com", null);
 		elementEntity = enhancedElementDao.create(elementEntity);
-		
+
 		ActionKeyBoundary actionKey = new ActionKeyBoundary();
 		actionKey.setId("50");
 		actionKey.setSmartspace("Moshe");
@@ -108,34 +108,29 @@ public class RESTActionIntegrationTests {
 		UserKeyBoundary player = new UserKeyBoundary();
 		player.setEmail("admin@smfng.com");
 		player.setSmartspace("Moshe");
-		
-		
+
 		ActionBoundary actionBoundary = new ActionBoundary();
 		actionBoundary.setActionKey(actionKey);
 		actionBoundary.setType("momo");
 		actionBoundary.setElement(element);
 		actionBoundary.setPlayer(player);
 		actionBoundary.setProperties(null);
-		
-		ActionBoundary[] arr = {actionBoundary};
-		
-		this.restTemplate.postForObject(
-				this.baseUrl, 
-				arr, 
-				ElementBoundary[].class, 
-				userEntityAdmin.getUserSmartspace(),
+
+		ActionBoundary[] arr = { actionBoundary };
+
+		this.restTemplate.postForObject(this.baseUrl, arr, ElementBoundary[].class, userEntityAdmin.getUserSmartspace(),
 				userEntityAdmin.getUserEmail());
-		
-		//THEN the database contains a single element
+
+		// THEN the database contains a single element
 		assertThat(this.enhancedActionDao.readAll()).hasSize(1);
 	}
-	
-	@Test(expected=Exception.class)
+
+	@Test(expected = Exception.class)
 	public void testImportActionWithExistingElementsAndUserNotAdmin() throws Exception {
 		ElementEntity elementEntity = new ElementEntity("2019b.tomc", null, new Location(5, 5), "Moshe", "Hotel", null,
 				false, "2019b.tomc", "admin2@admin.com", null);
 		elementEntity = enhancedElementDao.create(elementEntity);
-		
+
 		ActionKeyBoundary actionKey = new ActionKeyBoundary();
 		actionKey.setId("50");
 		actionKey.setSmartspace("Moshe");
@@ -145,25 +140,20 @@ public class RESTActionIntegrationTests {
 		UserKeyBoundary player = new UserKeyBoundary();
 		player.setEmail("admin@smfng.com");
 		player.setSmartspace("Moshe");
-		
-		
+
 		ActionBoundary actionBoundary = new ActionBoundary();
 		actionBoundary.setActionKey(actionKey);
 		actionBoundary.setType("momo");
 		actionBoundary.setElement(element);
 		actionBoundary.setPlayer(player);
 		actionBoundary.setProperties(null);
-		
-		ActionBoundary[] arr = {actionBoundary};
-		
-		this.restTemplate.postForObject(
-				this.baseUrl, 
-				arr, 
-				ElementBoundary[].class, 
-				userEntityManager.getUserSmartspace(),
-				userEntityManager.getUserEmail());
-		
-		//THEN throws execption
+
+		ActionBoundary[] arr = { actionBoundary };
+
+		this.restTemplate.postForObject(this.baseUrl, arr, ElementBoundary[].class,
+				userEntityManager.getUserSmartspace(), userEntityManager.getUserEmail());
+
+		// THEN throws execption
 	}
 
 }

@@ -38,14 +38,15 @@ public class UserServiceImpl implements UserService {
 
 		String key = adminSmartspace + "=" + adminEmail;
 
-		UserEntity adminUserEntity = userDao.readById(key).orElseThrow(() -> new RuntimeException("user doesn't exist"));
+		UserEntity adminUserEntity = userDao.readById(key)
+				.orElseThrow(() -> new RuntimeException("user doesn't exist"));
 
 		if (!adminUserEntity.getRole().equals(UserRole.ADMIN)) {
-			throw new RuntimeException("you are not ADMIN");
+			throw new RuntimeException("you are not an ADMIN");
 		}
 		for (UserBoundary userBoundary : allBoundaries) {
-			UserEntity userEntity=userBoundary.convertToEntity();
-			
+			UserEntity userEntity = userBoundary.convertToEntity();
+
 			if (validate(userEntity)) {
 				if (userEntity.getUserSmartspace().equals(smartspaceName))
 					throw new RuntimeException("Illigal Import!");
@@ -54,9 +55,11 @@ public class UserServiceImpl implements UserService {
 			} else {
 				throw new RuntimeException("Invalid User");
 			}
-		
-	}return userEntites;
-}
+
+		}
+		return userEntites;
+	}
+
 	@Override
 	public List<UserEntity> getUsingPagination(int size, int page, String adminSmartspace, String adminEmail) {
 

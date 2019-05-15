@@ -145,15 +145,7 @@ public class RdbUserDao implements EnhancedUserDao<String>{
 	
 	@Override
 	public UserEntity importUser(UserEntity userEntity) {
-					
-				//if user doesn't exists then add it, else throw RuntimeException
-				if(!this.userCrud.existsById(userEntity.getKey())) {
-					UserEntity rv = this.userCrud.save(userEntity);
-					return rv;
-				}
-				else {
-					throw new RuntimeException("user entity already exist with key:" + userEntity.getKey());
-				}
+		return this.userCrud.save(userEntity);
 		
 	}
 	

@@ -1,9 +1,9 @@
 package smartspace.layout;
 
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import smartspace.data.UserEntity;
 import smartspace.infra.UserService;
 
 @RestController
@@ -19,21 +20,21 @@ public class UserController {
 
 	private UserService userService;
 
-
 	@Autowired
 	public UserController(UserService userService) {
 		this.userService = userService;
 	}
 
-	@RequestMapping(path = "/smartspace/admin/users/{adminSmartspace}/{adminEmail}",
-			method = RequestMethod.POST,
-			consumes = MediaType.APPLICATION_JSON_VALUE,
-			produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(path = "/smartspace/admin/users/{adminSmartspace}/{adminEmail}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public UserBoundary[] newUser(@RequestBody UserBoundary[] users,
-			@PathVariable("adminSmartspace") String adminSmartspace,
-			@PathVariable("adminEmail") String adminEmail) {
-
-			return this.userService.newUser(users, adminSmartspace,adminEmail).stream().map(UserBoundary::new).collect(Collectors.toList()).toArray(new UserBoundary[0]);
+			@PathVariable("adminSmartspace") String adminSmartspace, @PathVariable("adminEmail") String adminEmail) {
+		UserEntity[] entityArr = 
+				Stream.of(users)
+				.map(UserBoundary::convertToEntity)
+				.collect(Collectors.toList())
+				.toArray(new UserEntity[0]);
+		return this.userService.newUser(entityArr, adminSmartspace, adminEmail).stream().map(UserBoundary::new)
+				.collect(Collectors.toList()).toArray(new UserBoundary[0]);
 
 	}
 

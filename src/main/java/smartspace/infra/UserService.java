@@ -8,7 +8,7 @@ import smartspace.layout.UserBoundary;
 
 public interface UserService {
 	
-	public List<UserEntity> newUser(UserBoundary[] allBoundaries, String adminSmartspace, String adminEmail);
+	public List<UserEntity> newUser(UserEntity[] allEntities, String adminSmartspace, String adminEmail);
 	
 	public List<UserEntity> getUsingPagination (int size, int page, String adminSmartspace, String adminEmail);
 

@@ -18,7 +18,6 @@ import smartspace.layout.UserBoundary;
 public class UserServiceImpl implements UserService {
 
 	private EnhancedUserDao<String> userDao;
-	@Value("${smartspace.name}")
 	private String smartspaceName;
 
 	@Autowired
@@ -33,7 +32,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public List<UserEntity> newUser(UserBoundary[] allBoundaries, String adminSmartspace, String adminEmail) {
+	public List<UserEntity> newUser(UserEntity[] allEntities, String adminSmartspace, String adminEmail) {
 		List<UserEntity> userEntites = new LinkedList<>();
 
 		String key = adminSmartspace + "=" + adminEmail;
@@ -44,8 +43,7 @@ public class UserServiceImpl implements UserService {
 		if (!adminUserEntity.getRole().equals(UserRole.ADMIN)) {
 			throw new RuntimeException("you are not an ADMIN");
 		}
-		for (UserBoundary userBoundary : allBoundaries) {
-			UserEntity userEntity = userBoundary.convertToEntity();
+		for (UserEntity userEntity : allEntities) {
 
 			if (validate(userEntity)) {
 				if (userEntity.getUserSmartspace().equals(smartspaceName))
@@ -72,6 +70,12 @@ public class UserServiceImpl implements UserService {
 			throw new RuntimeException("only the admin is allowed to create users");
 
 		return this.userDao.readAll("key", size, page);
+	}
+	
+	
+	@Value("${smartspace.name}")
+	public void setSmartspaceName(String smartspaceName) {
+		this.smartspaceName = smartspaceName;
 	}
 
 }

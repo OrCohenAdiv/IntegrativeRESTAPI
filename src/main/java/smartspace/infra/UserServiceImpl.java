@@ -77,5 +77,12 @@ public class UserServiceImpl implements UserService {
 	public void setSmartspaceName(String smartspaceName) {
 		this.smartspaceName = smartspaceName;
 	}
+	
+	//ADDED amir
+	public UserEntity loginUser(UserEntity loginUser,
+			String userSmartspace,String userEmail) {
+		return this.userDao.readById(userSmartspace+"="+userEmail)
+				.orElseThrow(()->new RuntimeException("User not found!"));
+	}
 
 }

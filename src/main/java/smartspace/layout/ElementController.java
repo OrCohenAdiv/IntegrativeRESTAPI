@@ -1,6 +1,7 @@
 package smartspace.layout;
 
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import smartspace.data.ElementEntity;
 import smartspace.infra.ElementService;
 
 @RestController
@@ -29,12 +31,18 @@ public class ElementController {
 	public ElementBoundary[] newElement(@RequestBody ElementBoundary[] elements,
 			@PathVariable("adminSmartspace") String adminSmartspace,
 			@PathVariable("adminEmail") String adminEmail) {
-
-		return this.elementService.newElement(elements, adminSmartspace, adminEmail)
+		
+		ElementEntity[] allElements = 
+				Stream.of(elements)
+				.map(ElementBoundary::convertToEntity)
+				.collect(Collectors.toList())
+				.toArray(new ElementEntity[0]);
+		
+		return this.elementService.newElement(allElements, adminSmartspace, adminEmail)
 				.stream()
 				.map(ElementBoundary::new)
 				.collect(Collectors.toList())
-						.toArray(new ElementBoundary[0]);
+				.toArray(new ElementBoundary[0]);
 	}
 
 	@RequestMapping(path = "/smartspace/admin/elements/{adminSmartspace}/{adminEmail}",
@@ -50,5 +58,5 @@ public class ElementController {
 				.collect(Collectors.toList())
 				.toArray(new ElementBoundary[0]);
 	}
-
+	
 }

@@ -19,7 +19,6 @@ import smartspace.layout.ElementBoundary;
 
 @Service
 public class ElementServiceImpl implements ElementService {
-	@Value("${smartspace.name}")
 	private String smartspaceName;
 	private EnhancedElementDao<String> elementDao;
 	private EnhancedUserDao<String> userDao;
@@ -32,7 +31,7 @@ public class ElementServiceImpl implements ElementService {
 
 	@Override
 	@Transactional
-	public List<ElementEntity> newElement(ElementBoundary[] allBoundaries, String adminSmartspace, String adminEmail) {
+	public List<ElementEntity> newElement(ElementEntity[] allBoundaries, String adminSmartspace, String adminEmail) {
 		List<ElementEntity> elementEntites = new LinkedList<>();
 		String key = adminSmartspace + "=" + adminEmail;
 		UserEntity userEntity = userDao.readById(key).orElseThrow(() -> new RuntimeException("user doesn't exist"));
@@ -40,11 +39,10 @@ public class ElementServiceImpl implements ElementService {
 		if (!userEntity.getRole().equals(UserRole.ADMIN)) {
 			throw new RuntimeException("you are not ADMIN");
 		}
-		for (ElementBoundary elementBoundary : allBoundaries) {
-			ElementEntity elementEntity = elementBoundary.convertToEntity();
+		for (ElementEntity elementEntity : allBoundaries) {
 
 			if (valiadate(elementEntity)) {
-				elementEntity.setCreationTimestamp(new Date());
+//				elementEntity.setCreationTimestamp(new Date());
 				if (elementEntity.getElementSmartspace().equals(smartspaceName))
 					throw new RuntimeException("Illigal Import!");
 				else {
@@ -76,5 +74,9 @@ public class ElementServiceImpl implements ElementService {
 
 		return this.elementDao.readAll("key", size, page);
 	}
-
+	
+	@Value("${smartspace.name}")
+	public void setSmartspaceName(String smartspaceName) {
+		this.smartspaceName = smartspaceName;
+	}
 }

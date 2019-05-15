@@ -7,7 +7,7 @@ import smartspace.layout.ElementBoundary;
 
 public interface ElementService {
 	
-	public List<ElementEntity> newElement(ElementBoundary[] allBoundaries, String adminSmartspace, String adminEmail);
+	public List<ElementEntity> newElement(ElementEntity[] allBoundaries, String adminSmartspace, String adminEmail);
 
 	public List<ElementEntity> getUsingPagination(
 			int size, int page, String adminSmartspace, String adminEmail);

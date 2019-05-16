@@ -1,10 +1,15 @@
 package smartspace.infra;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import smartspace.dao.EnhancedElementDao;
 import smartspace.dao.EnhancedUserDao;
 import smartspace.data.ElementEntity;
 import smartspace.data.UserEntity;
 import smartspace.data.UserRole;
+import smartspace.layout.ElementBoundary;
 
 public class RESTElementServiceImpl implements RESTElementService {
 
@@ -24,5 +29,37 @@ public class RESTElementServiceImpl implements RESTElementService {
 
 		elementDao.update(elementEntity);
 	}
+
+	@Override
+	public ElementEntity createNewElement(ElementEntity elementEntity, String managerSmartspace, String managerEmail) {
+		
+		String key = managerSmartspace + "=" + managerEmail;
+		ElementEntity newElementEntity = elementDao.readById(key).orElseThrow(() -> new RuntimeException("element doesn't exist"));
+
+//		if (!newElementEntity.getElementSmartspace().equals(managerSmartspace)) { // not sure about the check
+//			throw new RuntimeException("you are not MANAGER"); //
+//		}
+
+		return elementDao.create(newElementEntity);
+		
+	}
+
+
+	@Override
+	public List<ElementEntity> getUsingPagination(int size, int page, String userSmartspace, String userEmail) {
+		
+		String key = userSmartspace + "=" + userEmail;
+
+		ElementEntity entity = elementDao.readById(key).orElseThrow(() -> new RuntimeException("element doesn't exist"));
+
+//		if (entity.getRole() != UserRole.ADMIN) // not sure again check
+//			throw new RuntimeException("only the admin is allowed to create users");
+
+		return this.elementDao.readAll("key", size, page);
+
+
+	}
+	
+	
 
 }

@@ -13,34 +13,35 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import smartspace.data.ElementEntity;
 import smartspace.infra.ElementService;
+import smartspace.infra.RESTElementService;
 
 public class RESTElementController {
 	
-	private ElementService elementService; // RESTElementService
+	private RESTElementService restElementService; // RESTElementService
 
 	@Autowired
-	public RESTElementController(ElementService elementService) {
-		this.elementService = elementService;
+	public RESTElementController(RESTElementService resrElementService) {
+		this.restElementService = restElementService;
 	}
 
-	@RequestMapping(path = "/smartspace/admin/elements/{adminSmartspace}/{adminEmail}",
-			method = RequestMethod.POST,
-			consumes = MediaType.APPLICATION_JSON_VALUE, 
-			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ElementBoundary[] newElement(@RequestBody ElementBoundary[] elements,
-			@PathVariable("adminSmartspace") String adminSmartspace,
-			@PathVariable("adminEmail") String adminEmail) {
-		ElementEntity [] elementArr = Stream.of(elements)
-				.map(ElementBoundary::convertToEntity)
-				.collect(Collectors.toList())
-				.toArray(new ElementEntity[0]);
-
-		return this.elementService.newElement(elements, adminSmartspace, adminEmail)
-				.stream()
-				.map(ElementBoundary::new)
-				.collect(Collectors.toList())
-						.toArray(new ElementBoundary[0]);
-	}
+//	@RequestMapping(path = "/smartspace/admin/elements/{adminSmartspace}/{adminEmail}",
+//			method = RequestMethod.POST,
+//			consumes = MediaType.APPLICATION_JSON_VALUE, 
+//			produces = MediaType.APPLICATION_JSON_VALUE)
+//	public ElementBoundary[] newElement(@RequestBody ElementBoundary[] elements,
+//			@PathVariable("adminSmartspace") String adminSmartspace,
+//			@PathVariable("adminEmail") String adminEmail) {
+//		ElementEntity [] elementArr = Stream.of(elements)
+//				.map(ElementBoundary::convertToEntity)
+//				.collect(Collectors.toList())
+//				.toArray(new ElementEntity[0]);
+//
+//		return this.elementService.newElement(elements, adminSmartspace, adminEmail)
+//				.stream()
+//				.map(ElementBoundary::new)
+//				.collect(Collectors.toList())
+//						.toArray(new ElementBoundary[0]);
+//	}
 
 //	@RequestMapping(path = "/smartspace/admin/elements/{adminSmartspace}/{adminEmail}",
 //			method = RequestMethod.GET,
@@ -55,5 +56,12 @@ public class RESTElementController {
 //				.collect(Collectors.toList())
 //				.toArray(new ElementBoundary[0]);
 //	}
+	
+	@RequestMapping(path = "/smartspace/element/login/{managerSmartspace}/{managerEmail}/{elementSmartspace}/{elementId}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public void Update(@RequestBody ElementBoundary elementBoundary,
+			@PathVariable("managerSmartspace") String managerSmartspace, @PathVariable("managerEmail") String managerEmail,@PathVariable("elementSmartspace") String elementSmartspace, @PathVariable("elementId") String elementId) {
+		restElementService.updateElement(elementBoundary.convertToEntity(), managerSmartspace, managerEmail, elementSmartspace, elementId);
+
+	}
 
 }

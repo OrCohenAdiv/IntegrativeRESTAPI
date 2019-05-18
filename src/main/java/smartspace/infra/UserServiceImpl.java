@@ -8,11 +8,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import smartspace.aop.AdminUserGetActions;
+import smartspace.aop.AdminUserPostActions;
 import smartspace.dao.EnhancedUserDao;
-import smartspace.data.ActionEntity;
 import smartspace.data.UserEntity;
-import smartspace.data.UserRole;
-import smartspace.layout.UserBoundary;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -24,6 +23,11 @@ public class UserServiceImpl implements UserService {
 	public UserServiceImpl(EnhancedUserDao<String> userDao) {
 		this.userDao = userDao;
 	}
+	
+	@Value("${smartspace.name}")
+	public void setSmartspaceName(String smartspaceName) {
+		this.smartspaceName = smartspaceName;
+	}
 
 	private boolean validate(UserEntity entity) {
 		return entity.getAvatar() != null && !entity.getAvatar().trim().isEmpty() && entity.getUserName() != null
@@ -32,17 +36,10 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
+	@AdminUserPostActions
 	public List<UserEntity> newUser(UserEntity[] allEntities, String adminSmartspace, String adminEmail) {
 		List<UserEntity> userEntites = new LinkedList<>();
 
-		String key = adminSmartspace + "=" + adminEmail;
-
-		UserEntity adminUserEntity = userDao.readById(key)
-				.orElseThrow(() -> new RuntimeException("user doesn't exist"));
-
-		if (!adminUserEntity.getRole().equals(UserRole.ADMIN)) {
-			throw new RuntimeException("you are not an ADMIN");
-		}
 		for (UserEntity userEntity : allEntities) {
 
 			if (validate(userEntity)) {
@@ -59,23 +56,9 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	@AdminUserGetActions
 	public List<UserEntity> getUsingPagination(int size, int page, String adminSmartspace, String adminEmail) {
-
-		String key = adminSmartspace + "=" + adminEmail;
-
-		UserEntity entity = userDao.readById(key).orElseThrow(() -> new RuntimeException("no such user exists"));
-		;
-
-		if (entity.getRole() != UserRole.ADMIN)
-			throw new RuntimeException("only the admin is allowed to create users");
-
 		return this.userDao.readAll("key", size, page);
-	}
-	
-	
-	@Value("${smartspace.name}")
-	public void setSmartspaceName(String smartspaceName) {
-		this.smartspaceName = smartspaceName;
 	}
 	
 	//ADDED amir

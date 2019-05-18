@@ -1,6 +1,5 @@
 package smartspace.infra;
 
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -9,40 +8,33 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import smartspace.aop.AdminUserGetActions;
+import smartspace.aop.AdminUserPostActions;
 import smartspace.dao.EnhancedElementDao;
-import smartspace.dao.EnhancedUserDao;
-import smartspace.data.ActionEntity;
 import smartspace.data.ElementEntity;
-import smartspace.data.UserEntity;
-import smartspace.data.UserRole;
-import smartspace.layout.ElementBoundary;
 
 @Service
 public class ElementServiceImpl implements ElementService {
 	private String smartspaceName;
 	private EnhancedElementDao<String> elementDao;
-	private EnhancedUserDao<String> userDao;
 
 	@Autowired
-	public ElementServiceImpl(EnhancedElementDao<String> elementDao, EnhancedUserDao<String> userDao) {
+	public ElementServiceImpl(EnhancedElementDao<String> elementDao) {
 		this.elementDao = elementDao;
-		this.userDao = userDao;
+	}
+	
+	@Value("${smartspace.name}")
+	public void setSmartspaceName(String smartspaceName) {
+		this.smartspaceName = smartspaceName;
 	}
 
 	@Override
 	@Transactional
+	@AdminUserPostActions
 	public List<ElementEntity> newElement(ElementEntity[] allBoundaries, String adminSmartspace, String adminEmail) {
 		List<ElementEntity> elementEntites = new LinkedList<>();
-		String key = adminSmartspace + "=" + adminEmail;
-		UserEntity userEntity = userDao.readById(key).orElseThrow(() -> new RuntimeException("user doesn't exist"));
-
-		if (!userEntity.getRole().equals(UserRole.ADMIN)) {
-			throw new RuntimeException("you are not ADMIN");
-		}
 		for (ElementEntity elementEntity : allBoundaries) {
-
 			if (valiadate(elementEntity)) {
-//				elementEntity.setCreationTimestamp(new Date());
 				if (elementEntity.getElementSmartspace().equals(smartspaceName))
 					throw new RuntimeException("Illigal Import!");
 				else {
@@ -63,20 +55,10 @@ public class ElementServiceImpl implements ElementService {
 	}
 
 	@Override
+	@AdminUserGetActions
 	public List<ElementEntity> getUsingPagination(int size, int page, String adminSmartspace, String adminEmail) {
-
-		String key = adminSmartspace + "=" + adminEmail;
-		UserEntity userEntity = userDao.readById(key).orElseThrow(() -> new RuntimeException("user don't exist"));
-
-		if (!userEntity.getRole().equals(UserRole.ADMIN)) {
-			throw new RuntimeException("you are not ADMIN");
-		}
-
 		return this.elementDao.readAll("key", size, page);
 	}
 	
-	@Value("${smartspace.name}")
-	public void setSmartspaceName(String smartspaceName) {
-		this.smartspaceName = smartspaceName;
-	}
+	
 }

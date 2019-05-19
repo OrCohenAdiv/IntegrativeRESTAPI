@@ -22,8 +22,8 @@ public class UserBoundary {
 		}
 		if (entity.getKey() != null) {
 			String[] args = entity.getKey().split("=");
-			this.key.setEmail(args[0]);
-			this.key.setSmartspace(args[1]);
+			this.key.setSmartspace(args[0]);
+			this.key.setEmail(args[1]);
 		}
 		this.userName = entity.getUserName();
 		this.avatar = entity.getAvatar();

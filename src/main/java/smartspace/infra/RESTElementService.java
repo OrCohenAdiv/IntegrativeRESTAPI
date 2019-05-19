@@ -12,4 +12,5 @@ public interface RESTElementService {
 		
 	public List<ElementEntity> getUsingPagination(int size, int page, String userSmartspace, String userEmail);
 
+	public ElementEntity findById(String elementSmartspace, String elementId);
 }

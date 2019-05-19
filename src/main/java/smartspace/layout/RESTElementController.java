@@ -44,7 +44,8 @@ public class RESTElementController {
 	public ElementBoundary[] getSpecifiedNameElement(
 			@RequestParam(name = "size", required = false, defaultValue = "10") int size,
 			@RequestParam(name = "page", required = false, defaultValue = "0") int page,
-			@PathVariable("userSmartspace") String userSmartspace, @PathVariable("userEmail") String userEmail) {
+			@PathVariable("userSmartspace") String userSmartspace,
+			@PathVariable("userEmail") String userEmail) {
 		
 		return this.restElementService.getUsingPagination(size, page, userSmartspace, userEmail).stream()
 				.map(ElementBoundary::new)
@@ -61,7 +62,8 @@ public class RESTElementController {
 	public ElementBoundary[] getSpecifiedTypeElement(
 			@RequestParam(name = "size", required = false, defaultValue = "10") int size,
 			@RequestParam(name = "page", required = false, defaultValue = "0") int page,
-			@PathVariable("userSmartspace") String userSmartspace, @PathVariable("userEmail") String userEmail) {
+			@PathVariable("userSmartspace") String userSmartspace,
+			@PathVariable("userEmail") String userEmail) {
 		
 		return this.restElementService.getUsingPagination(size, page, userSmartspace, userEmail).stream()
 				.map(ElementBoundary::new)
@@ -84,11 +86,31 @@ public class RESTElementController {
 //				.toArray(new ElementBoundary[0]);
 //	}
 	
-	@RequestMapping(path = "/smartspace/element/login/{managerSmartspace}/{managerEmail}/{elementSmartspace}/{elementId}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(path = "/smartspace/element/login/{managerSmartspace}/{managerEmail}/{elementSmartspace}/{elementId}",
+			method = RequestMethod.PUT,
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
 	public void Update(@RequestBody ElementBoundary elementBoundary,
-			@PathVariable("managerSmartspace") String managerSmartspace, @PathVariable("managerEmail") String managerEmail,@PathVariable("elementSmartspace") String elementSmartspace, @PathVariable("elementId") String elementId) {
+			@PathVariable("managerSmartspace") String managerSmartspace, 
+			@PathVariable("managerEmail") String managerEmail,
+			@PathVariable("elementSmartspace") String elementSmartspace, 
+			@PathVariable("elementId") String elementId) {
 		restElementService.updateElement(elementBoundary.convertToEntity(), managerSmartspace, managerEmail, elementSmartspace, elementId);
 
 	}
 
+	@RequestMapping(path = "/smartspace/elements/{userSmartspace}/{userEmail}/{elementSmartspace}/{elementId}",
+			method = RequestMethod.GET,
+			consumes = MediaType.APPLICATION_JSON_VALUE, 
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ElementBoundary retrieveSpecificElement(
+			@PathVariable("userSmartspace") String userSmartspace, 
+			@PathVariable("userEmail") String userEmail,
+			@PathVariable("elementSmartspace") String elementSmartspace, 
+			@PathVariable("elementId") String elementId) {
+		
+		return new ElementBoundary(this.restElementService.findById(elementSmartspace, elementId));
+			
+	}
+		
 }

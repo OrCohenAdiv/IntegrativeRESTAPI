@@ -10,6 +10,7 @@ import smartspace.data.ElementEntity;
 import smartspace.data.UserEntity;
 import smartspace.data.UserRole;
 import smartspace.layout.ElementBoundary;
+import smartspace.layout.data.ElementKeyBoundary;
 
 public class RESTElementServiceImpl implements RESTElementService {
 
@@ -18,7 +19,8 @@ public class RESTElementServiceImpl implements RESTElementService {
 	private String smartspaceName;
 
 	@Override
-	public void updateElement(ElementEntity elementEntity, String managerSmartspace,  String managerEmail, String elementSmartspace, String elementId) {
+	public void updateElement(ElementEntity elementEntity, String managerSmartspace, String managerEmail,
+			String elementSmartspace, String elementId) {
 
 		String key = managerSmartspace + "=" + managerEmail;
 		UserEntity userEntity = userDao.readById(key).orElseThrow(() -> new RuntimeException("user doesn't exist"));
@@ -32,34 +34,39 @@ public class RESTElementServiceImpl implements RESTElementService {
 
 	@Override
 	public ElementEntity createNewElement(ElementEntity elementEntity, String managerSmartspace, String managerEmail) {
-		
+
 		String key = managerSmartspace + "=" + managerEmail;
-		ElementEntity newElementEntity = elementDao.readById(key).orElseThrow(() -> new RuntimeException("element doesn't exist"));
+		ElementEntity newElementEntity = elementDao.readById(key)
+				.orElseThrow(() -> new RuntimeException("element doesn't exist"));
 
 //		if (!newElementEntity.getElementSmartspace().equals(managerSmartspace)) { // not sure about the check
 //			throw new RuntimeException("you are not MANAGER"); //
 //		}
 
 		return elementDao.create(newElementEntity);
-		
-	}
 
+	}
 
 	@Override
 	public List<ElementEntity> getUsingPagination(int size, int page, String userSmartspace, String userEmail) {
-		
+
 		String key = userSmartspace + "=" + userEmail;
 
-		ElementEntity entity = elementDao.readById(key).orElseThrow(() -> new RuntimeException("element doesn't exist"));
+		ElementEntity entity = elementDao.readById(key)
+				.orElseThrow(() -> new RuntimeException("element doesn't exist"));
 
 //		if (entity.getRole() != UserRole.ADMIN) // not sure again check
 //			throw new RuntimeException("only the admin is allowed to create users");
 
 		return this.elementDao.readAll("key", size, page);
 
-
 	}
-	
-	
+
+	@Override
+	public ElementEntity findById(String elementSmartspace, String elementId) {
+		return this.elementDao
+				.readById(elementSmartspace + "=" + elementId)
+				.orElseThrow(() -> new RuntimeException("Element not found!"));
+	}
 
 }

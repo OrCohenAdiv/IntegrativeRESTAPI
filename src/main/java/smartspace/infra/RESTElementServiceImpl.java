@@ -4,19 +4,29 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import smartspace.dao.EnhancedElementDao;
 import smartspace.dao.EnhancedUserDao;
 import smartspace.data.ElementEntity;
+import smartspace.data.Location;
 import smartspace.data.UserEntity;
 import smartspace.data.UserRole;
 import smartspace.layout.ElementBoundary;
 import smartspace.layout.data.ElementKeyBoundary;
 
+@Service
 public class RESTElementServiceImpl implements RESTElementService {
 
 	private EnhancedElementDao<String> elementDao;
 	private EnhancedUserDao<String> userDao;
 	private String smartspaceName;
+	
+	@Autowired
+	public void setElementDao(EnhancedElementDao<String> elementDao) {
+		this.elementDao = elementDao;
+	}
 
 	@Override
 	public void updateElement(ElementEntity elementEntity, String managerSmartspace, String managerEmail,
@@ -67,6 +77,14 @@ public class RESTElementServiceImpl implements RESTElementService {
 		return this.elementDao
 				.readById(elementSmartspace + "=" + elementId)
 				.orElseThrow(() -> new RuntimeException("Element not found!"));
+	}
+	
+	@Override
+	public List<ElementEntity> findNearLocation(String userSmartspace,String userEmail,
+			String search,double x,double y,double distance,int page,int size){
+			return this.elementDao.readAllByDistanceFromLocation
+				(new Location(x, y), distance, size, page);
+		
 	}
 
 }

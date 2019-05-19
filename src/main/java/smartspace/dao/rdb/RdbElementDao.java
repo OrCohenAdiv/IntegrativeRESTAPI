@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import smartspace.dao.EnhancedElementDao;
 import smartspace.data.ElementEntity;
+import smartspace.data.Location;
 
 @Repository
 public class RdbElementDao implements EnhancedElementDao<String> {
@@ -124,6 +125,16 @@ public class RdbElementDao implements EnhancedElementDao<String> {
 	public ElementEntity importElement(ElementEntity elementEntity) {
 		// import elementEntity to our database
 		return this.elementCrud.save(elementEntity);
+	}
+	
+	@Override
+	@Transactional(readOnly=true)
+	public List<ElementEntity> readAllByDistanceFromLocation(
+			Location l,double distance, int size, int page){
+		return this.elementCrud
+				.findAllByLocation_xBetweenAndLocation_yBetween(
+						l.getX()-distance, l.getX()+distance,
+						l.getY()-distance, l.getY()+distance);
 	}
 }
 

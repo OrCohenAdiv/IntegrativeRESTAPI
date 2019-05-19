@@ -15,4 +15,8 @@ public interface ElementCrud extends
 	public List<ElementEntity> findAllByNameLike(
 			@Param("pattern") String pattern,
 			Pageable pageable);
+	
+	public List<ElementEntity> 
+		findAllByLocation_xBetweenAndLocation_yBetween(double startX,double endX,
+				double startY,double endY);
 }

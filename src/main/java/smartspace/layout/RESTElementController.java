@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import smartspace.infra.RESTElementService;
 import smartspace.layout.ElementBoundary;
 
+@RestController
 public class RESTElementController {
 	
 	private RESTElementService restElementService; 
@@ -57,7 +59,6 @@ public class RESTElementController {
 	
 	@RequestMapping(path = "/smartspace/elements/{userSmartspace}/{userEmail}",
 			method = RequestMethod.GET,
-			consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ElementBoundary[] getSpecifiedTypeElement(
 			@RequestParam(name = "size", required = false, defaultValue = "10") int size,
@@ -111,6 +112,27 @@ public class RESTElementController {
 		
 		return new ElementBoundary(this.restElementService.findById(elementSmartspace, elementId));
 			
+	}
+	
+	@RequestMapping(path = "/smartspace/elements/{userSmartspace}/{userEmail}",
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ElementBoundary[] retrieveSpecificElement(
+			@PathVariable("userSmartspace") String userSmartspace, 
+			@PathVariable("userEmail") String userEmail,
+			@RequestParam(name = "search", required = false, defaultValue = "location") String search,
+			@RequestParam(name = "distance", required = false, defaultValue = "1") double distance,
+			@RequestParam(name = "x", required = false, defaultValue = "0") double x,
+			@RequestParam(name = "y", required = false, defaultValue = "0") double y,
+			@RequestParam(name = "size", required = false, defaultValue = "10") int size,
+			@RequestParam(name = "page", required = false, defaultValue = "0") int page			) {
+		
+			return this.restElementService.findNearLocation
+					(userSmartspace, userEmail, search, x, y, distance, page, size)
+					.stream()
+					.map(ElementBoundary::new)
+					.collect(Collectors.toList())
+					.toArray(new ElementBoundary[0]);
 	}
 		
 }

@@ -13,4 +13,7 @@ public interface RESTElementService {
 	public List<ElementEntity> getUsingPagination(int size, int page, String userSmartspace, String userEmail);
 
 	public ElementEntity findById(String elementSmartspace, String elementId);
+	
+	public List<ElementEntity> findNearLocation(String userSmartspace,String userEmail,
+			String search,double x,double y,double distance,int page,int size);
 }

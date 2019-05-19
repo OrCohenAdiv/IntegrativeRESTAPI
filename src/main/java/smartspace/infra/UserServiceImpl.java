@@ -61,11 +61,4 @@ public class UserServiceImpl implements UserService {
 		return this.userDao.readAll("key", size, page);
 	}
 	
-	//ADDED amir
-	public UserEntity loginUser(UserEntity loginUser,
-			String userSmartspace,String userEmail) {
-		return this.userDao.readById(userSmartspace+"="+userEmail)
-				.orElseThrow(()->new RuntimeException("User not found!"));
-	}
-
 }

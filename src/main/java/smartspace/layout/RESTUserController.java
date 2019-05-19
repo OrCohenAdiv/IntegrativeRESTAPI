@@ -37,6 +37,20 @@ public class RESTUserController {
 //		return this.userService.getUsingPagination(size, page, adminSmartspace, adminEmail).stream()
 //				.map(UserBoundary::new).collect(Collectors.toList()).toArray(new UserBoundary[0]);
 //	}
+	
+	@RequestMapping(
+			path = "/smartspace/users/login/{userSmartspace}/{userEmail}",
+			method = RequestMethod.GET,
+			produces=MediaType.APPLICATION_JSON_VALUE
+			)
+	public UserBoundary loginUser(UserBoundary user,
+			@PathVariable("userSmartspace") String userSmartspace,
+			@PathVariable("userEmail") String userEmail) {
+		return new UserBoundary(
+				this.restUserService.loginUser(
+						user.convertToEntity(), userSmartspace, userEmail));
+		
+	}
 
 }
 

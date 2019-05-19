@@ -12,7 +12,4 @@ public interface UserService {
 	
 	public List<UserEntity> getUsingPagination (int size, int page, String adminSmartspace, String adminEmail);
 	
-	//ADDED amir
-	public UserEntity loginUser(UserEntity loginUser,
-			String userSmartspace,String userEmail);
 }

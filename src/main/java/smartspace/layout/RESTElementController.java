@@ -83,11 +83,12 @@ public class RESTElementController {
 	
 	@RequestMapping(path = "/smartspace/elements/{userSmartspace}/{userEmail}",
 			method = RequestMethod.GET,
-			produces = MediaType.APPLICATION_JSON_VALUE)
+			produces = MediaType.APPLICATION_JSON_VALUE,
+			params= {"search=location"})
 	public ElementBoundary[] retrieveAllElgetementsByNearByLocation(
 			@PathVariable("userSmartspace") String userSmartspace, 
 			@PathVariable("userEmail") String userEmail,
-			@RequestParam(name = "search", required = false, defaultValue = "location") String search,
+			@RequestParam(name = "search", required = false) String search,
 			@RequestParam(name = "distance", required = false, defaultValue = "1") double distance,
 			@RequestParam(name = "x", required = false, defaultValue = "0") double x,
 			@RequestParam(name = "y", required = false, defaultValue = "0") double y,
@@ -122,7 +123,8 @@ public class RESTElementController {
 	@RequestMapping(
 			path="/smartspace/elements/{managerSmartspace}/{managerEmail}?search=type&value={type}&page={page}&size={size}",
 			method=RequestMethod.GET,
-			produces=MediaType.APPLICATION_JSON_VALUE)
+			produces=MediaType.APPLICATION_JSON_VALUE,
+			params= {"search=type"})
 	public ElementBoundary[] getElementsUsingPaginationOfSpecifiedType (
 			@PathVariable("managerSmartspace") String managerSmartspace, 
 			@PathVariable("managerEmail") String managerEmail,

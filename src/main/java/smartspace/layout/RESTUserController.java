@@ -1,7 +1,7 @@
 package smartspace.layout;
 
-
-
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
+import smartspace.data.UserEntity;
 import smartspace.infra.RESTUserService;
-
+import smartspace.layout.data.NewUserForm;
 
 @RestController
 public class RESTUserController {
@@ -23,11 +23,15 @@ public class RESTUserController {
 		this.restUserService = restUserService;
 	}
 
-	@RequestMapping(path = "/smartspace/users/login/{userSmartspace}/{userEmail}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(
+			path = "/smartspace/users/login/{userSmartspace}/{userEmail}", 
+			method = RequestMethod.PUT, 
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
 	public void Update(@RequestBody UserBoundary user,
-			@PathVariable("userSmartspace") String userSmartspace, @PathVariable("userEmail") String userEmail) {
+			@PathVariable("userSmartspace") String userSmartspace, 
+			@PathVariable("userEmail") String userEmail) {
 		restUserService.updateUser(user.convertToEntity(), userSmartspace, userEmail);
-
 	}
 
 //	@RequestMapping(path = "/smartspace/admin/users/{adminSmartspace}/{adminEmail}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -52,9 +56,19 @@ public class RESTUserController {
 		return new UserBoundary(
 				this.restUserService.loginUser(
 						user.convertToEntity(), userSmartspace, userEmail));
-		
 	}
 
+	@RequestMapping(path = "/smartspace/users", 
+			method = RequestMethod.POST, 
+			consumes = MediaType.APPLICATION_JSON_VALUE, 
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public UserBoundary createANewUser(
+			@RequestBody NewUserForm newUserForm) {
+		return new UserBoundary(
+				this.restUserService.createANewUser(newUserForm));
+	}
+
+	
 }
 
 

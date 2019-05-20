@@ -35,7 +35,6 @@ public class UserController {
 				.toArray(new UserEntity[0]);
 		return this.userService.newUser(entityArr, adminSmartspace, adminEmail).stream().map(UserBoundary::new)
 				.collect(Collectors.toList()).toArray(new UserBoundary[0]);
-
 	}
 
 	@RequestMapping(path = "/smartspace/admin/users/{adminSmartspace}/{adminEmail}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

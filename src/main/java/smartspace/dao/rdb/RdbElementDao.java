@@ -136,5 +136,29 @@ public class RdbElementDao implements EnhancedElementDao<String> {
 						l.getX()-distance, l.getX()+distance,
 						l.getY()-distance, l.getY()+distance);
 	}
+	
+	
+	//ADDED NOW
+	@Override
+	public List<ElementEntity> readAllUsingName(String name, int size, int page) {
+		return this.elementCrud.findAllByName(name, PageRequest.of(page, size));
+	}
+
+	@Override
+	public List<ElementEntity> readAllUsingNameNotExpired(String name, int size, int page) {
+		return this.elementCrud.findAllByNameAndExpired(name, false, PageRequest.of(page, size));
+	}
+
+	@Override
+	public List<ElementEntity> readAllUsingType(String type, int size, int page) {
+		return this.elementCrud.findAllByType(type, PageRequest.of(page, size));
+	}
+
+	@Override
+	public List<ElementEntity> readAllUsingTypeNotExpired(String type, int size, int page) {
+		return this.elementCrud.findAllByExpiredAndType(false, type, PageRequest.of(page, size));
+	}
+	
+	
 }
 

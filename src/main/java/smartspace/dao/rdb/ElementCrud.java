@@ -19,4 +19,21 @@ public interface ElementCrud extends
 	public List<ElementEntity> 
 		findAllByLocation_xBetweenAndLocation_yBetween(double startX,double endX,
 				double startY,double endY);
+	
+	//ADDED NOW
+	public List<ElementEntity> findAllByName(
+			@Param("name") String name,
+			Pageable pageable);
+	
+	public List<ElementEntity> findAllByNameAndExpired(
+			@Param("name") String name, @Param("expired") boolean expired,
+			Pageable pageable);
+	
+	public List<ElementEntity> findAllByType(@Param("type") String type, Pageable pageable);
+	
+	public List<ElementEntity> findAllByExpiredAndType(@Param("expired") boolean expired,
+			@Param("type") String type, Pageable pageable);
+	
+	
+	
 }

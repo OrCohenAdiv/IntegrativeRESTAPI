@@ -39,41 +39,6 @@ public class RESTElementController {
 				
 	}
 	
-	@RequestMapping(path = "/smartspace/elements/{userSmartspace}/{userEmail}",
-			method = RequestMethod.GET,
-			consumes = MediaType.APPLICATION_JSON_VALUE, 
-			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ElementBoundary[] getSpecifiedNameElement(
-			@RequestParam(name = "search", required = false, defaultValue = "name") String search,
-			@RequestParam(name = "size", required = false, defaultValue = "10") int size,
-			@RequestParam(name = "page", required = false, defaultValue = "0") int page,
-			@PathVariable("userSmartspace") String userSmartspace,
-			@PathVariable("userEmail") String userEmail) {
-		
-		return this.restElementService.getUsingPagination(size, page, userSmartspace, userEmail).stream()
-				.map(ElementBoundary::new)
-				.collect(Collectors.toList())
-				.toArray(new ElementBoundary[0]);
-		
-	}
-	
-	
-	@RequestMapping(path = "/smartspace/elements/{userSmartspace}/{userEmail}",
-			method = RequestMethod.GET,
-			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ElementBoundary[] getSpecifiedTypeElement(
-			@RequestParam(name = "search", required = false, defaultValue = "type") String search,
-			@RequestParam(name = "size", required = false, defaultValue = "10") int size,
-			@RequestParam(name = "page", required = false, defaultValue = "0") int page,
-			@PathVariable("userSmartspace") String userSmartspace,
-			@PathVariable("userEmail") String userEmail) {
-		
-		return this.restElementService.getUsingPagination(size, page, userSmartspace, userEmail).stream()
-				.map(ElementBoundary::new)
-				.collect(Collectors.toList())
-				.toArray(new ElementBoundary[0]);
-		
-	}
 
 //	@RequestMapping(path = "/smartspace/admin/elements/{adminSmartspace}/{adminEmail}",
 //			method = RequestMethod.GET,
@@ -136,5 +101,42 @@ public class RESTElementController {
 					.collect(Collectors.toList())
 					.toArray(new ElementBoundary[0]);
 	}
+	
+	//ADDED NOW
+	
+	public ElementBoundary[] getElementsUsingPaginationOfSpecifiedName (
+			@PathVariable("managerSmartspace") String managerSmartspace, 
+			@PathVariable("managerEmail") String managerEmail,
+			@RequestParam(name="value", required=true) String name,
+			@RequestParam(name="size", required=false, defaultValue="10") int size,
+			@RequestParam(name="page", required=false, defaultValue="0") int page) {
+		return 
+				this.restElementService
+				.getElementsUsingPaginationOfName(managerSmartspace, managerEmail, null, name, size, page)
+				.stream()
+				.map(ElementBoundary::new)
+				.collect(Collectors.toList())
+				.toArray(new ElementBoundary[0]);
+	}
+	
+	@RequestMapping(
+			path="/smartspace/elements/{managerSmartspace}/{managerEmail}?search=type&value={type}&page={page}&size={size}",
+			method=RequestMethod.GET,
+			produces=MediaType.APPLICATION_JSON_VALUE)
+	public ElementBoundary[] getElementsUsingPaginationOfSpecifiedType (
+			@PathVariable("managerSmartspace") String managerSmartspace, 
+			@PathVariable("managerEmail") String managerEmail,
+			@RequestParam(name="value", required=true) String type,
+			@RequestParam(name="size", required=false, defaultValue="10") int size,
+			@RequestParam(name="page", required=false, defaultValue="0") int page) {
+		return 
+				this.restElementService
+				.getElementsUsingPaginationOfSpecifiedType(managerSmartspace, managerEmail, null, type, size, page)
+				.stream()
+				.map(ElementBoundary::new)
+				.collect(Collectors.toList())
+				.toArray(new ElementBoundary[0]);
+	}
+	
 		
 }

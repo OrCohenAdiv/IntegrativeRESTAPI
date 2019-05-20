@@ -1,5 +1,6 @@
 package smartspace.infra;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -52,25 +53,13 @@ public class RESTElementServiceImpl implements RESTElementService {
 //		if (!newElementEntity.getElementSmartspace().equals(managerSmartspace)) { // not sure about the check
 //			throw new RuntimeException("you are not MANAGER"); //
 //		}
+		
 
 		return elementDao.create(newElementEntity);
 
 	}
 
-	@Override
-	public List<ElementEntity> getUsingPagination(int size, int page, String userSmartspace, String userEmail) {
 
-		String key = userSmartspace + "=" + userEmail;
-
-		ElementEntity entity = elementDao.readById(key)
-				.orElseThrow(() -> new RuntimeException("element doesn't exist"));
-
-//		if (entity.getRole() != UserRole.ADMIN) // not sure again check
-//			throw new RuntimeException("only the admin is allowed to create users");
-
-		return this.elementDao.readAll("key", size, page);
-
-	}
 
 	@Override
 	public ElementEntity findById(String elementSmartspace, String elementId) {
@@ -86,5 +75,36 @@ public class RESTElementServiceImpl implements RESTElementService {
 				(new Location(x, y), distance, size, page);
 		
 	}
+	
+	//ADDED NOW
+	
+	@Override
+	public Collection<ElementEntity> getElementsUsingPaginationOfName(String managerSmartspace, String managerEmail, UserRole role,
+			String name, int size, int page) {
+
+		if (role == UserRole.MANAGER) {
+			return this.elementDao.readAllUsingName(name, size, page);
+		} else if (role == UserRole.PLAYER) {
+			return this.elementDao.readAllUsingNameNotExpired(name, size, page);
+		} else {
+			throw new RuntimeException(
+					"The URl isn't match for manager or player. use another user or URL that match admin user");
+		}
+	}
+
+	@Override
+	public List<ElementEntity> getElementsUsingPaginationOfSpecifiedType(String managerSmartspace, String managerEmail, UserRole role,
+			String type, int size, int page) {
+
+		if (role == UserRole.MANAGER) {
+			return this.elementDao.readAllUsingType(type, size, page);
+		} else if (role == UserRole.PLAYER) {
+			return this.elementDao.readAllUsingTypeNotExpired(type, size, page);
+		} else {
+			throw new RuntimeException(
+					"The URl isn't match for manager or player. use another user or URL that match admin user");
+		}
+	}
+
 
 }

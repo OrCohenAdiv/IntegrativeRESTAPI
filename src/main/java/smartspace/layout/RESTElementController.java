@@ -117,7 +117,7 @@ public class RESTElementController {
 	@RequestMapping(path = "/smartspace/elements/{userSmartspace}/{userEmail}",
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ElementBoundary[] retrieveSpecificElement(
+	public ElementBoundary[] retrieveAllElgetementsByNearByLocation(
 			@PathVariable("userSmartspace") String userSmartspace, 
 			@PathVariable("userEmail") String userEmail,
 			@RequestParam(name = "search", required = false, defaultValue = "location") String search,

@@ -50,10 +50,6 @@ public class RESTElementServiceImpl implements RESTElementService {
 		ElementEntity newElementEntity = elementDao.readById(key)
 				.orElseThrow(() -> new RuntimeException("element doesn't exist"));
 
-//		if (!newElementEntity.getElementSmartspace().equals(managerSmartspace)) { // not sure about the check
-//			throw new RuntimeException("you are not MANAGER"); //
-//		}
-		
 
 		return elementDao.create(newElementEntity);
 

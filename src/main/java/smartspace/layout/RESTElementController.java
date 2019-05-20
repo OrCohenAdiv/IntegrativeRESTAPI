@@ -34,9 +34,7 @@ public class RESTElementController {
 			@PathVariable("managerEmail") String managerEmail) {
 		
 		return new ElementBoundary(this.restElementService.createNewElement(element.convertToEntity(), managerSmartspace, managerEmail));
-		
-		//return this.elementService.newElement(element, adminSmartspace, adminEmail)
-				
+						
 	}
 	
 
@@ -104,8 +102,12 @@ public class RESTElementController {
 	}
 	
 	//ADDED NOW
-	
-	public ElementBoundary[] getElementsUsingPaginationOfSpecifiedName (
+	@RequestMapping(
+			path="/smartspace/elements/{userSmartspace}/{userEmail}?search=name&value={name}&page={page}&size={size}",
+			method=RequestMethod.GET,
+			produces=MediaType.APPLICATION_JSON_VALUE,
+			params = {"search=name"})
+	public ElementBoundary[] getElementsSpecifiedName (
 			@PathVariable("managerSmartspace") String managerSmartspace, 
 			@PathVariable("managerEmail") String managerEmail,
 			@RequestParam(name="value", required=true) String name,

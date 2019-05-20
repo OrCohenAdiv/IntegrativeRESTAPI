@@ -51,7 +51,7 @@ public class RESTElementIntegrationTests2 {
 	
 	private UserEntity userEntityAdmin;
 	private UserEntity userEntityManager;
-
+	
 	@Autowired
 	public void setElementDao(EnhancedElementDao<String> elementDao) {
 		this.elementDao = elementDao;
@@ -393,7 +393,7 @@ public class RESTElementIntegrationTests2 {
 				this.userEntityAdmin.getUserEmail());
 		
 		//THEN the database contains 3 elements
-		assertThat(this.elementDao.readAll()).hasSize(size);
+		assertThat(this.elementDao.readAll()).hasSize(size+3);
 		
 	}
 	
@@ -441,8 +441,7 @@ public class RESTElementIntegrationTests2 {
 		.containsExactlyElementsOf(allElements);
 
 	}
-	
-	///////////////////////////////////ADDED NOW Post///////////////////////////////
+		
 		
 	
 }

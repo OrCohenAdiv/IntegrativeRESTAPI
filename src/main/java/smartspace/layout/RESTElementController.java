@@ -44,6 +44,7 @@ public class RESTElementController {
 			consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ElementBoundary[] getSpecifiedNameElement(
+			@RequestParam(name = "search", required = false, defaultValue = "name") String search,
 			@RequestParam(name = "size", required = false, defaultValue = "10") int size,
 			@RequestParam(name = "page", required = false, defaultValue = "0") int page,
 			@PathVariable("userSmartspace") String userSmartspace,
@@ -61,6 +62,7 @@ public class RESTElementController {
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ElementBoundary[] getSpecifiedTypeElement(
+			@RequestParam(name = "search", required = false, defaultValue = "type") String search,
 			@RequestParam(name = "size", required = false, defaultValue = "10") int size,
 			@RequestParam(name = "page", required = false, defaultValue = "0") int page,
 			@PathVariable("userSmartspace") String userSmartspace,

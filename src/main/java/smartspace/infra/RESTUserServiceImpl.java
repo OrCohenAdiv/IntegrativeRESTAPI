@@ -59,7 +59,7 @@ public class RESTUserServiceImpl implements RESTUserService {
 				createNewUser.getUsername(), 
 				createNewUser.getAvatar(), 
 				createNewUser.getRole(), 
-				0);
+				0l);
 	}
 }
 

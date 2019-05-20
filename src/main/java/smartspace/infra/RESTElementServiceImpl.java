@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import smartspace.dao.EnhancedElementDao;
@@ -23,6 +24,12 @@ public class RESTElementServiceImpl implements RESTElementService {
 	private EnhancedElementDao<String> elementDao;
 	private EnhancedUserDao<String> userDao;
 	private String smartspaceName;
+	
+	
+	@Value("${smartspace.name}")
+	public void setRESTElementSmartspaceName(String smartspaceName) {
+		this.smartspaceName = smartspaceName;
+	}
 	
 	@Autowired
 	public void setElementDao(EnhancedElementDao<String> elementDao) {

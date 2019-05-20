@@ -3,6 +3,7 @@ package smartspace.infra;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import smartspace.dao.EnhancedActionDao;
@@ -15,12 +16,18 @@ public class RESTActionServiceImpl implements RESTActionService {
 	private EnhancedActionDao actionDao;
 	private EnhancedUserDao<String> userDao;
 	private EnhancedElementDao<String> elementDao;
-
+	private String smartspaceName;
+	
 	@Autowired
 	public RESTActionServiceImpl(EnhancedActionDao actionDao) {
 		this.actionDao = actionDao;
 	}
 
+	@Value("${smartspace.name}")
+	public void setRESTActionSmartspaceName(String smartspaceName) {
+		this.smartspaceName = smartspaceName;
+	}
+	
 	@Override
 	public ActionEntity invokeAction(ActionEntity newAction) {
 		try {

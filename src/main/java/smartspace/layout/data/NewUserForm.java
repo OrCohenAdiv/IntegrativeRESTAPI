@@ -1,5 +1,6 @@
 package smartspace.layout.data;
 
+import smartspace.data.UserEntity;
 import smartspace.data.UserRole;
 
 public class NewUserForm {
@@ -51,5 +52,22 @@ public class NewUserForm {
 		this.role = role;
 	}
 
-	
+	public UserEntity convertToEntity(NewUserForm userForm) {
+		UserEntity userEntity = new UserEntity();
+		if (userForm != null) {
+			if (userForm.getEmail() != null) {
+				userEntity.setUserEmail(userForm.getEmail());
+			} else {
+				throw new NullPointerException("Null email");
+			}
+			userEntity.setUserName(userForm.getUsername());
+			userEntity.setAvatar(userForm.getAvatar());
+			userEntity.setRole(userForm.getRole());
+			userEntity.setPoints(0);
+		}
+		else {
+			throw new NullPointerException("Null Form");
+		}
+		return userEntity;
+	}
 }

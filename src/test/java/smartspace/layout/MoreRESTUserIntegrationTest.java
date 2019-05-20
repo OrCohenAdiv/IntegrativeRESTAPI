@@ -81,7 +81,7 @@ public class MoreRESTUserIntegrationTest {
 		@Test
 		public void testLoginValidUser() throws Exception{
 			// GIVEN the database contains 3 users
-			UserEntity testUser = new UserEntity("test@test.com", "2019b.tomc", "or", "newAvatar", UserRole.PLAYER, 40);
+			UserEntity testUser = new UserEntity("2019b.tomc","test@test.com", "or", "newAvatar", UserRole.PLAYER, 40);
 			this.userDao.create(testUser);
 
 			
@@ -96,18 +96,20 @@ public class MoreRESTUserIntegrationTest {
 			// THEN I receive 3 users
 			assertThat(response.convertToEntity()).isEqualToComparingFieldByField(testUser);
 		}
+		
 		@Test
 		public void testGetAllUsersUsingPaginationAsAdmin() throws Exception{
 			// GIVEN the database contains 3 users
 			int size = 3;
 			IntStream.range(1, size + 1)
-				.mapToObj(i->new UserEntity("emailTest@gmailTest.com"+i,
+				.mapToObj(i->new UserEntity(
 						"2019B.test",
+						"test@test.com.com"+i,
 						"userName"+i,
 						"avatar.png",
 						UserRole.PLAYER,
 						0l))
-				.peek(i-> i.setKey(i+"#2019B.test"))
+				.peek(i-> i.setKey("2019B.test="+i))
 				.forEach(this.userDao::importUser);
 			
 			// WHEN I GET users of size 10 and page 0
@@ -126,13 +128,13 @@ public class MoreRESTUserIntegrationTest {
 		@Test
 		public void testUpdateUserWithoutTheirPoints() throws Exception{
 			// GIVEN the database contains a user
-			UserEntity testUserEntity = new UserEntity("test@test.com", "2019b.tomc", "or", "newAvatar", UserRole.PLAYER, 40);
+			UserEntity testUserEntity = new UserEntity( "2019b.tomc","test@test.com", "or", "newAvatar", UserRole.PLAYER, 40);
 			this.userDao.create(testUserEntity);
 			
 			
 			UserBoundary testUserBoundary = new UserBoundary();
 			testUserBoundary.setAvatar("newAvatar");
-			testUserBoundary.setKey(new UserKeyBoundary());
+			testUserBoundary.setKey(new UserKeyBoundary("2019b.tomc","test@test.com"));
 			testUserBoundary.setPoints(49);
 			testUserBoundary.setRole(UserRole.PLAYER);
 			testUserBoundary.setUserName("TEST");
@@ -140,16 +142,16 @@ public class MoreRESTUserIntegrationTest {
 			this.restTemplate
 				.put(this.baseUrl + "/smartspace/users/login/{userSmartspace}/{userEmail}", 
 						testUserBoundary, 
-						"test@test.com", "test@test.com");
+						"2019b.tomc", "test@test.com");
 			
 			// THEN the database contains updated details
-			assertThat(this.userDao.readById(testUserEntity.getKey()))
+			assertThat(this.userDao
+				.readById(testUserEntity.getKey()))
 				.isNotNull()
 				.isPresent()
 				.get()
 				.extracting("key")
 				.containsExactly(testUserEntity.getKey());
-			
 		}
 
 }

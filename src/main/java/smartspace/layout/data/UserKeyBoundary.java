@@ -7,6 +7,10 @@ public class UserKeyBoundary {
 
 	public UserKeyBoundary() {
 	}
+	
+	public UserKeyBoundary(String smartspace, String email) {
+		this.email = email;
+		this.smartspace = smartspace;}
 
 	public String getEmail() {
 		return email;

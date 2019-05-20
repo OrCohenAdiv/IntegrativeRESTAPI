@@ -1,9 +1,31 @@
 package smartspace.layout;
 
-import smartspace.infra.RESTActionService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import smartspace.infra.RESTActionServiceImpl;
+
+@RestController
 public class RESTActionController {
 
-	private RESTActionService restActionService; 
+	private RESTActionServiceImpl restActionServiceImpl;
 
+	@Autowired
+	public RESTActionController(RESTActionServiceImpl restActionServiceImpl) {
+		this.restActionServiceImpl = restActionServiceImpl;
+	}
+
+	@RequestMapping(path = "/smartspace/actions",
+			method = RequestMethod.POST,
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ActionBoundary invokeAction(@RequestBody ActionBoundary action) {
+		return new ActionBoundary(restActionServiceImpl.invokeAction(action.convertToEntity()));
+		// (action.getPlayer().getSmartspace(),action.getPlayer().getEmail(),
+		// null,action.convertToEntity());
+	}
 }

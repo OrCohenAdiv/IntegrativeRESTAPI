@@ -21,15 +21,17 @@ public class RESTUserController {
 	}
 
 	@RequestMapping(
-			path = "/smartspace/users/login/{userSmartspace}/{userEmail}", 
-			method = RequestMethod.PUT, 
-			consumes = MediaType.APPLICATION_JSON_VALUE,
-			produces = MediaType.APPLICATION_JSON_VALUE)
-	public void Update(@RequestBody UserBoundary user,
+			path="/smartspace/users/login/{userSmartspace}/{userEmail}",
+			method=RequestMethod.PUT,
+			consumes=MediaType.APPLICATION_JSON_VALUE,
+			produces=MediaType.APPLICATION_JSON_VALUE)
+	public void updateUser (
+			@RequestBody UserBoundary user,
 			@PathVariable("userSmartspace") String userSmartspace, 
-			@PathVariable("userEmail") String userEmail) {
-		restUserService.updateUser(user.convertToEntity(), userSmartspace, userEmail);
-	}
+			@PathVariable("userEmail") String userEmail) {		
+			this.restUserService.updateUser(user.convertToEntity(),userSmartspace,userEmail,null);	
+			}
+
 
 //	@RequestMapping(path = "/smartspace/admin/users/{adminSmartspace}/{adminEmail}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 //	public UserBoundary[] getUsingPagination(

@@ -3,6 +3,8 @@ package smartspace.infra;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import smartspace.dao.EnhancedUserDao;
 import smartspace.data.UserEntity;
 import smartspace.data.UserRole;
@@ -25,14 +27,22 @@ public class RESTUserServiceImpl implements RESTUserService {
 	}
 	
 	@Override
-	public void updateUser(UserEntity UserEntity, String userSmartspace, String userEmail) {
-
-		String key = userSmartspace + "=" + userEmail;
-
-		if (!UserEntity.getRole().equals(UserRole.MANAGER)) {
-			throw new RuntimeException("you are not a MANAGER");
+	@Transactional
+	public void updateUser(UserEntity user, String userSmartspace, String userEmail,UserRole role) {
+		if(user.getRole() == UserRole.PLAYER && role != UserRole.PLAYER) {
+			user.setPoints(0);
 		}
-		userDao.update(UserEntity);
+		this.userDao.update(user);
+	}
+
+	public UserEntity convertToUserEntity(NewUserForm newUser) {
+		return new UserEntity(
+				this.smartspaceName,
+				newUser.getEmail(),
+				newUser.getUsername(),
+				newUser.getAvatar(),
+				newUser.getRole(),
+				0);
 	}
 	
 	@Override

@@ -30,7 +30,7 @@ import smartspace.data.Location;
 import smartspace.data.UserEntity;
 import smartspace.data.UserRole;
 import smartspace.layout.data.ElementCreatorBoundary;
-import smartspace.layout.data.ElementKeyBoundary;
+import smartspace.layout.data.Key;
 import smartspace.layout.data.ElementLocationBoundary;
 
 @RunWith(SpringRunner.class)
@@ -122,7 +122,7 @@ public class RESTElementIntegrationTests2 {
 		elementProperties.put("key2", "2");
 		elementProperties.put("key3", "it can be anything");
 		
-		ElementKeyBoundary elementKey = new ElementKeyBoundary();
+		Key elementKey = new Key();
 		elementKey.setId("50");
 		elementKey.setSmartspace(this.userEntityAdmin.getUserSmartspace());
 		
@@ -174,7 +174,7 @@ public class RESTElementIntegrationTests2 {
 		elementProperties.put("key2", "2");
 		elementProperties.put("key3", "it can be anything");
 		
-		ElementKeyBoundary elementKey = new ElementKeyBoundary();
+		Key elementKey = new Key();
 		elementKey.setId("50");
 		elementKey.setSmartspace(this.userEntityManager.getUserSmartspace());
 		
@@ -225,7 +225,7 @@ public class RESTElementIntegrationTests2 {
 		elementProperties.put("key2", "2");
 		elementProperties.put("key3", "it can be anything");
 		
-		ElementKeyBoundary elementKey = new ElementKeyBoundary();
+		Key elementKey = new Key();
 		elementKey.setId("50");
 		elementKey.setSmartspace(this.userEntityManager.getUserSmartspace());
 		
@@ -278,7 +278,7 @@ public class RESTElementIntegrationTests2 {
 		elementProperties.put("key2", "2");
 		elementProperties.put("key3", "it can be anything");
 		
-		ElementKeyBoundary elementKey = new ElementKeyBoundary();
+		Key elementKey = new Key();
 		elementKey.setId("50");
 		elementKey.setSmartspace(this.userEntityAdmin.getUserSmartspace());
 		
@@ -330,7 +330,7 @@ public class RESTElementIntegrationTests2 {
 		elementProperties.put("key2", "2");
 		elementProperties.put("key3", "it can be anything");
 		
-		ElementKeyBoundary elementKey = new ElementKeyBoundary();
+		Key elementKey = new Key();
 		elementKey.setId("50");
 		elementKey.setSmartspace(this.smartspaceName);
 		
@@ -413,7 +413,7 @@ public class RESTElementIntegrationTests2 {
 			
 		int size = 3;
 		
-		java.util.List<ElementKeyBoundary> allElements = 
+		java.util.List<Key> allElements = 
 				IntStream.range(1, size + 1)
 				.mapToObj(i->new ElementEntity( 
 						"demo" + i, "MyType", location, new Date(), 

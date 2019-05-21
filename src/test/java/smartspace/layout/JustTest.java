@@ -28,7 +28,7 @@ import smartspace.data.ElementEntity;
 import smartspace.data.Location;
 import smartspace.data.UserEntity;
 import smartspace.data.UserRole;
-import smartspace.layout.data.ElementKeyBoundary;
+import smartspace.layout.data.Key;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT)
@@ -106,7 +106,7 @@ public class JustTest {
 			
 		int size = 3;
 		
-		java.util.List<ElementKeyBoundary> allElements = 
+		java.util.List<Key> allElements = 
 				IntStream.range(1, size + 1)
 				.mapToObj(i->new ElementEntity( 
 						"demo" + i, "MyType", new Location(location.getX()+i,location.getY()+i), new Date(), 

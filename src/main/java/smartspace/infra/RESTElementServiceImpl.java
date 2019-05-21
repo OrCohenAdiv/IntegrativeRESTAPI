@@ -2,21 +2,15 @@ package smartspace.infra;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
 import smartspace.dao.EnhancedElementDao;
 import smartspace.dao.EnhancedUserDao;
 import smartspace.data.ElementEntity;
 import smartspace.data.Location;
 import smartspace.data.UserEntity;
 import smartspace.data.UserRole;
-import smartspace.layout.ElementBoundary;
-import smartspace.layout.data.ElementKeyBoundary;
 
 @Service
 public class RESTElementServiceImpl implements RESTElementService {
@@ -24,7 +18,6 @@ public class RESTElementServiceImpl implements RESTElementService {
 	private EnhancedElementDao<String> elementDao;
 	private EnhancedUserDao<String> userDao;
 	private String smartspaceName;
-	
 	
 	@Value("${smartspace.name}")
 	public void setRESTElementSmartspaceName(String smartspaceName) {

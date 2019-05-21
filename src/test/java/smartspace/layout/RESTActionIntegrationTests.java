@@ -29,9 +29,8 @@ import smartspace.data.UserRole;
 import smartspace.infra.ActionService;
 import smartspace.infra.ElementService;
 import smartspace.infra.UserService;
-import smartspace.layout.data.ActionKeyBoundary;
+import smartspace.layout.data.Key;
 import smartspace.layout.data.ElementCreatorBoundary;
-import smartspace.layout.data.ElementKeyBoundary;
 import smartspace.layout.data.ElementLocationBoundary;
 import smartspace.layout.data.UserKeyBoundary;
 
@@ -99,10 +98,10 @@ public class RESTActionIntegrationTests {
 				false, "2019b.tomc", "admin@admin.com", null);
 		elementEntity = enhancedElementDao.create(elementEntity);
 
-		ActionKeyBoundary actionKey = new ActionKeyBoundary();
+		Key actionKey = new Key();
 		actionKey.setId("50");
 		actionKey.setSmartspace("Moshe");
-		ElementKeyBoundary element = new ElementKeyBoundary();
+		Key element = new Key();
 		element.setId(elementEntity.getKey().split("=")[1]);
 		element.setSmartspace("2019b.tomc");
 		UserKeyBoundary player = new UserKeyBoundary();
@@ -131,10 +130,10 @@ public class RESTActionIntegrationTests {
 				false, "2019b.tomc", "admin2@admin.com", null);
 		elementEntity = enhancedElementDao.create(elementEntity);
 
-		ActionKeyBoundary actionKey = new ActionKeyBoundary();
+		Key actionKey = new Key();
 		actionKey.setId("50");
 		actionKey.setSmartspace("Moshe");
-		ElementKeyBoundary element = new ElementKeyBoundary();
+		Key element = new Key();
 		element.setId(elementEntity.getKey().split("=")[1]);
 		element.setSmartspace("2019b.tomc");
 		UserKeyBoundary player = new UserKeyBoundary();

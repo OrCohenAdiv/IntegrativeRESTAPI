@@ -39,7 +39,6 @@ public class UserServiceImpl implements UserService {
 		List<UserEntity> userEntites = new LinkedList<>();
 
 		for (UserEntity userEntity : allEntities) {
-
 			if (validate(userEntity)) {
 				if (userEntity.getUserSmartspace().equals(smartspaceName))
 					throw new RuntimeException("Illigal Import!");

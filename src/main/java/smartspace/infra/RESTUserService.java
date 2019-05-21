@@ -8,7 +8,8 @@ public interface RESTUserService {
 
 	public void updateUser(UserEntity user, String userSmartspace, String userEmail,UserRole role);
 
-	public UserEntity loginUser(UserEntity loginUser, String userSmartspace, String userEmail);
+	//TODO:FIXED HERE no need for user boundary
+	public UserEntity loginUser(String userSmartspace, String userEmail);
 
 	public UserEntity createANewUser(NewUserForm createNewUser);
 }

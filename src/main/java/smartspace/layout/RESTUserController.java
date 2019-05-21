@@ -44,19 +44,21 @@ public class RESTUserController {
 //				.map(UserBoundary::new).collect(Collectors.toList()).toArray(new UserBoundary[0]);
 //	}
 	
+	//TODO:FIXED HERE no need for user boundary
 	@RequestMapping(
 			path = "/smartspace/users/login/{userSmartspace}/{userEmail}",
 			method = RequestMethod.GET,
 			produces=MediaType.APPLICATION_JSON_VALUE
 			)
-	public UserBoundary loginUser(UserBoundary user,
+	public UserBoundary loginUser(
 			@PathVariable("userSmartspace") String userSmartspace,
 			@PathVariable("userEmail") String userEmail) {
 		return new UserBoundary(
 				this.restUserService.loginUser(
-						user.convertToEntity(), userSmartspace, userEmail));
+						userSmartspace, userEmail));
 	}
 
+	//TODO: function was implemented wrong
 	@RequestMapping(path = "/smartspace/users", 
 			method = RequestMethod.POST, 
 			consumes = MediaType.APPLICATION_JSON_VALUE, 

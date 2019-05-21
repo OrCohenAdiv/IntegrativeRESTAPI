@@ -45,12 +45,14 @@ public class RESTUserServiceImpl implements RESTUserService {
 				0);
 	}
 	
+	//TODO:FIXED HERE no need for user boundary
 	@Override
-	public UserEntity loginUser(UserEntity loginUser, String userSmartspace, String userEmail) {
+	public UserEntity loginUser(String userSmartspace, String userEmail) {
 		return this.userDao.readById(userSmartspace + "=" + userEmail)
 				.orElseThrow(() -> new RuntimeException("User not found!"));
 	}
 
+	//TODO: function was implemented wrong
 	@Override
 	public UserEntity createANewUser(NewUserForm createNewUser) {
 		return new UserEntity(

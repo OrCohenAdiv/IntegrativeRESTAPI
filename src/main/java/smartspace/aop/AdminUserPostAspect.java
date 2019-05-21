@@ -41,9 +41,11 @@ public class AdminUserPostAspect {
 	@Before("@annotation(smartspace.aop.AdminUserGetActions)")
 	public void checkAdminGetPrivilages(JoinPoint jp) {
 		Object[] param = jp.getArgs();
+		log.debug("Parmameters 2 and 3 are: " + param[2] +", " + param[3]);
 		String key = param[2] + "="+ param[3];
 		UserEntity adminUserEntity = userDao.readById(key)
 				.orElseThrow(() -> new RuntimeException("user doesn't exist"));
+		log.trace("User found! " + adminUserEntity.getUserName());
 
 		if (!adminUserEntity.getRole().equals(UserRole.ADMIN)) {
 			throw new RuntimeException("you are not an ADMIN");

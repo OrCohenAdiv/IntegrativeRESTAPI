@@ -2,15 +2,14 @@ package smartspace.layout;
 
 import java.util.Date;
 import java.util.Map;
-
 import smartspace.data.ElementEntity;
 import smartspace.data.Location;
 import smartspace.layout.data.ElementCreatorBoundary;
-import smartspace.layout.data.ElementKeyBoundary;
+import smartspace.layout.data.Key;
 import smartspace.layout.data.ElementLocationBoundary;
 
 public class ElementBoundary {
-	private ElementKeyBoundary key;
+	private Key key;
 	private String name;
 	private String elementType;
 	private Date created;
@@ -24,7 +23,7 @@ public class ElementBoundary {
 
 	public ElementBoundary(ElementEntity entity) {
 		if (key == null) {
-			this.key = new ElementKeyBoundary();
+			this.key = new Key();
 		}
 		if (entity.getKey() != null) {
 			String[] args = entity.getKey().split("=");
@@ -65,11 +64,11 @@ public class ElementBoundary {
 		return entity;
 	}
 
-	public ElementKeyBoundary getKey() {
+	public Key getKey() {
 		return key;
 	}
 
-	public void setKey(ElementKeyBoundary key) {
+	public void setKey(Key key) {
 		this.key = key;
 	}
 

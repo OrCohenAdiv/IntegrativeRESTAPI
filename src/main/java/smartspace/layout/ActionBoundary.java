@@ -3,18 +3,16 @@ package smartspace.layout;
 import java.util.Date;
 import java.util.Map;
 import smartspace.data.ActionEntity;
-import smartspace.layout.data.ActionKeyBoundary;
-import smartspace.layout.data.ElementKeyBoundary;
+import smartspace.layout.data.Key;
 import smartspace.layout.data.UserKeyBoundary;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-
 public class ActionBoundary {
 	
-	private ActionKeyBoundary actionKey;
+	private Key actionKey;
 	private String type;
 	private Date created;	
-	private ElementKeyBoundary element;
+	private Key element;
 	private UserKeyBoundary player;
 	private Map<String,Object> properties;
 	
@@ -24,7 +22,7 @@ public class ActionBoundary {
 	public ActionBoundary(ActionEntity entity){
 		
 		if(actionKey==null) {
-			this.actionKey = new ActionKeyBoundary();			
+			this.actionKey = new Key();			
 		}
 		if(entity.getKey() != null) {
 			this.actionKey.setId(entity.getActionId());
@@ -32,7 +30,7 @@ public class ActionBoundary {
 		}
 		
 		if(element==null) {
-			this.element = new ElementKeyBoundary();			
+			this.element = new Key();			
 		}
 		if(entity.getElementId() != null && entity.getElementSmartspace() != null) {
 			this.element.setId(entity.getElementId());
@@ -53,19 +51,19 @@ public class ActionBoundary {
 	}
 	
 	
-	public ActionKeyBoundary getActionKey() {
+	public Key getActionKey() {
 		return actionKey;
 	}
 
-	public void setActionKey(ActionKeyBoundary actionKey) {
+	public void setActionKey(Key actionKey) {
 		this.actionKey = actionKey;
 	}
 
-	public ElementKeyBoundary getElement() {
+	public Key getElement() {
 		return element;
 	}
 
-	public void setElement(ElementKeyBoundary element) {
+	public void setElement(Key element) {
 		this.element = element;
 	}
 

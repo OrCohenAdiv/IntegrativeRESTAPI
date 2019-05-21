@@ -30,9 +30,8 @@ import smartspace.infra.ActionService;
 import smartspace.infra.ElementService;
 import smartspace.infra.UserService;
 import smartspace.layout.data.Key;
-import smartspace.layout.data.ElementCreatorBoundary;
+import smartspace.layout.data.CreatorBoundary;
 import smartspace.layout.data.ElementLocationBoundary;
-import smartspace.layout.data.UserKeyBoundary;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -104,7 +103,7 @@ public class RESTActionIntegrationTests {
 		Key element = new Key();
 		element.setId(elementEntity.getKey().split("=")[1]);
 		element.setSmartspace("2019b.tomc");
-		UserKeyBoundary player = new UserKeyBoundary();
+		CreatorBoundary player = new CreatorBoundary();
 		player.setEmail("admin@smfng.com");
 		player.setSmartspace("Moshe");
 
@@ -136,7 +135,7 @@ public class RESTActionIntegrationTests {
 		Key element = new Key();
 		element.setId(elementEntity.getKey().split("=")[1]);
 		element.setSmartspace("2019b.tomc");
-		UserKeyBoundary player = new UserKeyBoundary();
+		CreatorBoundary player = new CreatorBoundary();
 		player.setEmail("admin@smfng.com");
 		player.setSmartspace("Moshe");
 

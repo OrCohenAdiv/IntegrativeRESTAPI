@@ -25,7 +25,7 @@ import smartspace.data.UserEntity;
 import smartspace.data.UserRole;
 import smartspace.infra.UserService;
 import smartspace.infra.UserServiceImpl;
-import smartspace.layout.data.UserKeyBoundary;
+import smartspace.layout.data.CreatorBoundary;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -78,7 +78,7 @@ public class RESTUserIntegrationTests {
 
 		// WHEN I POST new user
 		UserBoundary newUser = new UserBoundary(userAdminTest);
-		UserKeyBoundary ukb = new UserKeyBoundary();
+		CreatorBoundary ukb = new CreatorBoundary();
 		ukb.setEmail("Or@Test");
 		ukb.setSmartspace("DaniTest.smartspace");
 		newUser.setKey(ukb);
@@ -101,7 +101,7 @@ public class RESTUserIntegrationTests {
 		// GIVEN the database has an admin user and non admin user
 
 		UserBoundary newUser = new UserBoundary(userPlayerTest);
-		UserKeyBoundary ukb = new UserKeyBoundary();
+		CreatorBoundary ukb = new CreatorBoundary();
 		ukb.setEmail("Or@Test");
 		ukb.setSmartspace("DaniTest.smartspace");
 		newUser.setKey(ukb);

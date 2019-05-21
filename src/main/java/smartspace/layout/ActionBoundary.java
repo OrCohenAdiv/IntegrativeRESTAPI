@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.Map;
 import smartspace.data.ActionEntity;
 import smartspace.layout.data.Key;
-import smartspace.layout.data.UserKeyBoundary;
+import smartspace.layout.data.CreatorBoundary;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ActionBoundary {
@@ -13,7 +13,7 @@ public class ActionBoundary {
 	private String type;
 	private Date created;	
 	private Key element;
-	private UserKeyBoundary player;
+	private CreatorBoundary player;
 	private Map<String,Object> properties;
 	
 	public ActionBoundary() {
@@ -38,7 +38,7 @@ public class ActionBoundary {
 		}
 		
 		if(player==null) {
-			this.player = new UserKeyBoundary();			
+			this.player = new CreatorBoundary();			
 		}
 		if(entity.getPlayerEmail() != null && entity.getPlayerSmartspace() != null) {
 			this.player.setEmail(entity.getPlayerEmail());
@@ -67,11 +67,11 @@ public class ActionBoundary {
 		this.element = element;
 	}
 
-	public UserKeyBoundary getPlayer() {
+	public CreatorBoundary getPlayer() {
 		return player;
 	}
 
-	public void setPlayer(UserKeyBoundary player) {
+	public void setPlayer(CreatorBoundary player) {
 		this.player = player;
 	}
 	

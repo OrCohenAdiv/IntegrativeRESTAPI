@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.Map;
 import smartspace.data.ElementEntity;
 import smartspace.data.Location;
-import smartspace.layout.data.ElementCreatorBoundary;
+import smartspace.layout.data.CreatorBoundary;
 import smartspace.layout.data.Key;
 import smartspace.layout.data.ElementLocationBoundary;
 
@@ -14,7 +14,7 @@ public class ElementBoundary {
 	private String elementType;
 	private Date created;
 	private boolean expired;
-	private ElementCreatorBoundary creator;
+	private CreatorBoundary creator;
 	private ElementLocationBoundary latlng;
 	private Map<String, Object> elementProperties;
 
@@ -35,7 +35,7 @@ public class ElementBoundary {
 		this.created = entity.getCreationTimestamp();
 		this.expired = entity.isExpired();
 		if (creator == null) {
-			this.creator = new ElementCreatorBoundary();
+			this.creator = new CreatorBoundary();
 		}
 		this.creator.setEmail(entity.getCreatorEmail());
 		this.creator.setSmartspace(entity.getCreatorSmartspace());
@@ -104,11 +104,11 @@ public class ElementBoundary {
 		this.expired = expired;
 	}
 
-	public ElementCreatorBoundary getCreator() {
+	public CreatorBoundary getCreator() {
 		return creator;
 	}
 
-	public void setCreator(ElementCreatorBoundary creator) {
+	public void setCreator(CreatorBoundary creator) {
 		this.creator = creator;
 	}
 

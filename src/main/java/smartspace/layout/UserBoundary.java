@@ -2,11 +2,11 @@ package smartspace.layout;
 
 import smartspace.data.UserEntity;
 import smartspace.data.UserRole;
-import smartspace.layout.data.UserKeyBoundary;
+import smartspace.layout.data.CreatorBoundary;
 
 public class UserBoundary {
 
-	private UserKeyBoundary key;
+	private CreatorBoundary key;
 	private String userName;
 	private String avatar;
 	private UserRole role;
@@ -18,7 +18,7 @@ public class UserBoundary {
 	public UserBoundary(UserEntity entity) {
 
 		if (key == null) {
-			this.key = new UserKeyBoundary();
+			this.key = new CreatorBoundary();
 		}
 		if (entity.getKey() != null) {
 			String[] args = entity.getKey().split("=");
@@ -31,11 +31,11 @@ public class UserBoundary {
 		this.points = entity.getPoints();
 	}
 
-	public UserKeyBoundary getKey() {
+	public CreatorBoundary getKey() {
 		return key;
 	}
 
-	public void setKey(UserKeyBoundary key) {
+	public void setKey(CreatorBoundary key) {
 		this.key = key;
 	}
 

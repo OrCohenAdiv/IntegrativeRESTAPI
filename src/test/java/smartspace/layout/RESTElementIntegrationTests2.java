@@ -29,7 +29,7 @@ import smartspace.data.ElementEntity;
 import smartspace.data.Location;
 import smartspace.data.UserEntity;
 import smartspace.data.UserRole;
-import smartspace.layout.data.ElementCreatorBoundary;
+import smartspace.layout.data.CreatorBoundary;
 import smartspace.layout.data.Key;
 import smartspace.layout.data.ElementLocationBoundary;
 
@@ -113,7 +113,7 @@ public class RESTElementIntegrationTests2 {
 		latlng.setLat(32.115);
 		latlng.setLng(84.817);
 		
-		ElementCreatorBoundary newElementCreator = new ElementCreatorBoundary();
+		CreatorBoundary newElementCreator = new CreatorBoundary();
 		newElementCreator.setEmail(this.userEntityAdmin.getUserEmail());
 		newElementCreator.setSmartspace(this.userEntityAdmin.getUserSmartspace());
 		
@@ -165,7 +165,7 @@ public class RESTElementIntegrationTests2 {
 		latlng.setLat(32.115);
 		latlng.setLng(84.817);
 		
-		ElementCreatorBoundary newElementCreator = new ElementCreatorBoundary();
+		CreatorBoundary newElementCreator = new CreatorBoundary();
 		newElementCreator.setEmail(this.userEntityManager.getUserEmail());
 		newElementCreator.setSmartspace(this.userEntityManager.getUserSmartspace());
 		
@@ -216,7 +216,7 @@ public class RESTElementIntegrationTests2 {
 		latlng.setLat(32.115);
 		latlng.setLng(84.817);
 		
-		ElementCreatorBoundary newElementCreator = new ElementCreatorBoundary();
+		CreatorBoundary newElementCreator = new CreatorBoundary();
 		newElementCreator.setEmail(this.userEntityManager.getUserEmail());
 		newElementCreator.setSmartspace(this.userEntityManager.getUserSmartspace());
 		
@@ -269,7 +269,7 @@ public class RESTElementIntegrationTests2 {
 		latlng.setLat(32.115);
 		latlng.setLng(84.817);
 		
-		ElementCreatorBoundary newElementCreator = new ElementCreatorBoundary();
+		CreatorBoundary newElementCreator = new CreatorBoundary();
 		newElementCreator.setEmail(this.userEntityAdmin.getUserEmail());
 		newElementCreator.setSmartspace(this.userEntityAdmin.getUserSmartspace());
 		
@@ -321,7 +321,7 @@ public class RESTElementIntegrationTests2 {
 		latlng.setLat(32.115);
 		latlng.setLng(84.817);
 		
-		ElementCreatorBoundary newElementCreator = new ElementCreatorBoundary();
+		CreatorBoundary newElementCreator = new CreatorBoundary();
 		newElementCreator.setEmail(this.userEntityAdmin.getUserEmail());
 		newElementCreator.setSmartspace(this.userEntityAdmin.getUserSmartspace());
 		

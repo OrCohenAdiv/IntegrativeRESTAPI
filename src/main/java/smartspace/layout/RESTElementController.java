@@ -37,21 +37,6 @@ public class RESTElementController {
 						
 	}
 	
-
-//	@RequestMapping(path = "/smartspace/admin/elements/{adminSmartspace}/{adminEmail}",
-//			method = RequestMethod.GET,
-//			produces = MediaType.APPLICATION_JSON_VALUE)
-//	public ElementBoundary[] getUsingPagination(
-//			@RequestParam(name = "size", required = false, defaultValue = "10") int size,
-//			@RequestParam(name = "page", required = false, defaultValue = "0") int page,
-//			@PathVariable("adminSmartspace") String adminSmartspace, @PathVariable("adminEmail") String adminEmail) {
-//		return this.elementService.getUsingPagination(size, page, adminSmartspace, adminEmail)
-//				.stream()
-//				.map(ElementBoundary::new)
-//				.collect(Collectors.toList())
-//				.toArray(new ElementBoundary[0]);
-//	}
-	
 	@RequestMapping(path = "/smartspace/element/login/{managerSmartspace}/{managerEmail}/{elementSmartspace}/{elementId}",
 			method = RequestMethod.PUT,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -88,10 +73,10 @@ public class RESTElementController {
 			@PathVariable("userEmail") String userEmail,
 			@RequestParam(name = "search", required = false) String search,
 			@RequestParam(name = "distance", required = false, defaultValue = "1") double distance,
-			@RequestParam(name = "x", required = false, defaultValue = "0") double x,
-			@RequestParam(name = "y", required = false, defaultValue = "0") double y,
+			@RequestParam(name = "x", required = false, defaultValue = "1") double x,
+			@RequestParam(name = "y", required = false, defaultValue = "1") double y,
 			@RequestParam(name = "size", required = false, defaultValue = "10") int size,
-			@RequestParam(name = "page", required = false, defaultValue = "0") int page			) {
+			@RequestParam(name = "page", required = false, defaultValue = "0") int page) {
 		
 			return this.restElementService.findNearLocation
 					(userSmartspace, userEmail, search, x, y, distance, page, size)

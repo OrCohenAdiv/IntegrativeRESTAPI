@@ -17,12 +17,6 @@ public class RESTElementServiceImpl implements RESTElementService {
 
 	private EnhancedElementDao<String> elementDao;
 	private EnhancedUserDao<String> userDao;
-	private String smartspaceName;
-	
-	@Value("${smartspace.name}")
-	public void setRESTElementSmartspaceName(String smartspaceName) {
-		this.smartspaceName = smartspaceName;
-	}
 	
 	@Autowired
 	public void setElementDao(EnhancedElementDao<String> elementDao) {
@@ -52,10 +46,7 @@ public class RESTElementServiceImpl implements RESTElementService {
 
 
 		return elementDao.create(newElementEntity);
-
 	}
-
-
 
 	@Override
 	public ElementEntity findById(String elementSmartspace, String elementId) {
@@ -67,12 +58,13 @@ public class RESTElementServiceImpl implements RESTElementService {
 	@Override
 	public List<ElementEntity> findNearLocation(String userSmartspace,String userEmail,
 			String search,double x,double y,double distance,int page,int size){
-			return this.elementDao.readAllByDistanceFromLocation
-				(new Location(x, y), distance, size, page);
+		if(distance<0)
+			throw new RuntimeException("Value must be positive!");
+		
+		return this.elementDao.readAllByDistanceFromLocation(
+				new Location(x, y), distance, size, page);
 		
 	}
-	
-	//ADDED NOW
 	
 	@Override
 	public Collection<ElementEntity> getElementsUsingPaginationOfName(String managerSmartspace, String managerEmail, UserRole role,
@@ -101,6 +93,4 @@ public class RESTElementServiceImpl implements RESTElementService {
 					"The URl isn't match for manager or player. use another user or URL that match admin user");
 		}
 	}
-
-
 }

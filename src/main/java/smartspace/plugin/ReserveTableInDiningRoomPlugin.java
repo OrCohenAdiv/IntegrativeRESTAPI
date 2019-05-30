@@ -69,17 +69,12 @@ public class ReserveTableInDiningRoomPlugin implements Plugin {
 	@Override
 	public ActionEntity process(ActionEntity action) {
 		
-		System.err.println("here1 !!!!!!!!!!!!!!!");
-
 		try {
 			ReserveTableInDiningRoomInput reserveTableInDiningRoomInput = 
 					this.jackson.readValue(
 							this.jackson.writeValueAsString(action.getMoreAttributes()), 
 							ReserveTableInDiningRoomInput.class);
-			
-			System.err.println(reserveTableInDiningRoomInput.getNotes());
-			System.err.println("here2 !!!!!!!!!!!!!!!");
-			
+						
 			String result = "TABLE WAS BOOKED!";
 			action.getMoreAttributes().put("result", result);
 			return action;

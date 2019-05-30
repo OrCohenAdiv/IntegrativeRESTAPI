@@ -60,5 +60,4 @@ public class ElementServiceImpl implements ElementService {
 		return this.elementDao.readAll("key", size, page);
 	}
 	
-	
 }

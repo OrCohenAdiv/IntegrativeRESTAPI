@@ -4,7 +4,6 @@ import smartspace.data.ActionEntity;
 
 public interface RESTActionService {
 
-	ActionEntity invokeAction(ActionEntity newAction);
-
+	public ActionEntity invokeAction(ActionEntity newAction);
 
 }

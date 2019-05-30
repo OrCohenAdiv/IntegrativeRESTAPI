@@ -58,4 +58,39 @@ public class RESTActionServiceImpl implements RESTActionService {
 		}
 		return false;
 	}
+
+	
+	/*
+	@Override
+	public MessageEntity play(MessageEntity message) {
+		if (message.getName() == null ||
+			message.getName().trim().isEmpty()) {
+			throw new IllegalNameException();
+		}
+		
+		if (message.getSeverity() == null) {
+			throw new RuntimeException();
+		}
+		
+		try {
+			String name = message.getName();
+//		"guess" ------>>>>>>> smartspace.plugin.GuessPlugin
+			String className = 
+					"smartspace.plugin." 
+					+ name.toUpperCase().charAt(0) 
+					+ name.substring(1, name.length())
+					+ "Plugin";
+			Class<?> theClass = Class.forName(className);
+			Plugin plugin = (Plugin) this.ctx.getBean(theClass);
+			
+			message.setAvailableFrom(new Date());
+			message = plugin.process(message);
+			
+			this.messageDao.create(message);
+			return message;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	} 
+	 */
 }

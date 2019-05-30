@@ -28,4 +28,31 @@ public class RESTActionController {
 		// (action.getPlayer().getSmartspace(),action.getPlayer().getEmail(),
 		// null,action.convertToEntity());
 	}
+	
+	
+	/*
+	@RequestMapping(
+			path="/play",
+			method=RequestMethod.POST,
+			consumes=MediaType.APPLICATION_JSON_VALUE,
+			produces=MediaType.APPLICATION_JSON_VALUE)
+	public MessageBoundary play (
+			@RequestBody MessageBoundary input) {
+		return new MessageBoundary(
+			this.messageService
+				.play(input.convertToEntity()));
+				
+	}
+	
+	@ExceptionHandler
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	public ErrorMessage handleException (IllegalNameException e){
+		String message = e.getMessage();
+		if (message == null) {
+			message = "The name you have provided is invalid";
+		}
+		
+		return new ErrorMessage(message);
+	}
+	*/
 }

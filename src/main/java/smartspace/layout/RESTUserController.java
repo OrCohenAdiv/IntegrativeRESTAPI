@@ -32,7 +32,6 @@ public class RESTUserController {
 			this.restUserService.updateUser(user.convertToEntity(),userSmartspace,userEmail,null);	
 			}
 
-
 //	@RequestMapping(path = "/smartspace/admin/users/{adminSmartspace}/{adminEmail}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 //	public UserBoundary[] getUsingPagination(
 //			@RequestParam(name = "size", required = false, defaultValue = "10") int size,
@@ -58,7 +57,6 @@ public class RESTUserController {
 						userSmartspace, userEmail));
 	}
 
-	//TODO: function was implemented wrong
 	@RequestMapping(path = "/smartspace/users", 
 			method = RequestMethod.POST, 
 			consumes = MediaType.APPLICATION_JSON_VALUE, 
@@ -66,10 +64,7 @@ public class RESTUserController {
 	public UserBoundary createANewUser(
 			@RequestBody NewUserForm newUserForm) {
 		return new UserBoundary(
-				this.restUserService.createANewUser(newUserForm));
+				this.restUserService.createANewUser(newUserForm.convertToEntity()));
 	}
-
-	
 }
-
 

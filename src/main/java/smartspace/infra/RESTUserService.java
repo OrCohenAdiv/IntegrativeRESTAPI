@@ -2,7 +2,6 @@ package smartspace.infra;
 
 import smartspace.data.UserEntity;
 import smartspace.data.UserRole;
-import smartspace.layout.data.NewUserForm;
 
 public interface RESTUserService {
 
@@ -11,5 +10,5 @@ public interface RESTUserService {
 	//TODO:FIXED HERE no need for user boundary
 	public UserEntity loginUser(String userSmartspace, String userEmail);
 
-	public UserEntity createANewUser(NewUserForm createNewUser);
+	public UserEntity createANewUser(UserEntity createNewUser);
 }

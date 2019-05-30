@@ -52,22 +52,17 @@ public class NewUserForm {
 		this.role = role;
 	}
 
-	public UserEntity convertToEntity(NewUserForm userForm) {
+	public UserEntity convertToEntity() {
 		UserEntity userEntity = new UserEntity();
-		if (userForm != null) {
-			if (userForm.getEmail() != null) {
-				userEntity.setUserEmail(userForm.getEmail());
-			} else {
-				throw new NullPointerException("Null email");
-			}
-			userEntity.setUserName(userForm.getUsername());
-			userEntity.setAvatar(userForm.getAvatar());
-			userEntity.setRole(userForm.getRole());
-			userEntity.setPoints(0);
+		if (this.getEmail() != null) {
+			userEntity.setUserEmail(this.getEmail());
+		} else {
+			throw new NullPointerException("Null email");
 		}
-		else {
-			throw new NullPointerException("Null Form");
-		}
+		userEntity.setUserName(this.getUsername());
+		userEntity.setAvatar(this.getAvatar());
+		userEntity.setRole(this.getRole());
+		userEntity.setPoints(0);
 		return userEntity;
 	}
 }

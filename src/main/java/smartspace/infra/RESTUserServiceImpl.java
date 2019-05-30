@@ -4,11 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import smartspace.dao.EnhancedUserDao;
 import smartspace.data.UserEntity;
 import smartspace.data.UserRole;
-import smartspace.layout.data.NewUserForm;
 
 @Service
 public class RESTUserServiceImpl implements RESTUserService {
@@ -34,34 +32,29 @@ public class RESTUserServiceImpl implements RESTUserService {
 		}
 		this.userDao.update(user);
 	}
-
-	public UserEntity convertToUserEntity(NewUserForm newUser) {
-		return new UserEntity(
-				this.smartspaceName,
-				newUser.getEmail(),
-				newUser.getUsername(),
-				newUser.getAvatar(),
-				newUser.getRole(),
-				0);
-	}
 	
-	//TODO:FIXED HERE no need for user boundary
 	@Override
 	public UserEntity loginUser(String userSmartspace, String userEmail) {
 		return this.userDao.readById(userSmartspace + "=" + userEmail)
 				.orElseThrow(() -> new RuntimeException("User not found!"));
 	}
 
-	//TODO: function was implemented wrong
+	private boolean validate(UserEntity entity) {
+		return entity.getAvatar() != null && !entity.getAvatar().trim().isEmpty() && entity.getUserName() != null
+				&& !entity.getUserName().trim().isEmpty() && entity.getRole() != null;
+	}
+	
 	@Override
-	public UserEntity createANewUser(NewUserForm createNewUser) {
-		return new UserEntity(
-				this.smartspaceName,
-				createNewUser.getEmail(), 
-				createNewUser.getUsername(), 
-				createNewUser.getAvatar(), 
-				createNewUser.getRole(), 
-				0l);
+	public UserEntity createANewUser(UserEntity createNewUser) {
+		
+		if (validate(createNewUser)) {
+			createNewUser.setUserSmartspace(smartspaceName);
+			this.userDao.importUser(createNewUser);
+		} else {
+			throw new RuntimeException("Invalid User");
+		}
+
+	return createNewUser;
 	}
 }
 

@@ -12,9 +12,10 @@ public interface EnhancedElementDao<Key> extends ElementDao<Key> {
 	public ElementEntity importElement(ElementEntity elementEntity);
 	public List<ElementEntity> readAllByDistanceFromLocation(Location l,double distance, int size, int page);
 	
-	// ADDED NOW
 	public List<ElementEntity> readAllUsingName(String name, int size, int page);
 	public List<ElementEntity> readAllUsingNameNotExpired(String name, int size, int page);
 	public List<ElementEntity> readAllUsingType(String type, int size, int page);
 	public List<ElementEntity> readAllUsingTypeNotExpired(String type, int size, int page);
+	public List<ElementEntity> readElementsByKeyAndLocation(String elementSmartspace, String elementId,
+			Location roomNumber, int size);
 }

@@ -1,10 +1,12 @@
 package smartspace.infra;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
 import smartspace.dao.EnhancedElementDao;
 import smartspace.dao.EnhancedUserDao;
 import smartspace.data.ElementEntity;
@@ -19,8 +21,9 @@ public class RESTElementServiceImpl implements RESTElementService {
 	private EnhancedUserDao<String> userDao;
 	
 	@Autowired
-	public void setElementDao(EnhancedElementDao<String> elementDao) {
+	public void setElementDao(EnhancedElementDao<String> elementDao, EnhancedUserDao<String> userDao) {
 		this.elementDao = elementDao;
+		this.userDao = userDao;
 	}
 
 	@Override
@@ -28,7 +31,8 @@ public class RESTElementServiceImpl implements RESTElementService {
 			String elementSmartspace, String elementId) {
 
 		String key = managerSmartspace + "=" + managerEmail;
-		UserEntity userEntity = userDao.readById(key).orElseThrow(() -> new RuntimeException("user doesn't exist"));
+		UserEntity userEntity = userDao.readById(key)
+				.orElseThrow(() -> new RuntimeException("user doesn't exist"));
 
 		if (!userEntity.getRole().equals(UserRole.MANAGER)) {
 			throw new RuntimeException("you are not MANAGER");
@@ -37,17 +41,46 @@ public class RESTElementServiceImpl implements RESTElementService {
 		elementDao.update(elementEntity);
 	}
 
-	@Override
-	public ElementEntity createNewElement(ElementEntity elementEntity, String managerSmartspace, String managerEmail) {
-
-		String key = managerSmartspace + "=" + managerEmail;
-		ElementEntity newElementEntity = elementDao.readById(key)
-				.orElseThrow(() -> new RuntimeException("element doesn't exist"));
-
-
-		return elementDao.create(newElementEntity);
+	private boolean validate(ElementEntity elementEntity) {
+		return (
+				elementEntity.getName() != null
+				&& !elementEntity.getName().trim().isEmpty()
+				&& elementEntity.getType() != null
+				&& !elementEntity.getType().trim().isEmpty()
+				&& elementEntity.getCreatorSmartspace() != null
+				&& !elementEntity.getCreatorSmartspace().trim().isEmpty()
+				&& elementEntity.getCreatorEmail() != null
+				&& !elementEntity.getCreatorEmail().trim().isEmpty()
+				&& elementEntity.getMoreAttributes() != null
+				&& elementEntity.getLocation().getX() != 0
+				&& elementEntity.getLocation().getY() != 0);
 	}
+	
+	@Override
+	public ElementEntity createNewElement(ElementEntity elementEntity, String smartspace, String email) {
+		
+		String key = smartspace + "=" + email;
 
+		UserEntity userEntity = this.userDao.readById(key)
+				.orElseThrow(() -> new RuntimeException("user doesn't exist"));
+
+		if (!userEntity.getRole().equals(UserRole.MANAGER)) {
+			throw new RuntimeException("you are not a MANAGER");
+		}
+		
+		if (validate(elementEntity)) {
+			elementEntity.setKey(
+					smartspace+"="+elementEntity.getElementId());			
+			if(elementEntity.getCreationTimestamp() == null) {
+				elementEntity.setCreationTimestamp(new Date());
+			}
+			this.elementDao.importElement(elementEntity);
+		} else {
+			throw new RuntimeException("Invalid element");
+		}
+	return elementEntity;
+	}
+					
 	@Override
 	public ElementEntity findById(String elementSmartspace, String elementId) {
 		return this.elementDao
@@ -63,7 +96,6 @@ public class RESTElementServiceImpl implements RESTElementService {
 		
 		return this.elementDao.readAllByDistanceFromLocation(
 				new Location(x, y), distance, size, page);
-		
 	}
 	
 	@Override

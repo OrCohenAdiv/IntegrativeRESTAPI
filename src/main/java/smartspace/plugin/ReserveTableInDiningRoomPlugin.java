@@ -56,13 +56,13 @@ import smartspace.data.ActionEntity;
 @Component
 public class ReserveTableInDiningRoomPlugin implements Plugin {
 
-	private EnhancedActionDao actionDao;
+	//private EnhancedActionDao actionDao;
 	private ObjectMapper jackson;
 
 	@Autowired
 	public ReserveTableInDiningRoomPlugin(EnhancedActionDao actionDao) {
 		super();
-		this.actionDao = actionDao;
+		//this.actionDao = actionDao;
 		this.jackson = new ObjectMapper();
 	}
 	

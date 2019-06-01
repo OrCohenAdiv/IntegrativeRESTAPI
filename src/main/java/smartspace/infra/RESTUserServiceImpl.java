@@ -40,20 +40,21 @@ public class RESTUserServiceImpl implements RESTUserService {
 	}
 
 	private boolean validate(UserEntity entity) {
-		return entity.getAvatar() != null && !entity.getAvatar().trim().isEmpty() && entity.getUserName() != null
-				&& !entity.getUserName().trim().isEmpty() && entity.getRole() != null;
+		return (entity.getAvatar() != null
+				&& !entity.getAvatar().trim().isEmpty()
+				&& entity.getUserName() != null
+				&& !entity.getUserName().trim().isEmpty() 
+				&& entity.getRole() != null);
 	}
 	
 	@Override
 	public UserEntity createANewUser(UserEntity createNewUser) {
-		
 		if (validate(createNewUser)) {
 			createNewUser.setUserSmartspace(smartspaceName);
 			this.userDao.importUser(createNewUser);
 		} else {
 			throw new RuntimeException("Invalid User");
 		}
-
 	return createNewUser;
 	}
 }

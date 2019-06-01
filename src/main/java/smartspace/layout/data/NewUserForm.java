@@ -7,16 +7,16 @@ public class NewUserForm {
 
 	private String email;
 	private UserRole role;
-	private String username;
+	private String userName;
 	private String avatar;
 	
 	public NewUserForm(){
 	}
 	
-	public NewUserForm(String email, String role, String username, String avatar){
+	public NewUserForm(String email, String role, String userName, String avatar){
 		this.email = email;
 		this.setRole(UserRole.valueOf(role));
-		this.username = username;
+		this.userName = userName;
 		this.avatar = avatar;
 	}
 	
@@ -28,12 +28,12 @@ public class NewUserForm {
 		this.email = email;
 	}
 	
-	public String getUsername() {
-		return username;
+	public String getUserName() {
+		return userName;
 	}
 	
-	public void setUsername(String username) {
-		this.username = username;
+	public void setUsername(String userName) {
+		this.userName = userName;
 	}
 	
 	public String getAvatar() {
@@ -59,7 +59,7 @@ public class NewUserForm {
 		} else {
 			throw new NullPointerException("Null email");
 		}
-		userEntity.setUserName(this.getUsername());
+		userEntity.setUserName(this.getUserName());
 		userEntity.setAvatar(this.getAvatar());
 		userEntity.setRole(this.getRole());
 		userEntity.setPoints(0);

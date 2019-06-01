@@ -3,6 +3,8 @@ package smartspace.dao.rdb;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
@@ -58,6 +60,7 @@ public class RdbElementDao implements EnhancedElementDao<String> {
 	@Override
 	@Transactional
 	public void update(ElementEntity elemntEnt) {
+		
 		ElementEntity existing = this.readById(elemntEnt.getKey())
 				.orElseThrow(() -> new RuntimeException("no element to update"));
 
@@ -78,6 +81,8 @@ public class RdbElementDao implements EnhancedElementDao<String> {
 
 		if (elemntEnt.getMoreAttributes() != null)
 			existing.setMoreAttributes(elemntEnt.getMoreAttributes());
+		
+		existing.setExpired(elemntEnt.isExpired());
 		
 		this.elementCrud.save(existing);
 	}
@@ -137,8 +142,6 @@ public class RdbElementDao implements EnhancedElementDao<String> {
 						l.getY()-distance, l.getY()+distance);
 	}
 	
-	
-	//ADDED NOW
 	@Override
 	public List<ElementEntity> readAllUsingName(String name, int size, int page) {
 		return this.elementCrud.findAllByName(name, PageRequest.of(page, size));
@@ -158,7 +161,21 @@ public class RdbElementDao implements EnhancedElementDao<String> {
 	public List<ElementEntity> readAllUsingTypeNotExpired(String type, int size, int page) {
 		return this.elementCrud.findAllByExpiredAndType(false, type, PageRequest.of(page, size));
 	}
-	
-	
+
+	@Override
+	public List<ElementEntity> readElementsByKeyAndLocation(
+			String elementSmartspace, String elementId, Location roomNumber, int size) {
+				
+		return this.elementCrud
+				.findAllByLocation_xBetweenAndLocation_yBetween(
+						roomNumber.getX(), roomNumber.getX(), roomNumber.getY(), roomNumber.getY())
+				.stream()
+				.filter(elem -> elem.getMoreAttributes() != null
+				&&elem.getElementSmartspace().equals(elementSmartspace) 
+				&&elem.getElementId().equals(elementId))
+				.sorted()
+				.limit(size)
+				.collect(Collectors.toList());
+	}
 }
 

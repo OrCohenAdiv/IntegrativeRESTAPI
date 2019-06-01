@@ -1,6 +1,5 @@
 package smartspace.layout;
 
-
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,19 +36,19 @@ public class RESTElementController {
 						
 	}
 	
-	@RequestMapping(path = "/smartspace/element/login/{managerSmartspace}/{managerEmail}/{elementSmartspace}/{elementId}",
+	@RequestMapping(path = "/smartspace/elements/{managerSmartspace}/{managerEmail}/{elementSmartspace}/{elementId}",
 			method = RequestMethod.PUT,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public void Update(@RequestBody ElementBoundary elementBoundary,
+	public void Update(
+			@RequestBody ElementBoundary elementBoundary,
 			@PathVariable("managerSmartspace") String managerSmartspace, 
 			@PathVariable("managerEmail") String managerEmail,
 			@PathVariable("elementSmartspace") String elementSmartspace, 
 			@PathVariable("elementId") String elementId) {
-		restElementService.updateElement(elementBoundary.convertToEntity(), managerSmartspace, managerEmail, elementSmartspace, elementId);
-
+		this.restElementService.updateElement(elementBoundary.convertToEntity(), managerSmartspace, managerEmail, elementSmartspace, elementId);
 	}
-
+	
 	@RequestMapping(path = "/smartspace/elements/{userSmartspace}/{userEmail}/{elementSmartspace}/{elementId}",
 			method = RequestMethod.GET,
 			consumes = MediaType.APPLICATION_JSON_VALUE, 
@@ -86,7 +85,6 @@ public class RESTElementController {
 					.toArray(new ElementBoundary[0]);
 	}
 	
-	//ADDED NOW
 	@RequestMapping(
 			path="/smartspace/elements/{userSmartspace}/{userEmail}?search=name&value={name}&page={page}&size={size}",
 			method=RequestMethod.GET,
@@ -126,6 +124,4 @@ public class RESTElementController {
 				.collect(Collectors.toList())
 				.toArray(new ElementBoundary[0]);
 	}
-	
-		
 }

@@ -4,15 +4,16 @@ import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Service;
 
 import smartspace.dao.EnhancedActionDao;
 import smartspace.dao.EnhancedElementDao;
 import smartspace.dao.EnhancedUserDao;
 import smartspace.data.ActionEntity;
+import smartspace.data.UserEntity;
+import smartspace.data.UserRole;
 import smartspace.plugin.Plugin;
-
 
 @Service
 public class RESTActionServiceImpl implements RESTActionService {
@@ -24,8 +25,15 @@ public class RESTActionServiceImpl implements RESTActionService {
 	private ApplicationContext ctx;
 	
 	@Autowired
-	public RESTActionServiceImpl(EnhancedActionDao actionDao, ApplicationContext ctx) {
+	public RESTActionServiceImpl(
+			EnhancedActionDao actionDao, 
+			EnhancedUserDao<String> userDao, 
+			EnhancedElementDao<String> elementDao,
+			ApplicationContext ctx) {
+		
 		this.actionDao = actionDao;
+		this.elementDao = elementDao;
+		this.userDao = userDao;
 		this.ctx = ctx;
 	}
 
@@ -37,15 +45,23 @@ public class RESTActionServiceImpl implements RESTActionService {
 	@Override
 	public ActionEntity invokeAction(ActionEntity newAction) {
 		
-		if (newAction.getActionId()  == null || 
-				newAction.getActionSmartspace().trim().isEmpty() ||
-				newAction.getMoreAttributes() == null) {
-			throw new RuntimeException();
+		if (!valiadate(newAction)) {
+			throw new RuntimeException("can NOT invoke action!");
 		}
-
+		
+		if (!newAction.getActionSmartspace().equals(this.smartspaceName)) {
+			throw new RuntimeException("Illigal Import!");
+		}
+		
+		if(newAction.getCreationTimestamp() == null) {
+			newAction.setCreationTimestamp(new Date());
+		}		
+		
 		try {
 			String funcName = newAction.getActionType();
 //"ReserveTableInDiningRoom" ------>>>>>>> smartspace.plugin.ReserveTableInDiningRoomPlugin
+//"GetTotalCost" ------>>>>>>> smartspace.plugin.GetTotalCostPlugin
+
 			String className = 
 					"smartspace.plugin." 
 					+ funcName.toUpperCase().charAt(0) 
@@ -54,7 +70,6 @@ public class RESTActionServiceImpl implements RESTActionService {
 			Class<?> theClass = Class.forName(className);
 			Plugin plugin = (Plugin) this.ctx.getBean(theClass);
 			
-			newAction.setCreationTimestamp(new Date());
 			newAction = plugin.process(newAction);
 			
 			this.actionDao.create(newAction);
@@ -64,39 +79,49 @@ public class RESTActionServiceImpl implements RESTActionService {
 			throw new RuntimeException(e);
 		}
 	} 
-		
-/*
-OLD INVOKR FUNCTION 
- 
-	try {
-		String actionType = newAction.getActionType();
-		if (actionType != null && !actionType.trim().isEmpty()) {
-			if (valiadate(newAction)) {
-				newAction.setCreationTimestamp(new Date());
-				return this.actionDao.create(newAction);
-			} else {
-				throw new RuntimeException("Action is invalid - Wrong element of user");
-			}
-		} else {
-			throw new RuntimeException("Illegal action type");
-		}
-	} catch (Exception e) {
-		throw new RuntimeException(e);
-	}
-*/
 
-	private boolean valiadate(ActionEntity entity) {
-		if (entity.getPlayerEmail() != null && entity.getPlayerSmartspace() != null && entity.getElementId() != null
-				&& entity.getElementSmartspace() != null && entity.getActionType() != null) {
-			if (this.userDao.readById(entity.getPlayerEmail() + "=" + entity.getPlayerSmartspace()).isPresent()
-					&& this.elementDao.readById(entity.getElementId() + "=" + entity.getElementSmartspace())
-							.isPresent()) {
-				return true;
+	
+	private boolean valiadate(ActionEntity actionEntity) {
+		
+	//check if all fields of actionEntity are NOT empty except getCreationTimestamp
+	//and the player and the element does exist in DB
+		UserEntity tmpUser;
+		
+		if(actionEntity.getPlayerEmail() != null 
+				&& !actionEntity.getPlayerEmail().trim().isEmpty() 
+				&& actionEntity.getPlayerSmartspace() != null 
+				&& !actionEntity.getPlayerSmartspace().trim().isEmpty()
+				&& actionEntity.getActionSmartspace() != null 
+				&& !actionEntity.getActionSmartspace().trim().isEmpty()
+				&& actionEntity.getActionId() != null 
+				&& !actionEntity.getActionId().trim().isEmpty()
+				&& actionEntity.getElementSmartspace() != null 
+				&& !actionEntity.getElementSmartspace().trim().isEmpty()
+				&& actionEntity.getElementId() != null 
+				&& !actionEntity.getElementId().trim().isEmpty()
+				&& actionEntity.getActionType() != null 
+				&& !actionEntity.getActionType().trim().isEmpty()) {
+		
+			if (this.userDao.readById(actionEntity.getPlayerSmartspace() 
+						+"="+ actionEntity.getPlayerEmail()).isPresent()) {
+
+				tmpUser = this.userDao.readById(
+						actionEntity.getPlayerSmartspace() +"="+ actionEntity.getPlayerEmail())
+						.orElseThrow(() -> new RuntimeException("user do not exist"));
+				
+				if(tmpUser.getRole() != UserRole.PLAYER) {
+					throw new RuntimeException("you must be a PLAYER for doing Actions !");
+				}
 			}
+			
+			if(!this.elementDao.readById(actionEntity.getElementSmartspace() 
+					+"="+ actionEntity.getElementId()).isPresent()) {
+				throw new RuntimeException("element does not exist!");
+			}
+			return true;
 		}
 		return false;
 	}
-	
 }
 
 	

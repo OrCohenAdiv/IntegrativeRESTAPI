@@ -3,6 +3,7 @@ package smartspace.dao.rdb;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,10 +14,15 @@ import org.springframework.data.domain.Sort.Direction;
 
 @Repository
 public class RdbActionDao implements EnhancedActionDao {
-
+	private String smartspace;
 	private ActionCrud actionCrud;
 	private GenericIdGeneratorCrud genericIdGeneratorCrud;
 
+	@Value("${smartspace.name}")
+	public void setSmartspace(String smartspace) {
+		this.smartspace = smartspace;
+	}
+	
 	@Autowired
 	public RdbActionDao(ActionCrud actionCrud, GenericIdGeneratorCrud genericIdGeneratorCrud) {
 		super();
@@ -28,7 +34,7 @@ public class RdbActionDao implements EnhancedActionDao {
 	@Transactional
 	public ActionEntity create(ActionEntity actionEntity) {
 		GenericIdGenerator nextID = this.genericIdGeneratorCrud.save(new GenericIdGenerator());
-		actionEntity.setKey(actionEntity.getActionSmartspace() + "=" + nextID.getId() );
+		actionEntity.setKey(smartspace + "=" + nextID.getId() );
 		this.genericIdGeneratorCrud.delete(nextID);
 		if (!this.actionCrud.existsById(actionEntity.getKey())) {
 			ActionEntity rv = this.actionCrud.save(actionEntity);

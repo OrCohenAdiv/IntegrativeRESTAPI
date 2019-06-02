@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Repository;
@@ -15,8 +16,14 @@ import smartspace.data.Location;
 
 @Repository
 public class RdbElementDao implements EnhancedElementDao<String> {
+	private String smartspace;
 	private ElementCrud elementCrud;
 	private GenericIdGeneratorCrud generatorCrud;
+	
+	@Value("${smartspace.name}")
+	public void setSmartspace(String smartspace) {
+		this.smartspace = smartspace;
+	}
 
 	@Autowired
 	public RdbElementDao(ElementCrud eleCrud, GenericIdGeneratorCrud generatorCrud) {
@@ -31,7 +38,7 @@ public class RdbElementDao implements EnhancedElementDao<String> {
 		GenericIdGenerator nextIdNum = this.generatorCrud.save(new GenericIdGenerator());
 
 		// set element key and destroy the row in db
-		elementEntity.setKey(elementEntity.getElementSmartspace() + "=" + nextIdNum.getId());
+		elementEntity.setKey(smartspace + "=" + nextIdNum.getId());
 		this.generatorCrud.delete(nextIdNum);
 
 		// if element doesn't exists then add it else throw RuntimeException

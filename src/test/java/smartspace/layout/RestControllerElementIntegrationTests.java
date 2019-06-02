@@ -166,4 +166,46 @@ public class RestControllerElementIntegrationTests {
 		
 		// THEN I get an exception
 	}
+	
+	@Test
+	public void testAddElementWithLocationAndSerachByLocationUsingDefaults() throws Exception{
+		// GIVEN the database contains 3 messages
+		
+		Map<String, Object> elementProperties = new HashMap<>();
+		elementProperties.put("key1", 1);
+		elementProperties.put("key2", "it can be anything");
+			
+		Location location = new Location();
+		location.setX(1);
+		location.setY(1); 
+			
+		int size = 3;
+		List<Key> allElements = 
+				IntStream.range(1, size + 1)
+				.mapToObj(i->new ElementEntity( 
+						"demo" + i, "MyType", new Location(location.getX()+i,location.getY()+i), new Date(), 
+						this.userEntityAdmin.getUserEmail(), 
+						this.userEntityAdmin.getUserSmartspace(), 
+						false, elementProperties))
+				.map(this.elementDao::create)
+				.map(ElementBoundary::new)
+				.map(ElementBoundary::getKey)
+				.collect(Collectors.toList());
+
+		// WHEN I GET messages of size 10 and page 0
+		ElementBoundary[] response = this.restTemplate
+				.getForObject(this.baseUrl + 
+				"?search={search}", 
+				ElementBoundary[].class, 
+				this.userEntityAdmin.getUserSmartspace(), 
+				this.userEntityAdmin.getUserEmail(), 
+				"location");
+		
+		// THEN I receive the exactly 1 element written to the database
+		assertThat(response)
+		.hasSize(1)
+		.extracting("key")
+		.usingElementComparatorOnFields("id")
+		.containsExactly(allElements.get(0));
+	}
 }

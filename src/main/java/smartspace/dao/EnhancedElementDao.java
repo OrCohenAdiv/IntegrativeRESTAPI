@@ -16,6 +16,4 @@ public interface EnhancedElementDao<Key> extends ElementDao<Key> {
 	public List<ElementEntity> readAllUsingNameNotExpired(String name, int size, int page);
 	public List<ElementEntity> readAllUsingType(String type, int size, int page);
 	public List<ElementEntity> readAllUsingTypeNotExpired(String type, int size, int page);
-	public List<ElementEntity> readElementsByKeyAndLocation(String elementSmartspace, String elementId,
-			Location roomNumber, int size);
 }

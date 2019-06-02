@@ -61,6 +61,8 @@ public class RESTActionServiceImpl implements RESTActionService {
 			String funcName = newAction.getActionType();
 //"ReserveTableInDiningRoom" ------>>>>>>> smartspace.plugin.ReserveTableInDiningRoomPlugin
 //"GetTotalCost" ------>>>>>>> smartspace.plugin.GetTotalCostPlugin
+//"RoomServiceReservation" ------>>>>>>> smartspace.plugin.RoomServiceReservationPlugin
+//"CheckIn" ------>>>>>>> smartspace.plugin.CheckInPlugin
 
 			String className = 
 					"smartspace.plugin." 

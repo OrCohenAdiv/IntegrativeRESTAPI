@@ -1,5 +1,7 @@
 package smartspace.plugin;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +28,7 @@ import smartspace.data.ActionEntity;
 		"email":"player.invoking.action@de.no"
 	},
 	"properties":{
-		"dateOfDiningTableReservation":"2019-05-30T16:52:35.170+0000",
+		"dateOfDiningTableReservation":"2019-05-30,16:52",
 		"notes":"No peanuts",		
 	}
 }
@@ -48,7 +50,7 @@ import smartspace.data.ActionEntity;
 		"email":"player.invoking.action@de.no"
 	},
 	"properties":{
-		"dateOfDiningTableReservation":"2019-07-30T19:30:35.170+0000"
+		"dateOfDiningTableReservation":"2019-07-30,19:30:30"
 	}
 }
 */
@@ -56,28 +58,31 @@ import smartspace.data.ActionEntity;
 @Component
 public class ReserveTableInDiningRoomPlugin implements Plugin {
 
-	//private EnhancedActionDao actionDao;
 	private ObjectMapper jackson;
 
 	@Autowired
 	public ReserveTableInDiningRoomPlugin(EnhancedActionDao actionDao) {
 		super();
-		//this.actionDao = actionDao;
 		this.jackson = new ObjectMapper();
 	}
 	
 	@Override
-	public ActionEntity process(ActionEntity action) {
+	public ActionEntity process(ActionEntity actionEntity) {
 		
 		try {
 			ReserveTableInDiningRoomInput reserveTableInDiningRoomInput = 
 					this.jackson.readValue(
-							this.jackson.writeValueAsString(action.getMoreAttributes()), 
+							this.jackson.writeValueAsString(actionEntity.getMoreAttributes()), 
 							ReserveTableInDiningRoomInput.class);
 						
-			String result = "TABLE WAS BOOKED!";
-			action.getMoreAttributes().put("result", result);
-			return action;
+			if(reserveTableInDiningRoomInput.getDateOfDiningTableReservation() != null) {
+				actionEntity.getMoreAttributes().put("The table was:", "SUCCESSFULLY SAVED");
+			}
+			else {
+				actionEntity.getMoreAttributes().put("Table Reservation At", new Date());
+			}
+			
+			return actionEntity;
 			
 		} catch (Exception e) {
 			throw new RuntimeException(e);

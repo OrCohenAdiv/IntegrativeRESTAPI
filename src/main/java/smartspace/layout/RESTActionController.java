@@ -34,7 +34,6 @@ public class RESTActionController {
 	Room:
 		CheckIn
 		CheckOut
-		Room service reservation
 		Room cleaning reservation
 	*/
 	

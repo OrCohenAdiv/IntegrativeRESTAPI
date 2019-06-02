@@ -7,6 +7,8 @@ import smartspace.dao.EnhancedElementDao;
 import smartspace.data.ActionEntity;
 import smartspace.data.ElementEntity;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Component
@@ -23,19 +25,20 @@ public class CheckInPlugin implements Plugin {
 	
 	@Override
 	public ActionEntity process(ActionEntity actionEntity) {
+		
 		try {
-			ElementEntity elementEntity = 
-					 this.elementDao.readById(
-							 actionEntity.getElementSmartspace() +"="+ actionEntity.getElementId())
-					 .orElseThrow(() -> new RuntimeException("element does not exist"));
-					
 			CheckInInput checkInInput = 
 					this.jackson.readValue(
 							this.jackson.writeValueAsString(actionEntity.getMoreAttributes()), 
 							CheckInInput.class);
+				
+			if(checkInInput.getCheckIn() != null) {
+				actionEntity.getMoreAttributes().put("Checked In:", "SUCCESSFULLY");
+			}
+			else {
+				actionEntity.getMoreAttributes().put("Checked In At:", new Date());
+			}
 						
-			actionEntity.getMoreAttributes().put("Checked", " In");
-			
 			return actionEntity;
 			
 		} catch (Exception e) {

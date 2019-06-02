@@ -2,16 +2,16 @@ package smartspace.plugin;
 
 public class CheckInInput {
 
-	private boolean checkIn;
+	private String checkIn;
 
 	public CheckInInput(){
 	}
 	
-	public boolean getCheckIn() {
+	public String getCheckIn() {
 		return checkIn;
 	}
 
-	public void setCheckIn(boolean checkIn) {
+	public void setCheckIn(String checkIn) {
 		this.checkIn = checkIn;
 	}
 

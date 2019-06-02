@@ -107,6 +107,7 @@ public class RESTActionServiceImpl implements RESTActionService {
 			if (this.userDao.readById(actionEntity.getPlayerSmartspace() 
 						+"="+ actionEntity.getPlayerEmail()).isPresent()) {
 
+				System.err.println("here");
 				tmpUser = this.userDao.readById(
 						actionEntity.getPlayerSmartspace() +"="+ actionEntity.getPlayerEmail())
 						.orElseThrow(() -> new RuntimeException("user do not exist"));

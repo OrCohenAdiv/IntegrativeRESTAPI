@@ -3,6 +3,7 @@ package smartspace.plugin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -31,36 +32,33 @@ public class GetTotalCostPlugin implements Plugin {
 	
 	@Override
 	public ActionEntity process(ActionEntity actionEntity) {
-		int size = 10;
-		int page = 0;
+		
 		try {		
 			ElementEntity elementEntity = 
 					 this.elementDao.readById(
 							 actionEntity.getElementSmartspace() +"="+ actionEntity.getElementId())
 					 .orElseThrow(() -> new RuntimeException("element does not exist"));
 									
-			CostInput totalCostInput =
+			ElementInput roomPriceInput =
 					this.jackson.readValue(
-							this.jackson.writeValueAsString(elementEntity.getMoreAttributes()), 
-							CostInput.class);
+							this.jackson.writeValueAsString(
+									elementEntity.getMoreAttributes()), ElementInput.class);
 			
-			roomPrice = totalCostInput.getRoomPrice();
-			
-//			List<ActionEntity> listActions = 
-//					this.actionDao
-//					.readAll(size, page)
-//					.stream()
-//					.findAny()
-//					.filter(actionEntity.getElementId())
-//					.equals(actionEntity.getElementId());
-			
-			
-			//listActions = listActions.stream().filter(predicate);
-			
-			
-			
-			roomServicePrice = totalCostInput.getRoomServicePrice();
-			
+			roomPrice = roomPriceInput.getRoomPrice();
+
+			List<ActionEntity> listActions = 
+					this.actionDao.readAll()
+					.stream()
+					.filter(action -> 
+					action.getElementId().equals(actionEntity.getElementId())
+					&&action.getMoreAttributes().get("roomServicePrice") != null)
+					.collect(Collectors.toList());
+						
+			roomServicePrice = 0;
+			for (ActionEntity actionEntity2 : listActions) {
+				roomServicePrice += (int)actionEntity2.getMoreAttributes().get("roomServicePrice");
+			}
+
 			totalPrice = 0;
 			if(roomPrice >= 0) {
 				totalPrice += roomPrice;
@@ -68,10 +66,7 @@ public class GetTotalCostPlugin implements Plugin {
 			if(roomServicePrice >= 0) {
 				totalPrice += roomServicePrice;
 			}
-			
 			actionEntity.getMoreAttributes().put("TotalPrice", totalPrice);
-			//elementList.get(0).getMoreAttributes().put("TotalPrice", totalPrice);
-	
 			return actionEntity;
 			
 		} catch (Exception e) {

@@ -63,7 +63,54 @@ public class ElementBoundary {
 		entity.setMoreAttributes(this.elementProperties);
 		return entity;
 	}
-
+	
+	public ElementEntity convertToEntityForUpdate() {
+		
+		ElementEntity entity = new ElementEntity();
+		
+		if (this.key.getId() != null && this.key.getSmartspace() != null) {
+			entity.setKey(this.key.getSmartspace() +"="+ this.key.getId());
+		}
+		
+		if(this.getCreationTimestamp() != null) {
+			entity.setCreationTimestamp(this.getCreationTimestamp());
+		}
+		
+		if(this.getCreator() != null) {
+			if(this.getCreator().getEmail() != null) {
+				entity.setCreatorEmail(this.getCreator().getEmail());
+			}
+			if(this.getCreator().getSmartspace() != null) {
+			entity.setCreatorSmartspace(this.getCreator().getSmartspace());
+			}
+		}
+		
+		if(this.getName() != null) {
+			entity.setName(this.getName());
+		}
+		
+		if(this.getElementType() != null) {
+			entity.setType(this.getElementType());
+		}
+		
+		if(this.isExpired()) {
+			entity.setExpired(this.isExpired());
+		}
+		
+		if(this.getLatlng() != null) {
+			if(this.getLatlng().getLat() >= 0 && this.getLatlng().getLng() >= 0) {
+				entity.setLocation(new Location(this.getLatlng().getLat(), this.getLatlng().getLng()));
+			}
+		}
+		
+		if(this.getElementProperties() != null) {
+			entity.setMoreAttributes(this.getElementProperties());
+		}
+		
+		return entity;
+	}
+	
+	
 	public Key getKey() {
 		return key;
 	}

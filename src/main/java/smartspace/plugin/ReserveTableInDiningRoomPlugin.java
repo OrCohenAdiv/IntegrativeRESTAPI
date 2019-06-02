@@ -1,12 +1,9 @@
 package smartspace.plugin;
 
 import java.util.Date;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import smartspace.dao.EnhancedActionDao;
 import smartspace.data.ActionEntity;
 
@@ -75,7 +72,7 @@ public class ReserveTableInDiningRoomPlugin implements Plugin {
 							this.jackson.writeValueAsString(actionEntity.getMoreAttributes()), 
 							ReserveTableInDiningRoomInput.class);
 						
-			if(reserveTableInDiningRoomInput.getDateOfDiningTableReservation() != null) {
+			if(reserveTableInDiningRoomInput.getDateTableReserv() != null) {
 				actionEntity.getMoreAttributes().put("The table was:", "SUCCESSFULLY SAVED");
 			}
 			else {

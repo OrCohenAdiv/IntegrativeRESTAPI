@@ -2,18 +2,18 @@ package smartspace.plugin;
 
 public class ReserveTableInDiningRoomInput {
 	
-	private String dateOfDiningTableReservation;
+	private String dateTableReserv;
 	private String notes;
 
 	public ReserveTableInDiningRoomInput() {
 	}
 
-	public String getDateOfDiningTableReservation() {
-		return dateOfDiningTableReservation;
+	public String getDateTableReserv() {
+		return dateTableReserv;
 	}
 
-	public void setDateOfDiningTableReservation(String dateOfDiningTableReservation) {
-		this.dateOfDiningTableReservation = dateOfDiningTableReservation;
+	public void setDateTableReserv(String dateTableReserv) {
+		this.dateTableReserv = dateTableReserv;
 	}
 
 	public String getNotes() {

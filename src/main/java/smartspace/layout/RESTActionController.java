@@ -32,11 +32,7 @@ public class RESTActionController {
 	/*
 	FUNCTIONS TO DO !!!!! 
 	Room:
-		CheckIn
-		CheckOut
 		Room cleaning reservation
 	*/
 	
 }
-
-

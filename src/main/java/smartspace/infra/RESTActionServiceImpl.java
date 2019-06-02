@@ -1,6 +1,8 @@
 package smartspace.infra;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,6 +13,7 @@ import smartspace.dao.EnhancedActionDao;
 import smartspace.dao.EnhancedElementDao;
 import smartspace.dao.EnhancedUserDao;
 import smartspace.data.ActionEntity;
+import smartspace.data.ElementEntity;
 import smartspace.data.UserEntity;
 import smartspace.data.UserRole;
 import smartspace.plugin.Plugin;
@@ -88,7 +91,8 @@ public class RESTActionServiceImpl implements RESTActionService {
 	//check if all fields of actionEntity are NOT empty except getCreationTimestamp
 	//and the player and the element does exist in DB
 		UserEntity tmpUser;
-		
+		ElementEntity tmpElement;
+
 		if(actionEntity.getPlayerEmail() != null 
 				&& !actionEntity.getPlayerEmail().trim().isEmpty() 
 				&& actionEntity.getPlayerSmartspace() != null 
@@ -104,23 +108,18 @@ public class RESTActionServiceImpl implements RESTActionService {
 				&& actionEntity.getActionType() != null 
 				&& !actionEntity.getActionType().trim().isEmpty()) {
 		
-			if (this.userDao.readById(actionEntity.getPlayerSmartspace() 
-						+"="+ actionEntity.getPlayerEmail()).isPresent()) {
-
-				System.err.println("here");
-				tmpUser = this.userDao.readById(
-						actionEntity.getPlayerSmartspace() +"="+ actionEntity.getPlayerEmail())
-						.orElseThrow(() -> new RuntimeException("user do not exist"));
-				
-				if(tmpUser.getRole() != UserRole.PLAYER) {
-					throw new RuntimeException("you must be a PLAYER for doing Actions !");
-				}
-			}
+			tmpUser = this.userDao.readById(
+					actionEntity.getPlayerSmartspace()+"="+actionEntity.getPlayerEmail())
+					.orElseThrow(() -> new RuntimeException("user do NOT exist"));
 			
-			if(!this.elementDao.readById(actionEntity.getElementSmartspace() 
-					+"="+ actionEntity.getElementId()).isPresent()) {
-				throw new RuntimeException("element does not exist!");
+			if(tmpUser.getRole() != UserRole.PLAYER) {
+				throw new RuntimeException("you must be a PLAYER for doing Actions !");	
 			}
+		
+			tmpElement = this.elementDao.readById(
+					actionEntity.getElementSmartspace()+"="+actionEntity.getElementId())
+					.orElseThrow(() -> new RuntimeException("element do NOT exist"));
+						
 			return true;
 		}
 		return false;

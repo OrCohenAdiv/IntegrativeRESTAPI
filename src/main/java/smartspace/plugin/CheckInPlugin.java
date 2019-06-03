@@ -19,7 +19,6 @@ public class CheckInPlugin implements Plugin {
 	@Autowired
 	public CheckInPlugin() {
 		super();
-		this.elementDao = elementDao;
 		this.jackson = new ObjectMapper();
 	}
 	
@@ -32,7 +31,13 @@ public class CheckInPlugin implements Plugin {
 					 this.elementDao.readById(
 							 actionEntity.getElementSmartspace() +"="+ actionEntity.getElementId())
 					 .orElseThrow(() -> new RuntimeException("element does not exist"));
-					
+			
+			//make sure the element is room	
+			if(elementEntity.getType().toLowerCase().contains("room")) {
+				throw new RuntimeException("I'm sorry but this is NOT a room!");
+			}
+			
+			//make sure the element is available 
 			if(elementEntity.isExpired()) {
 				throw new RuntimeException("I'm sorry but this room is already OCCUPIED!");
 			}
@@ -49,6 +54,7 @@ public class CheckInPlugin implements Plugin {
 			if(checkInInput.getCheckIn() != null) {
 				actionEntity.getMoreAttributes().put("Checked In:", "SUCCESSFULLY");
 			}
+			
 			else {
 				actionEntity.getMoreAttributes().put("Checked In At:", new Date());
 			}

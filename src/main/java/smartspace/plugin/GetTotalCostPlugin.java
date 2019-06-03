@@ -34,11 +34,22 @@ public class GetTotalCostPlugin implements Plugin {
 	public ActionEntity process(ActionEntity actionEntity) {
 		
 		try {		
+			
 			ElementEntity elementEntity = 
 					 this.elementDao.readById(
 							 actionEntity.getElementSmartspace() +"="+ actionEntity.getElementId())
 					 .orElseThrow(() -> new RuntimeException("element does not exist"));
-									
+			
+			//make sure the element is room	
+			if(elementEntity.getType().toLowerCase().contains("room")) {
+				throw new RuntimeException("I'm sorry but this is NOT a room!");
+			}
+			
+			//make sure the element is available 
+			if(elementEntity.isExpired()) {
+				throw new RuntimeException("You must CHECKED IN the room\nbefore attempting to perform any actions registered on it");
+			}
+						
 			ElementInput roomPriceInput =
 					this.jackson.readValue(
 							this.jackson.writeValueAsString(

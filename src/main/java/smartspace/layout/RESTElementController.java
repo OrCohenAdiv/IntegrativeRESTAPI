@@ -32,7 +32,8 @@ public class RESTElementController {
 			@PathVariable("managerSmartspace") String managerSmartspace,
 			@PathVariable("managerEmail") String managerEmail) {
 		
-		return new ElementBoundary(this.restElementService.createNewElement(element.convertToEntity(), managerSmartspace, managerEmail));
+		return new ElementBoundary(this.restElementService.createNewElement(
+				element.convertToEntity(), managerSmartspace, managerEmail));
 	}
 	
 	@RequestMapping(path = "/smartspace/elements/{managerSmartspace}/{managerEmail}/{elementSmartspace}/{elementId}",
@@ -45,7 +46,10 @@ public class RESTElementController {
 			@PathVariable("managerEmail") String managerEmail,
 			@PathVariable("elementSmartspace") String elementSmartspace, 
 			@PathVariable("elementId") String elementId) {
-		this.restElementService.updateElement(elementBoundary.convertToEntityForUpdate(), managerSmartspace, managerEmail, elementSmartspace, elementId);
+		this.restElementService.updateElement(
+				elementBoundary.convertToEntityForUpdate(), 
+				managerSmartspace, managerEmail, 
+				elementSmartspace, elementId);
 	}
 	
 	@RequestMapping(path = "/smartspace/elements/{userSmartspace}/{userEmail}/{elementSmartspace}/{elementId}",
@@ -57,8 +61,8 @@ public class RESTElementController {
 			@PathVariable("userEmail") String userEmail,
 			@PathVariable("elementSmartspace") String elementSmartspace, 
 			@PathVariable("elementId") String elementId) {
-		
-		return new ElementBoundary(this.restElementService.findById(elementSmartspace, elementId));
+		return new ElementBoundary(
+				this.restElementService.findById(userSmartspace, userEmail, elementSmartspace, elementId));
 			
 	}
 	

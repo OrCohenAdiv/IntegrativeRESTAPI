@@ -26,17 +26,26 @@ public class RESTUserServiceImpl implements RESTUserService {
 	
 	@Override
 	@Transactional
-	public void updateUser(UserEntity user, String userSmartspace, String userEmail,UserRole role) {
-		if(user.getRole() == UserRole.PLAYER && role != UserRole.PLAYER) {
-			user.setPoints(0);
-		}
+	public void updateUser(UserEntity user, String userSmartspace, String userEmail) { //, UserRole role) {
+		
+		UserEntity userWillingUpdateAnotherUser = this.userDao.readById(userSmartspace +"="+userEmail)
+				.orElseThrow(() -> new RuntimeException("user willing to update another user is NOT in DB"));
+		
+		//user.setPoints(0);
 		this.userDao.update(user);
 	}
+		
+		
+//		if(user.getRole() == UserRole.PLAYER && role != UserRole.PLAYER) {
+//			user.setPoints(0);
+//		}
+//		this.userDao.update(user);
+	
 	
 	@Override
 	public UserEntity loginUser(String userSmartspace, String userEmail) {
 		return this.userDao.readById(userSmartspace + "=" + userEmail)
-				.orElseThrow(() -> new RuntimeException("User not found!"));
+				.orElseThrow(() -> new RuntimeException("user willing to Login is NOT in DB"));
 	}
 
 	private boolean validate(UserEntity entity) {

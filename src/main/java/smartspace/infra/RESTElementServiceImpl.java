@@ -31,13 +31,18 @@ public class RESTElementServiceImpl implements RESTElementService {
 			String elementSmartspace, String elementId) {
 
 		String key = managerSmartspace + "=" + managerEmail;
-		UserEntity userEntity = userDao.readById(key)
+		UserEntity userEntity = this.userDao.readById(key)
 				.orElseThrow(() -> new RuntimeException("user doesn't exist"));
 
 		if (!userEntity.getRole().equals(UserRole.MANAGER)) {
 			throw new RuntimeException("you are not MANAGER");
 		}
 
+		ElementEntity elementEntityToUpdate = this.elementDao.readById(elementSmartspace + "=" + elementId)
+				.orElseThrow(() -> new RuntimeException("element to update is NOT in DB"));
+		
+		elementEntity.setKey(elementEntityToUpdate.getKey());
+		
 		elementDao.update(elementEntity);
 	}
 
@@ -60,7 +65,6 @@ public class RESTElementServiceImpl implements RESTElementService {
 	public ElementEntity createNewElement(ElementEntity elementEntity, String smartspace, String email) {
 		
 		String key = smartspace + "=" + email;
-
 		UserEntity userEntity = this.userDao.readById(key)
 				.orElseThrow(() -> new RuntimeException("user doesn't exist"));
 
@@ -69,12 +73,10 @@ public class RESTElementServiceImpl implements RESTElementService {
 		}
 		
 		if (validate(elementEntity)) {
-			elementEntity.setKey(
-					smartspace+"="+elementEntity.getElementId());			
 			if(elementEntity.getCreationTimestamp() == null) {
 				elementEntity.setCreationTimestamp(new Date());
 			}
-			this.elementDao.importElement(elementEntity);
+			this.elementDao.create(elementEntity);
 		} else {
 			throw new RuntimeException("Invalid element");
 		}
@@ -82,7 +84,17 @@ public class RESTElementServiceImpl implements RESTElementService {
 	}
 					
 	@Override
-	public ElementEntity findById(String elementSmartspace, String elementId) {
+	public ElementEntity findById(String userSmartspace, String userEmail, 
+			String elementSmartspace, String elementId) {
+		
+		String key = userSmartspace + "=" + userEmail;
+		UserEntity userEntity = this.userDao.readById(key)
+				.orElseThrow(() -> new RuntimeException("user doesn't exist"));
+
+//		if (!userEntity.getRole().equals(UserRole.MANAGER)) {
+//			throw new RuntimeException("you are not MANAGER");
+//		}
+		
 		return this.elementDao
 				.readById(elementSmartspace + "=" + elementId)
 				.orElseThrow(() -> new RuntimeException("Element not found!"));

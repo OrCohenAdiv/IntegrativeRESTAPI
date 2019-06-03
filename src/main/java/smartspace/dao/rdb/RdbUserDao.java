@@ -74,33 +74,45 @@ public class RdbUserDao implements EnhancedUserDao<String>{
 		return rv;
 	}
 
-
-
 	@Override
 	@Transactional
 	public void update(UserEntity userEntity) {
 		
 		UserEntity existing = this.readById(userEntity.getKey())
-				.orElseThrow(() -> new RuntimeException("not user to update"));
+				.orElseThrow(() -> new RuntimeException("user to update is NOT in DB"));
 		
-		if(userEntity.getPoints() != existing.getPoints()) {
-			existing.setPoints(userEntity.getPoints());
-		}
+//		if(userEntity.getPoints() == existing.getPoints()) {
+//			System.err.println("bla1");
+//		}
+//		else {
+//			existing.setPoints(userEntity.getPoints());
+//		}
+		
 		if(userEntity.getAvatar() != null) {
+			System.err.println("bla2");
 			existing.setAvatar(userEntity.getAvatar());
 		}
+		
 		if(userEntity.getRole() != null) {
+			System.err.println("bla3");
 			existing.setRole(userEntity.getRole());
 		}
+		
 		if(userEntity.getUserEmail() != null) {
+			System.err.println("bla4");
 			existing.setUserEmail(userEntity.getUserEmail());
 		}
+		
 		if(userEntity.getUserName() != null) {
+			System.err.println("bla5");
 			existing.setUserName(userEntity.getUserName());
 		}
+		
 		if(userEntity.getUserSmartspace() != null) {
+			System.err.println("bla6");
 			existing.setUserSmartspace(userEntity.getUserSmartspace());
 		}
+		
 		// SQL: UPDATE
 		this.userCrud.save(existing);
 	}

@@ -76,18 +76,18 @@ public class UserBoundary {
 		UserEntity entity = new UserEntity();
 
 		//TODO: FIXED HERE(for user post tests)
-		entity.setKey(" = ");
-		if (this.key.getEmail() != null && this.key.getSmartspace() != null) {
-			entity.setKey(this.key.getSmartspace() + "=" + this.key.getEmail());
+		//entity.setKey("=");
+		if (this.getKey().getEmail() != null && this.getKey().getSmartspace() != null) {
+			entity.setKey(this.getKey().getSmartspace() + "=" + this.getKey().getEmail());
 		}
 
-		entity.setAvatar(this.avatar);
+		entity.setAvatar(this.getAvatar());
 
-		entity.setPoints(this.points);
+		entity.setPoints(this.getPoints());
 
-		entity.setRole(this.role);
+		entity.setRole(this.getRole());
 
-		entity.setUserName(this.userName);
+		entity.setUserName(this.getUserName());
 
 		return entity;
 	}

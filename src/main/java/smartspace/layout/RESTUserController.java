@@ -20,43 +20,6 @@ public class RESTUserController {
 		this.restUserService = restUserService;
 	}
 
-	@RequestMapping(
-			path="/smartspace/users/login/{userSmartspace}/{userEmail}",
-			method=RequestMethod.PUT,
-			consumes=MediaType.APPLICATION_JSON_VALUE,
-			produces=MediaType.APPLICATION_JSON_VALUE)
-	public void updateUser (
-			@RequestBody UserBoundary user,
-			@PathVariable("userSmartspace") String userSmartspace, 
-			@PathVariable("userEmail") String userEmail) {		
-			this.restUserService.updateUser(user.convertToEntity(),userSmartspace,userEmail,null);	
-			}
-
-//	@RequestMapping(path = "/smartspace/admin/users/{adminSmartspace}/{adminEmail}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-//	public UserBoundary[] getUsingPagination(
-//			@RequestParam(name = "size", required = false, defaultValue = "10") int size,
-//			@RequestParam(name = "page", required = false, defaultValue = "0") int page,
-//			@PathVariable("adminSmartspace") String adminSmartspace, @PathVariable("adminEmail") String adminEmail)
-//
-//	{
-//		return this.userService.getUsingPagination(size, page, adminSmartspace, adminEmail).stream()
-//				.map(UserBoundary::new).collect(Collectors.toList()).toArray(new UserBoundary[0]);
-//	}
-	
-	//TODO:FIXED HERE no need for user boundary
-	@RequestMapping(
-			path = "/smartspace/users/login/{userSmartspace}/{userEmail}",
-			method = RequestMethod.GET,
-			produces=MediaType.APPLICATION_JSON_VALUE
-			)
-	public UserBoundary loginUser(
-			@PathVariable("userSmartspace") String userSmartspace,
-			@PathVariable("userEmail") String userEmail) {
-		return new UserBoundary(
-				this.restUserService.loginUser(
-						userSmartspace, userEmail));
-	}
-
 	@RequestMapping(path = "/smartspace/users", 
 			method = RequestMethod.POST, 
 			consumes = MediaType.APPLICATION_JSON_VALUE, 
@@ -66,5 +29,30 @@ public class RESTUserController {
 		return new UserBoundary(
 				this.restUserService.createANewUser(newUserForm.convertToEntity()));
 	}
+	
+	@RequestMapping(
+			path = "/smartspace/users/login/{userSmartspace}/{userEmail}",
+			method = RequestMethod.GET,
+			produces=MediaType.APPLICATION_JSON_VALUE
+			)
+	public UserBoundary loginUser(
+			@PathVariable("userSmartspace") String userSmartspace,
+			@PathVariable("userEmail") String userEmail) {
+		return new UserBoundary(
+				this.restUserService.loginUser(userSmartspace, userEmail));
+	}
+	
+	@RequestMapping(
+			path="/smartspace/users/login/{userSmartspace}/{userEmail}",
+			method=RequestMethod.PUT,
+			//consumes=MediaType.APPLICATION_JSON_VALUE,
+			produces=MediaType.APPLICATION_JSON_VALUE)
+	public void updateUser (
+			@RequestBody UserBoundary user,
+			@PathVariable("userSmartspace") String userSmartspace, 
+			@PathVariable("userEmail") String userEmail) {		
+			this.restUserService.updateUser(user.convertToEntity(), userSmartspace, userEmail); //, null);	
+			}
+
 }
 

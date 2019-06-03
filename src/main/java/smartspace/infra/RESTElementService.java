@@ -12,7 +12,7 @@ public interface RESTElementService {
 	
 	public ElementEntity createNewElement(ElementEntity elementEntity, String managerSmartspace,  String managerEmail);
 		
-	public ElementEntity findById(String elementSmartspace, String elementId);
+	public ElementEntity findById(String managerSmartspace, String managerEmail, String elementSmartspace, String elementId);
 	
 	public List<ElementEntity> findNearLocation(String userSmartspace,String userEmail,
 			String search,double x,double y,double distance,int page,int size);

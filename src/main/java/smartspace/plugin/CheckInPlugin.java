@@ -2,7 +2,11 @@ package smartspace.plugin;
 
 import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import smartspace.dao.EnhancedElementDao;
 import smartspace.data.ActionEntity;
+import smartspace.data.ElementEntity;
+
 import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -10,10 +14,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class CheckInPlugin implements Plugin {
 
 	private ObjectMapper jackson;
-	
+    private EnhancedElementDao<String> elementDao;
+
 	@Autowired
 	public CheckInPlugin() {
 		super();
+		this.elementDao = elementDao;
 		this.jackson = new ObjectMapper();
 	}
 	
@@ -21,6 +27,20 @@ public class CheckInPlugin implements Plugin {
 	public ActionEntity process(ActionEntity actionEntity) {
 		
 		try {
+			
+			ElementEntity elementEntity = 
+					 this.elementDao.readById(
+							 actionEntity.getElementSmartspace() +"="+ actionEntity.getElementId())
+					 .orElseThrow(() -> new RuntimeException("element does not exist"));
+					
+			if(elementEntity.isExpired()) {
+				throw new RuntimeException("I'm sorry but this room is already OCCUPIED!");
+			}
+			
+			else {
+				elementEntity.setExpired(false);
+			}
+			
 			CheckInInput checkInInput = 
 					this.jackson.readValue(
 							this.jackson.writeValueAsString(actionEntity.getMoreAttributes()), 

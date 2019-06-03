@@ -8,21 +8,27 @@ import smartspace.data.UserRole;
 
 public interface RESTElementService {
 	
-	public void updateElement(ElementEntity elementEntity, String managerSmartspace,  String managerEmail, String elementSmartspace, String elementId);
+	public ElementEntity createNewElement(ElementEntity elementEntity, String managerSmartspace,  
+			String managerEmail);
 	
-	public ElementEntity createNewElement(ElementEntity elementEntity, String managerSmartspace,  String managerEmail);
-		
-	public ElementEntity findById(String managerSmartspace, String managerEmail, String elementSmartspace, String elementId);
+	public void updateElement(ElementEntity elementEntity, String managerSmartspace,  
+			String managerEmail, String elementSmartspace, String elementId);
+	
+	public ElementEntity findById(String userSmartspace, String userEmail, 
+			String elementSmartspace, String elementId);
 	
 	public List<ElementEntity> findNearLocation(String userSmartspace,String userEmail,
 			String search,double x,double y,double distance,int page,int size);
-	
-	//ADDED NOW
-	
-	public Collection<ElementEntity> getElementsUsingPaginationOfName(String managerSmartspace, String managerEmail, UserRole role,
+		
+	public Collection<ElementEntity> getElementsUsingPaginationOfName(
+			String userSmartspace, String userEmail, 
 			String name, int size, int page);
 
-	public List<ElementEntity> getElementsUsingPaginationOfSpecifiedType(String managerSmartspace, String managerEmail, UserRole role,
+	public List<ElementEntity> getElementsUsingPaginationOfSpecifiedType(
+			String userSmartspace, String userEmail,
 			String type, int size, int page);
+
+	public List<ElementEntity> getUsingPagination(int size, int page, 
+			String userSmartspace, String userEmail);
 }
 

@@ -150,7 +150,7 @@ public class RdbElementDao implements EnhancedElementDao<String> {
 	
 	@Override
 	public List<ElementEntity> readAllUsingName(String name, int size, int page) {
-		return this.elementCrud.findAllByName(name, PageRequest.of(page, size));
+		return this.elementCrud.findAllByNameLike("%"+name+"%", PageRequest.of(page, size));
 	}
 
 	@Override
@@ -160,7 +160,7 @@ public class RdbElementDao implements EnhancedElementDao<String> {
 
 	@Override
 	public List<ElementEntity> readAllUsingType(String type, int size, int page) {
-		return this.elementCrud.findAllByType(type, PageRequest.of(page, size));
+		return this.elementCrud.findAllByTypeLike("%"+type+"%", PageRequest.of(page, size));
 	}
 
 	@Override

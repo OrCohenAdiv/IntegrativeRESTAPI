@@ -24,7 +24,6 @@ public class MemoryElementDao implements ElementDao<String> {
 		return this.elements;
 	}
 	
-	
 	@Override
 	public ElementEntity create(ElementEntity elementEntity) {
 		long tmpId = nextId.getAndIncrement();

@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import smartspace.aop.AdminUserGetActions;
 import smartspace.dao.EnhancedElementDao;
 import smartspace.dao.EnhancedUserDao;
 import smartspace.data.ElementEntity;
@@ -87,13 +88,8 @@ public class RESTElementServiceImpl implements RESTElementService {
 	public ElementEntity findById(String userSmartspace, String userEmail, 
 			String elementSmartspace, String elementId) {
 		
-		String key = userSmartspace + "=" + userEmail;
-		UserEntity userEntity = this.userDao.readById(key)
+		this.userDao.readById(userSmartspace + "=" + userEmail)
 				.orElseThrow(() -> new RuntimeException("user doesn't exist"));
-
-//		if (!userEntity.getRole().equals(UserRole.MANAGER)) {
-//			throw new RuntimeException("you are not MANAGER");
-//		}
 		
 		return this.elementDao
 				.readById(elementSmartspace + "=" + elementId)
@@ -101,40 +97,58 @@ public class RESTElementServiceImpl implements RESTElementService {
 	}
 	
 	@Override
-	public List<ElementEntity> findNearLocation(String userSmartspace,String userEmail,
-			String search,double x,double y,double distance,int page,int size){
-		if(distance<0)
+	public List<ElementEntity> getUsingPagination(int size, int page, 
+			String userSmartspace, String userEmail) {
+		
+		this.userDao.readById(userSmartspace + "=" + userEmail)
+			.orElseThrow(() -> new RuntimeException("user doesn't exist"));
+
+		return this.elementDao.readAll("key", size, page);
+	}
+	
+	@Override
+	public List<ElementEntity> findNearLocation(String userSmartspace, String userEmail,
+			String search, double x, double y, double distance, int page, int size){
+		
+		this.userDao.readById(userSmartspace + "=" + userEmail)
+			.orElseThrow(() -> new RuntimeException("user doesn't exist"));
+		
+		if(distance<0) {
 			throw new RuntimeException("Value must be positive!");
+		}
 		
 		return this.elementDao.readAllByDistanceFromLocation(
 				new Location(x, y), distance, size, page);
 	}
 	
 	@Override
-	public Collection<ElementEntity> getElementsUsingPaginationOfName(String managerSmartspace, String managerEmail, UserRole role,
+	public Collection<ElementEntity> getElementsUsingPaginationOfName(
+			String userSmartspace, String userEmail, 
 			String name, int size, int page) {
 
-		if (role == UserRole.MANAGER) {
-			return this.elementDao.readAllUsingName(name, size, page);
-		} else if (role == UserRole.PLAYER) {
-			return this.elementDao.readAllUsingNameNotExpired(name, size, page);
-		} else {
-			throw new RuntimeException(
-					"The URl isn't match for manager or player. use another user or URL that match admin user");
-		}
+		this.userDao.readById(userSmartspace + "=" + userEmail)
+			.orElseThrow(() -> new RuntimeException("user doesn't exist"));
+
+		return this.elementDao.readAllUsingName(name, size, page);
 	}
 
 	@Override
-	public List<ElementEntity> getElementsUsingPaginationOfSpecifiedType(String managerSmartspace, String managerEmail, UserRole role,
+	public List<ElementEntity> getElementsUsingPaginationOfSpecifiedType(
+			String userSmartspace, String userEmail,
 			String type, int size, int page) {
 
-		if (role == UserRole.MANAGER) {
-			return this.elementDao.readAllUsingType(type, size, page);
-		} else if (role == UserRole.PLAYER) {
-			return this.elementDao.readAllUsingTypeNotExpired(type, size, page);
-		} else {
-			throw new RuntimeException(
-					"The URl isn't match for manager or player. use another user or URL that match admin user");
-		}
+		this.userDao.readById(userSmartspace + "=" + userEmail)
+			.orElseThrow(() -> new RuntimeException("user doesn't exist"));
+
+		return this.elementDao.readAllUsingType(type, size, page);
+
+//		if (role == UserRole.MANAGER) {
+//			return this.elementDao.readAllUsingType(type, size, page);
+//		} else if (role == UserRole.PLAYER) {
+//			return this.elementDao.readAllUsingTypeNotExpired(type, size, page);
+//		} else {
+//			throw new RuntimeException(
+//					"The URl isn't match for manager or player. use another user or URL that match admin user");
+//		}
 	}
 }

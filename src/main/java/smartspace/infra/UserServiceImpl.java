@@ -36,8 +36,8 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	@AdminUserPostActions
 	public List<UserEntity> newUser(UserEntity[] allEntities, String adminSmartspace, String adminEmail) {
+		
 		List<UserEntity> userEntites = new LinkedList<>();
-
 		for (UserEntity userEntity : allEntities) {
 			if (validate(userEntity)) {
 				if (userEntity.getUserSmartspace().equals(smartspaceName))

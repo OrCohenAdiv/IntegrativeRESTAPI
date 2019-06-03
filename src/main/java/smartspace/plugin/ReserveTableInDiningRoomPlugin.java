@@ -4,7 +4,6 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import smartspace.dao.EnhancedActionDao;
 import smartspace.dao.EnhancedElementDao;
 import smartspace.data.ActionEntity;
 import smartspace.data.ElementEntity;
@@ -16,9 +15,10 @@ public class ReserveTableInDiningRoomPlugin implements Plugin {
     private EnhancedElementDao<String> elementDao;
 
 	@Autowired
-	public ReserveTableInDiningRoomPlugin(EnhancedActionDao actionDao) {
+	public ReserveTableInDiningRoomPlugin(EnhancedElementDao<String> elementDao) {
 		super();
 		this.jackson = new ObjectMapper();
+		this.elementDao = elementDao;
 	}
 	
 	@Override
@@ -32,7 +32,7 @@ public class ReserveTableInDiningRoomPlugin implements Plugin {
 					 .orElseThrow(() -> new RuntimeException("element does not exist"));
 			
 			//make sure the element is room	
-			if(elementEntity.getType().toLowerCase().contains("room")) {
+			if(elementEntity.getType().toLowerCase().contains("%room%")) {
 				throw new RuntimeException("I'm sorry but this is NOT a room!");
 			}
 			

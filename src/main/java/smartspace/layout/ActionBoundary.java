@@ -104,11 +104,15 @@ public class ActionBoundary {
 		
 		ActionEntity entity =  new ActionEntity();
 		
-		if(this.actionKey.getId() != null && this.actionKey.getSmartspace() != null) {
+		if(this.actionKey != null) {
+			
+			if(this.actionKey.getId() != null && this.actionKey.getSmartspace() != null) {
 			entity.setActionId(this.actionKey.getId());
 			entity.setActionSmartspace(this.actionKey.getSmartspace());
 			entity.setKey(this.actionKey.getSmartspace() + "=" + this.actionKey.getId());
+			}
 		}
+		
 		if(this.element.getId() != null && this.element.getSmartspace() != null) {
 			entity.setElementId(this.element.getId());
 			entity.setElementSmartspace(this.element.getSmartspace());

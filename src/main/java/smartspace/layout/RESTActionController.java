@@ -29,10 +29,4 @@ public class RESTActionController {
 				this.restActionServiceImpl.invokeAction(action.convertToEntity()));
 	}
 	
-	/*
-	FUNCTIONS TO DO !!!!! 
-	Room:
-		Room cleaning reservation
-	*/
-	
 }

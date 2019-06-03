@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import smartspace.dao.ActionDao;
 import smartspace.dao.EnhancedActionDao;
 import smartspace.data.ActionEntity;
 import org.springframework.data.domain.Sort.Direction;

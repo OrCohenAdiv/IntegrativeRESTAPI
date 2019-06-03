@@ -1,8 +1,6 @@
 package smartspace.infra;
 
 import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -52,14 +50,14 @@ public class RESTActionServiceImpl implements RESTActionService {
 			throw new RuntimeException("can NOT invoke action!");
 		}
 		
-		if (!newAction.getActionSmartspace().equals(this.smartspaceName)) {
-			throw new RuntimeException("Illigal Import!");
-		}
-		
 		if(newAction.getCreationTimestamp() == null) {
 			newAction.setCreationTimestamp(new Date());
-		}		
-		
+		}
+				
+//		if (!newAction.getActionSmartspace().equals(this.smartspaceName)) {
+//			throw new RuntimeException("Illigal Import!");
+//		}
+	
 		try {
 			String funcName = newAction.getActionType();
 //"ReserveTableInDiningRoom" ------>>>>>>> smartspace.plugin.ReserveTableInDiningRoomPlugin
@@ -76,8 +74,8 @@ public class RESTActionServiceImpl implements RESTActionService {
 			Plugin plugin = (Plugin) this.ctx.getBean(theClass);
 			
 			newAction = plugin.process(newAction);
-			
 			this.actionDao.create(newAction);
+
 			return newAction;
 			
 		} catch (Exception e) {
@@ -85,7 +83,6 @@ public class RESTActionServiceImpl implements RESTActionService {
 		}
 	} 
 
-	
 	private boolean valiadate(ActionEntity actionEntity) {
 		
 	//check if all fields of actionEntity are NOT empty except getCreationTimestamp
@@ -97,10 +94,10 @@ public class RESTActionServiceImpl implements RESTActionService {
 				&& !actionEntity.getPlayerEmail().trim().isEmpty() 
 				&& actionEntity.getPlayerSmartspace() != null 
 				&& !actionEntity.getPlayerSmartspace().trim().isEmpty()
-				&& actionEntity.getActionSmartspace() != null 
-				&& !actionEntity.getActionSmartspace().trim().isEmpty()
-				&& actionEntity.getActionId() != null 
-				&& !actionEntity.getActionId().trim().isEmpty()
+				//&& actionEntity.getActionSmartspace() != null 
+				//&& !actionEntity.getActionSmartspace().trim().isEmpty()
+				//&& actionEntity.getActionId() != null 
+				//&& !actionEntity.getActionId().trim().isEmpty()
 				&& actionEntity.getElementSmartspace() != null 
 				&& !actionEntity.getElementSmartspace().trim().isEmpty()
 				&& actionEntity.getElementId() != null 

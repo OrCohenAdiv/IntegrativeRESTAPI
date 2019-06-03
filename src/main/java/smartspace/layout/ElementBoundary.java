@@ -49,10 +49,13 @@ public class ElementBoundary {
 
 	public ElementEntity convertToEntity() {
 		ElementEntity entity = new ElementEntity();
-//		entity.setKey("=");
-//		if (this.key.getId() != null && this.key.getSmartspace() != null) {
-//			entity.setKey(this.key.getSmartspace() +"="+ this.key.getId());
-//		}
+		
+		if(this.key != null) {
+			if (this.key.getId() != null && this.key.getSmartspace() != null) {
+				entity.setKey(this.key.getSmartspace() +"="+ this.key.getId());
+			}
+		}
+		
 		entity.setType(this.elementType);
 		entity.setName(this.name);
 		entity.setExpired(this.expired);

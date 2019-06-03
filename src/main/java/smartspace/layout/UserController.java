@@ -25,16 +25,25 @@ public class UserController {
 		this.userService = userService;
 	}
 
-	@RequestMapping(path = "/smartspace/admin/users/{adminSmartspace}/{adminEmail}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public UserBoundary[] newUser(@RequestBody UserBoundary[] users,
-			@PathVariable("adminSmartspace") String adminSmartspace, @PathVariable("adminEmail") String adminEmail) {
+	@RequestMapping(path = "/smartspace/admin/users/{adminSmartspace}/{adminEmail}", 
+			method = RequestMethod.POST, 
+			consumes = MediaType.APPLICATION_JSON_VALUE, 
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public UserBoundary[] newUser(
+			@RequestBody UserBoundary[] users,
+			@PathVariable("adminSmartspace") String adminSmartspace, 
+			@PathVariable("adminEmail") String adminEmail) {
 		UserEntity[] entityArr = 
 				Stream.of(users)
 				.map(UserBoundary::convertToEntity)
 				.collect(Collectors.toList())
 				.toArray(new UserEntity[0]);
-		return this.userService.newUser(entityArr, adminSmartspace, adminEmail).stream().map(UserBoundary::new)
-				.collect(Collectors.toList()).toArray(new UserBoundary[0]);
+		return this.userService
+				.newUser(entityArr, adminSmartspace, adminEmail)
+				.stream()
+				.map(UserBoundary::new)
+				.collect(Collectors.toList())
+				.toArray(new UserBoundary[0]);
 	}
 
 	@RequestMapping(path = "/smartspace/admin/users/{adminSmartspace}/{adminEmail}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

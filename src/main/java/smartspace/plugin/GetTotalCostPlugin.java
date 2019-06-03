@@ -41,7 +41,7 @@ public class GetTotalCostPlugin implements Plugin {
 					 .orElseThrow(() -> new RuntimeException("element does not exist"));
 			
 			//make sure the element is room	
-			if(elementEntity.getType().toLowerCase().contains("room")) {
+			if(elementEntity.getType().toLowerCase().contains("%room%")) {
 				throw new RuntimeException("I'm sorry but this is NOT a room!");
 			}
 						
@@ -64,7 +64,7 @@ public class GetTotalCostPlugin implements Plugin {
 			for (ActionEntity actionEntity2 : listActions) {
 				roomServicePrice += (int)actionEntity2.getMoreAttributes().get("roomServicePrice");
 			}
-
+				
 			totalPrice = 0;
 			if(roomPrice >= 0) {
 				totalPrice += roomPrice;

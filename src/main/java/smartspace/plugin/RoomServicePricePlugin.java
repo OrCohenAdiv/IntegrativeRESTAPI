@@ -15,9 +15,10 @@ public class RoomServicePricePlugin implements Plugin {
     private EnhancedElementDao<String> elementDao;
 
 	@Autowired
-	public RoomServicePricePlugin() {
+	public RoomServicePricePlugin(EnhancedElementDao<String> elementDao) {
 		super();
 		this.jackson = new ObjectMapper();
+		this.elementDao = elementDao;
 	}
 	
 	@Override
@@ -31,7 +32,7 @@ public class RoomServicePricePlugin implements Plugin {
 					 .orElseThrow(() -> new RuntimeException("element does not exist"));
 			
 			//make sure the element is room	
-			if(elementEntity.getType().toLowerCase().contains("room")) {
+			if(elementEntity.getType().toLowerCase().contains("%room%")) {
 				throw new RuntimeException("I'm sorry but this is NOT a room!");
 			}
 			

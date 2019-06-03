@@ -70,7 +70,9 @@ public class ActionServiceImpl implements ActionService {
 
 	@Override
 	@AdminUserGetActions
-	public List<ActionEntity> getUsingPagination(int size, int page, String adminSmartspace, String adminEmail) {
+	public List<ActionEntity> getUsingPagination(
+			int size, int page, String adminSmartspace, String adminEmail) {
+		
 		return this.actionDao.readAll("key", size, page);
 	}
 }

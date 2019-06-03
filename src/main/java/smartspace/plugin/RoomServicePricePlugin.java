@@ -35,11 +35,6 @@ public class RoomServicePricePlugin implements Plugin {
 				throw new RuntimeException("I'm sorry but this is NOT a room!");
 			}
 			
-			//make sure the element is available 
-			if(elementEntity.isExpired()) {
-				throw new RuntimeException("You must CHECKED IN the room\nbefore attempting to perform any actions registered on it");
-			}
-
 			RoomServicePriceInput roomServicePriceInput = 
 					this.jackson.readValue(
 							this.jackson.writeValueAsString(actionEntity.getMoreAttributes()), 

@@ -37,15 +37,6 @@ public class CheckInPlugin implements Plugin {
 				throw new RuntimeException("I'm sorry but this is NOT a room!");
 			}
 			
-			//make sure the element is available 
-			if(elementEntity.isExpired()) {
-				throw new RuntimeException("I'm sorry but this room is already OCCUPIED!");
-			}
-			
-			else {
-				elementEntity.setExpired(false);
-			}
-			
 			CheckInInput checkInInput = 
 					this.jackson.readValue(
 							this.jackson.writeValueAsString(actionEntity.getMoreAttributes()), 
